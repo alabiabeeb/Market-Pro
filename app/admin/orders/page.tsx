@@ -36,21 +36,17 @@ export default function OrdersPage() {
 
   return (
     <div className="space-y-4 sm:space-y-6">
-
-      {/* ── Page title + Create button ── */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-lg sm:text-xl font-bold text-gray-900">Orders</h1>
+          <h1 className="text-lg sm:text-xl font-bold text-[#4338CA]">Orders</h1>
           <p className="text-xs text-gray-400 mt-0.5">Manage and track all your orders</p>
         </div>
         <button className="flex items-center gap-1.5 bg-[#4F46E5] hover:bg-[#4338CA] text-white text-xs sm:text-sm font-medium px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg transition-colors shadow-sm">
           <Plus size={14} />
           <span className="hidden xs:inline">Create Order</span>
-          <span className="xs:hidden">New</span>
+          <span className="xs:hidden">New Order</span>
         </button>
       </div>
-
-      {/* ── Stat Cards ── */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         {statCards.map((s) => {
           const Icon = s.icon;
@@ -70,18 +66,12 @@ export default function OrdersPage() {
           );
         })}
       </div>
-
-      {/* ── Table card ── */}
       <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
-
-        {/* Toolbar */}
         <div className="p-4 sm:p-5 border-b border-gray-100 flex flex-col sm:flex-row sm:items-center gap-3">
           <div className="flex items-center justify-between sm:hidden">
             <h2 className="text-sm font-semibold text-gray-800">Recent Orders</h2>
             <button className="text-xs text-indigo-600 font-medium">View All →</button>
           </div>
-
-          {/* Search */}
           <div className="relative flex-1 max-w-sm">
             <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
             <input
@@ -92,8 +82,6 @@ export default function OrdersPage() {
               className="w-full pl-8 pr-3 py-2 text-xs sm:text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-400 transition-all"
             />
           </div>
-
-          {/* Filter buttons */}
           <div className="flex items-center gap-2 sm:ml-auto">
             <button className="flex items-center gap-1.5 text-xs font-medium text-gray-600 border border-gray-200 px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors">
               <Filter size={13} /> Filter
@@ -106,16 +94,12 @@ export default function OrdersPage() {
             <button className="flex items-center gap-1.5 text-xs font-medium text-gray-600 border border-gray-200 px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors hidden sm:flex">
               <SlidersHorizontal size={13} /> More Filters
             </button>
-
-            {/* Desktop: View All */}
             <div className="hidden sm:flex items-center gap-3 ml-2">
               <span className="text-xs font-semibold text-gray-700">Recent Orders</span>
               <button className="text-xs text-indigo-600 font-medium hover:underline">View All →</button>
             </div>
           </div>
         </div>
-
-        {/* ── Desktop Table (sm+) ── */}
         <div className="hidden sm:block overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
@@ -157,8 +141,6 @@ export default function OrdersPage() {
             </tbody>
           </table>
         </div>
-
-        {/* ── Mobile Cards (below sm) ── */}
         <div className="sm:hidden divide-y divide-gray-50">
           {filtered.map((order) => (
             <div key={order.id} className="flex items-center justify-between px-4 py-3.5 hover:bg-gray-50/60 transition-colors">
@@ -181,8 +163,6 @@ export default function OrdersPage() {
             </div>
           ))}
         </div>
-
-        {/* ── Pagination ── */}
         <div className="px-4 sm:px-5 py-3.5 border-t border-gray-100 flex flex-col xs:flex-row items-center justify-between gap-2">
           <p className="text-xs text-gray-400">
             Showing <span className="font-medium text-gray-600">1 to 10</span> of <span className="font-medium text-gray-600">1,248</span> orders

@@ -112,15 +112,12 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-4 sm:space-y-6   ">
-
-      {/* ── Stat Cards ── */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         {stats.map((stat) => (
           <div
             key={stat.label}
             className="bg-white rounded-xl sm:rounded-2xl border border-gray-100 shadow-sm p-3 sm:p-4 flex flex-col gap-2"
           >
-            {/* Label + badge */}
             <div className="flex items-start justify-between gap-1">
               <span className="text-[10px] sm:text-[11px] font-medium text-gray-400 uppercase tracking-wide leading-tight">
                 {stat.label}
@@ -134,13 +131,9 @@ export default function DashboardPage() {
                 {stat.change}
               </span>
             </div>
-
-            {/* Value */}
             <p className="text-lg sm:text-[22px] font-bold text-gray-800 tracking-tight leading-none">
               {stat.value}
             </p>
-
-            {/* Bottom visual */}
             {stat.type === "bars" && (
               <div className="flex items-end gap-0.5 h-6 sm:h-7 mt-1">
                 {stat.bars!.map((h, i) => (
@@ -184,10 +177,7 @@ export default function DashboardPage() {
           </div>
         ))}
       </div>
-
-      {/* ── Revenue Trends ── */}
       <div className="bg-white rounded-xl sm:rounded-2xl border border-gray-100 shadow-sm p-4 sm:p-6">
-        {/* Header */}
         <div className="flex flex-col xs:flex-row xs:items-center justify-between gap-3 mb-4">
           <div>
             <h2 className="text-sm sm:text-base font-semibold text-gray-800">Revenue Trends</h2>
@@ -209,8 +199,6 @@ export default function DashboardPage() {
             ))}
           </div>
         </div>
-
-        {/* Chart — shorter on mobile */}
         <div className="h-44 sm:h-56">
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart data={revenueData} margin={{ top: 10, right: 4, left: -20, bottom: 0 }}>
@@ -254,8 +242,6 @@ export default function DashboardPage() {
           </ResponsiveContainer>
         </div>
       </div>
-
-      {/* ── Recent Orders ── */}
       <div className="bg-white rounded-xl sm:rounded-2xl border border-gray-100 shadow-sm p-4 sm:p-6">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-sm sm:text-base font-semibold text-gray-800">Recent Orders</h2>
