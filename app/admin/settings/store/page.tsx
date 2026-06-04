@@ -34,6 +34,7 @@ export default function StoreSettingsPage() {
     twitterX: "@luminary_home",
     twitter: "",
     pinterest: "",
+    banner: "", // Added banner field
   });
 
   const handleSave = () => {
@@ -134,6 +135,22 @@ export default function StoreSettingsPage() {
               <ImageIcon size={16} className="text-gray-400 group-hover:text-indigo-500" />
               <p className="text-[11px] text-gray-400">Upload wide banner (1920×400)</p>
             </label>
+            {/* Optional: Show preview if banner exists */}
+            {store.banner && (
+              <div className="mt-3 relative">
+                <img 
+                  src={store.banner} 
+                  alt="Banner preview" 
+                  className="w-full h-32 object-cover rounded-lg border border-gray-200"
+                />
+                <button
+                  onClick={() => setStore({ ...store, banner: "" })}
+                  className="absolute top-2 right-2 p-1 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors"
+                >
+                  <X size={14} />
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>

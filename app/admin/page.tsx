@@ -111,7 +111,7 @@ export default function DashboardPage() {
   const [activePeriod, setActivePeriod] = useState("Week");
 
   return (
-    <div className="space-y-4 sm:space-y-6   ">
+    <div className="space-y-4 sm:space-y-6">
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         {stats.map((stat) => (
           <div
@@ -227,7 +227,7 @@ export default function DashboardPage() {
                   fontSize: "12px",
                   boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
                 }}
-                formatter={(v: number) => [`$${v.toLocaleString()}`, "Revenue"]}
+                formatter={(value) => [`$${Number(value).toLocaleString()}`, "Revenue"]}
               />
               <Area
                 type="monotone"
