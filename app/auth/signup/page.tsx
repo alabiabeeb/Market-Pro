@@ -15,91 +15,49 @@ export default function SignUpPage() {
     setForm({ ...form, [e.target.name]: e.target.value });
 
   return (
-    <div className="min-h-screen w-full flex">
+    <div className="min-h-screen w-full flex overflow-hidden">
 
       {/* ── Left panel: branding (hidden on mobile) ── */}
-      <div className="hidden lg:flex lg:w-[45%] xl:w-1/2 relative bg-[#0f0c29] overflow-hidden flex-col justify-between p-10 xl:p-14">
-        {/* Animated blobs */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute -top-32 -left-32 w-[500px] h-[500px] rounded-full bg-indigo-600/25 blur-[100px] animate-pulse" />
-          <div className="absolute bottom-0 right-0 w-[400px] h-[400px] rounded-full bg-violet-500/20 blur-[120px] animate-pulse delay-1000" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] rounded-full bg-blue-500/10 blur-[80px]" />
-        </div>
+<div 
+  className="hidden lg:flex lg:w-[40%] xl:w-1/2 relative  flex-col justify-between p-8 xl:p-14"
+  style={{ 
+    backgroundImage: "[#F0F3FF], url('/signup bg.jpg')",
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    backgroundRepeat: "no-repeat",
+    backgroundAttachment: "fixed"
+  }}
+>
+  {/* Animated blobs */}
+  <div className="absolute inset-0 overflow-hidden pointer-events-none">
+    <div className="absolute -top-32 -left-32 w-[500px] h-[500px] rounded-full bg-[#f0f3ffb2] blur-[100px] animate-pulse" />
+    <div className="absolute bottom-0 right-0 w-[400px] h-[400px] rounded-full bg-[#f0f3ffb2] blur-[120px] animate-pulse delay-1000" />
+    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] rounded-full bg-blue-500/10 blur-[80px]" />
+  </div>
 
-        {/* Grid overlay */}
-        <div
-          className="absolute inset-0 opacity-[0.04]"
-          style={{
-            backgroundImage: "linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)",
-            backgroundSize: "40px 40px",
-          }}
-        />
+  {/* Logo */}
+  <div className="relative z-10">
+    <span className="text-black text-[20px] font-bold tracking-tight">
+      Market <span className="text-indigo-700">Pro</span>
+    </span>
+  </div>
 
-        {/* Logo */}
-        <div className="relative z-10">
-          <span className="text-white text-xl font-bold tracking-tight">
-            Market <span className="text-indigo-400">Pro</span>
-          </span>
-        </div>
+  {/* Center illustration mock */}
+  
 
-        {/* Center illustration mock */}
-        <div className="relative z-10 flex-1 flex items-center justify-center py-10">
-          <div className="w-full max-w-sm">
-            {/* Mock dashboard card */}
-            <div className="bg-white/5 border border-white/10 rounded-2xl p-5 backdrop-blur-sm mb-4 shadow-2xl">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-8 h-8 rounded-lg bg-indigo-500/30 flex items-center justify-center">
-                  <div className="w-3 h-3 rounded bg-indigo-400" />
-                </div>
-                <div>
-                  <div className="h-2.5 w-24 bg-white/20 rounded-full" />
-                  <div className="h-2 w-16 bg-white/10 rounded-full mt-1.5" />
-                </div>
-              </div>
-              <div className="grid grid-cols-3 gap-2">
-                {[65, 85, 45].map((h, i) => (
-                  <div key={i} className="bg-white/5 rounded-lg p-2">
-                    <div className="h-1.5 w-10 bg-white/20 rounded-full mb-2" />
-                    <div className="flex items-end gap-0.5 h-10">
-                      {[40, h, 55, 70, h - 10].map((b, j) => (
-                        <div key={j} className="flex-1 rounded-sm bg-indigo-400/50" style={{ height: `${b}%` }} />
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Second mock card */}
-            <div className="bg-white/5 border border-white/10 rounded-2xl p-4 backdrop-blur-sm shadow-xl">
-              <div className="h-2.5 w-28 bg-white/20 rounded-full mb-3" />
-              {[1, 2, 3].map((i) => (
-                <div key={i} className="flex items-center gap-2.5 py-2 border-b border-white/5 last:border-0">
-                  <div className="w-6 h-6 rounded-full bg-indigo-400/30 shrink-0" />
-                  <div className="flex-1">
-                    <div className="h-2 w-20 bg-white/15 rounded-full" />
-                    <div className="h-1.5 w-14 bg-white/8 rounded-full mt-1" />
-                  </div>
-                  <div className="h-5 w-12 rounded-full bg-green-400/20" />
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Bottom text */}
-        <div className="relative z-10">
-          <div className="inline-block bg-indigo-500/20 border border-indigo-400/30 text-indigo-300 text-[10px] font-semibold uppercase tracking-widest px-3 py-1.5 rounded-full mb-3">
-            MarketPro Elite
-          </div>
-          <h2 className="text-white text-3xl xl:text-4xl font-bold leading-tight mb-3">
-            Build Your Store<br />Today
-          </h2>
-          <p className="text-white/50 text-sm leading-relaxed max-w-xs">
-            Launch a professional e-commerce website with powerful tools and beautiful themes.
-          </p>
-        </div>
-      </div>
+  {/* Bottom text */}
+  <div className="relative z-10">
+    <div className="inline-block bg-[#3525CD1A] border border-indigo-400/30 text-[#3525CD] text-[10px] font-semibold uppercase tracking-widest px-3 py-1.5 rounded-full mb-3">
+      MarketPro Elite
+    </div>
+    <h2 className="text-[#111C2D] text-[90px] xl:text-5xl font-bold leading-tight mb-3">
+      Build Your Store<br />Today
+    </h2>
+    <p className="text-[#464554] text-[14px] leading-relaxed max-w-xs">
+      Launch a professional e-commerce website with powerful tools and beautiful themes.
+    </p>
+  </div>
+</div>
 
       {/* ── Right panel: form ── */}
       <div className="flex-1 flex flex-col items-center justify-center bg-white px-5 sm:px-8 py-10 min-h-screen">
@@ -209,9 +167,9 @@ export default function SignUpPage() {
               </div>
               <span className="text-xs text-gray-500 leading-relaxed">
                 I agree to the{" "}
-                <a href="#" className="text-indigo-600 hover:underline font-medium">Terms of Service</a>
+                <a href="#" className="text-[#4648D4] hover:underline font-medium">Terms of Service</a>
                 {" "}and{" "}
-                <a href="#" className="text-indigo-600 hover:underline font-medium">Privacy Policy</a>.
+                <a href="#" className="text-[#4648D4] hover:underline font-medium">Privacy Policy</a>.
               </span>
             </label>
 
@@ -257,7 +215,7 @@ export default function SignUpPage() {
             {/* Login link */}
             <p className="text-center text-xs text-gray-400 mt-2">
               Already have an account?{" "}
-              <Link href="/login" className="text-indigo-600 font-medium hover:underline">
+              <Link href="/auth/login" className="text-[#4648D4] font-medium hover:underline">
                 Log in
               </Link>
             </p>
