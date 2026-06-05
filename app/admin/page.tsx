@@ -148,6 +148,13 @@ export default function DashboardPage() {
     setToast(`Showing ${p.toLowerCase()} revenue data`);
   };
 
+  // Fixed formatter function that handles undefined values
+  const revenueFormatter = (value: any) => {
+    const numValue = typeof value === 'number' ? value : 
+                     typeof value === 'string' ? parseFloat(value) : 0;
+    return [`$${numValue.toLocaleString()}`, "Revenue"];
+  };
+
   if (loading) {
     return (
       <div className="space-y-4 sm:space-y-6">
@@ -246,7 +253,7 @@ export default function DashboardPage() {
               <YAxis tick={{ fontSize: 10, fill: "#9ca3af" }} axisLine={false} tickLine={false} />
               <Tooltip
                 contentStyle={{ borderRadius: "10px", border: "1px solid #e5e7eb", fontSize: "12px", boxShadow: "0 4px 12px rgba(0,0,0,0.08)" }}
-                formatter={(v: number) => [`$${v.toLocaleString()}`, "Revenue"]}
+                formatter={revenueFormatter}
               />
               <Area type="monotone" dataKey="revenue" stroke="#6366f1" strokeWidth={2.5}
                 fill="url(#revenueGrad)" dot={{ r: 4, fill: "#6366f1", strokeWidth: 0 }} activeDot={{ r: 6 }} />

@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import Sidebar from "./components/Sidebar";
 import Header from "./components/Header";
 
-const inter = Inter({ subsets: ["latin"] });
+// Remove the Inter font import and use system fonts instead
 
 export const metadata: Metadata = {
   title: "MarketPro Dashboard",
@@ -15,12 +14,11 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className="font-sans"> {/* Changed from inter.className to Tailwind's font-sans */}
         <div className="flex h-screen bg-gray-50">
           <Sidebar />
           <div className="flex-1 flex flex-col overflow-hidden">
             <Header />
-            {/* pb-20 on mobile = space for the bottom nav bar */}
             <main className="flex-1 overflow-y-auto p-4 sm:p-6 pb-24 md:pb-6 bg-white md:bg-transparent">
               {children}
             </main>
