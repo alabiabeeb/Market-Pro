@@ -246,7 +246,7 @@ export default function CreateOrderPage() {
                 <div className="p-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-xs font-medium text-gray-600 mb-1.5">Order Date</label>
-                    <input type="text" value={orderDate} onChange={e => setOrderDate(e.target.value)}
+                    <input type="date" value={orderDate} onChange={e => setOrderDate(e.target.value)}
                       className="w-full px-3.5 py-2.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-400" />
                   </div>
                   <div>
