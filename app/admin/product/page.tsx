@@ -6,7 +6,6 @@ import {
   ChevronLeft, ChevronRight, MoreVertical, ImageIcon, X, Check, Pencil, Trash2, Eye,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
-const router = useRouter();
 
 type PStatus = "Active"|"Draft"|"Out of Stock";
 interface Product { id:number; name:string; sku:string; category:string; stock:number; stockStatus:string; price:string; status:PStatus; }
@@ -134,6 +133,7 @@ function AddModal({ onClose, onAdd }: { onClose:()=>void; onAdd:(p:Product)=>voi
 }
 
 export default function ProductsPage() {
+  const router = useRouter(); // ✅ Moved inside the component
   const [loading, setLoading]     = useState(true);
   const [products, setProducts]   = useState<Product[]>([]);
   const [search, setSearch]       = useState("");
@@ -198,7 +198,7 @@ export default function ProductsPage() {
           <p className="text-xs text-gray-400 mt-0.5">Manage and track all your products</p>
         </div>
         <button onClick={() => router.push("/admin/product/add")} className="flex items-center gap-1.5 bg-[#4F46E5] hover:bg-[#4338CA] text-white text-xs sm:text-sm font-medium px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg transition-colors shadow-sm">
-       <Plus size={14}/> Add Product
+          <Plus size={14}/> Add Product
         </button>
       </div>
 
