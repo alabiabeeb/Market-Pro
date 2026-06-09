@@ -5,6 +5,8 @@ import {
   Search, Plus, TrendingUp, AlertTriangle, RefreshCw, ShoppingBag,
   ChevronLeft, ChevronRight, MoreVertical, ImageIcon, X, Check, Pencil, Trash2, Eye,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
+const router = useRouter();
 
 type PStatus = "Active"|"Draft"|"Out of Stock";
 interface Product { id:number; name:string; sku:string; category:string; stock:number; stockStatus:string; price:string; status:PStatus; }
@@ -195,8 +197,8 @@ export default function ProductsPage() {
           <h1 className="text-lg sm:text-xl font-bold text-[#4338CA]">Products</h1>
           <p className="text-xs text-gray-400 mt-0.5">Manage and track all your products</p>
         </div>
-        <button onClick={()=>setShowAdd(true)} className="flex items-center gap-1.5 bg-[#4F46E5] hover:bg-[#4338CA] text-white text-xs sm:text-sm font-medium px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg transition-colors shadow-sm">
-          <Plus size={14}/><span className="hidden xs:inline">Add Product</span><span className="xs:hidden">Add</span>
+        <button onClick={() => router.push("/admin/product/add")} className="flex items-center gap-1.5 bg-[#4F46E5] hover:bg-[#4338CA] text-white text-xs sm:text-sm font-medium px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg transition-colors shadow-sm">
+       <Plus size={14}/> Add Product
         </button>
       </div>
 

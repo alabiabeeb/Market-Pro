@@ -184,15 +184,6 @@ export default function ProfileSettingsPage() {
         </div>
       </div>
 
-      {/* Footer actions */}
-      <div className="flex items-center justify-end gap-3 pt-1">
-        <button className="text-sm font-medium text-gray-500 hover:text-gray-700 px-4 py-2.5 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
-          Cancel
-        </button>
-        <button className="bg-[#4F46E5] hover:bg-[#4338CA] text-white text-sm font-medium px-5 py-2.5 rounded-lg transition-colors shadow-sm">
-          Save Changes
-        </button>
-      </div>
 
       {/* Footer */}
       <div className="flex flex-col sm:flex-row items-center justify-between gap-2 pt-2 border-t border-gray-100">
