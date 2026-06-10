@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link"
 import { TrendingUp, TrendingDown } from "lucide-react";
 import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
@@ -276,7 +277,7 @@ export default function DashboardPage() {
                 </button>
               ))}
             </div>
-            <button className="text-xs font-medium text-indigo-600 hover:underline">View All →</button>
+            <Link  href="/admin/orders" className="text-xs font-medium text-indigo-600 hover:underline">View All →</Link>
           </div>
         </div>
 
