@@ -95,7 +95,7 @@ export default function AddCustomerPage() {
           </p>
         </div>
         <div className="hidden sm:flex items-center gap-2 shrink-0">
-          <button onClick={() => router.push("/admin/customers")}
+          <button onClick={() => router.push("/admin/customer")}
             className="px-4 py-2 rounded-lg border border-gray-200 text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors">
             Discard
           </button>
