@@ -320,7 +320,7 @@ export default function AnalyticsPage() {
                       <Cell key={i} fill={entry.color} />
                     ))}
                   </Pie>
-                  <Tooltip formatter={(v: number) => [`${v}%`, "Share"]} contentStyle={{ borderRadius: "10px", fontSize: "12px", border: "1px solid #e5e7eb" }} />
+                  <Tooltip formatter={(v) => [`${v ?? 0}%`, "Share"]} contentStyle={{ borderRadius: "10px", fontSize: "12px", border: "1px solid #e5e7eb" }} />
                 </PieChart>
               </ResponsiveContainer>
             </div>
@@ -361,7 +361,7 @@ export default function AnalyticsPage() {
               <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" vertical={false} />
               <XAxis dataKey="date" tick={{ fontSize: 10, fill: "#9ca3af" }} axisLine={false} tickLine={false} />
               <YAxis tick={{ fontSize: 10, fill: "#9ca3af" }} axisLine={false} tickLine={false} />
-              <Tooltip contentStyle={{ borderRadius: "10px", fontSize: "12px", border: "1px solid #e5e7eb" }} formatter={(v: number) => [v, "Orders"]} />
+              <Tooltip contentStyle={{ borderRadius: "10px", fontSize: "12px", border: "1px solid #e5e7eb" }} formatter={(v) => [v, "Orders"]} />
               <Bar dataKey="orders" radius={[4, 4, 0, 0]}>
                 {revenueData.map((_, i) => (
                   <Cell key={i} fill={i === revenueData.length - 1 ? "#6366f1" : "#e0e7ff"} />
