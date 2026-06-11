@@ -14,7 +14,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body className="font-sans"> {/* Changed from inter.className to Tailwind's font-sans */}
+      <body>
         <div className="flex h-screen bg-gray-50">
           <Sidebar />
           <div className="flex-1 flex flex-col overflow-hidden">
