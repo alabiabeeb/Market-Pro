@@ -42,8 +42,8 @@ const allOrders = [
 ];
 
 const statsData = [
-  { label: "Total Sales",      value: "$24,592.00", change: "+5.2%", positive: true,  type: "bars",     bars: [45,60,40,75,55,85,70], barColors: ["#c7d2fe","#a5b4fc","#c7d2fe","#818cf8","#a5b4fc","#6366f1","#818cf8"] },
-  { label: "Orders",           value: "1,245",      change: "+8.2%", positive: true,  type: "bars",     bars: [35,55,50,65,60,80,70], barColors: ["#99f6e4","#5eead4","#99f6e4","#2dd4bf","#5eead4","#14b8a6","#2dd4bf"] },
+  { label: "Total Sales",      value: "$24,592.00", change: "+5.2%", positive: true,  type: "bars",     bars: [145,260,140,175,255,385,170], barColors: ["#c7d2fe","#a5b4fc","#c7d2fe","#818cf8","#a5b4fc","#6366f1","#818cf8"] },
+  { label: "Orders",           value: "1,245",      change: "+8.2%", positive: true,  type: "bars",     bars: [145,260,140,175,255,385,170], barColors: ["#99f6e4","#5eead4","#99f6e4","#2dd4bf","#5eead4","#14b8a6","#2dd4bf"] },
   { label: "Customers",        value: "842",        change: "+3.4%", positive: true,  type: "avatars",  avatars: [{ initials:"JD", color:"bg-indigo-500" },{ initials:"AS", color:"bg-orange-400" },{ initials:"MJ", color:"bg-violet-500" },{ initials:"EW", color:"bg-teal-500" }] },
   { label: "Conversion Rate",  value: "3.4%",       change: "-0.8%", positive: false, type: "progress", progress: 34 },
 ];
@@ -193,7 +193,7 @@ export default function DashboardPage() {
             <p className="text-lg sm:text-[22px] font-bold text-gray-800 tracking-tight leading-none">{stat.value}</p>
 
             {stat.type === "bars" && (
-              <div className="flex items-end gap-0.5 h-6 sm:h-7 mt-1">
+              <div className="flex items-end gap-0.5 h-6 sm:h-7 mt-19">
                 {stat.bars!.map((h, i) => (
                   <div key={i} className="flex-1 rounded-sm transition-all hover:opacity-100 opacity-80"
                     style={{ height: `${h}%`, backgroundColor: stat.barColors![i] }} />
