@@ -10,7 +10,7 @@ export default function Header() {
       <div className="min-w-0">
         {/* Mobile: logo */}
         <Link href="/admin" className="flex items-center gap-2 md:hidden">
-          <img src="/Container.jpg" alt="Logo" className="h-8 w-auto" />
+          <img src="/Container.png" alt="Logo" className="h-8 w-auto" />
         </Link>
 
         {/* Desktop: welcome text */}
