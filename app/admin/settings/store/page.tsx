@@ -531,7 +531,7 @@ export default function StoreSettingsPage() {
         <div className={sectionClass}>
           <div className={headerClass}><Share2 size={15} className="text-indigo-500"/><h2 className="text-sm font-semibold text-gray-800 dark:text-gray-100">Socials</h2></div>
           <div className="p-5 space-y-3">
-            {[{label:"X / Twitter",placeholder:"@handle",key:"twitterX"},{label:"Instagram",placeholder:"@yourstore",key:"twitter"},{label:"Pinterest",placeholder:"pinterest.com/store",key:"pinterest"}].map(s=>(
+            {[{label:"X / Twitter",placeholder:"@handle",key:"twitterX"},{label:"Instagram",placeholder:"@yourstore",key:"twitter"},{label:"Facebook",placeholder:"facebook.com/store",key:"facebook"}].map(s=>(
               <div key={s.key}>
                 <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1.5">{s.label}</label>
                 <input type="text" placeholder={s.placeholder} value={(store as any)[s.key]} onChange={e=>setStore({...store,[s.key]:e.target.value})} className={INPUT}/>
