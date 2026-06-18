@@ -7,7 +7,6 @@ import {
   Tooltip, ResponsiveContainer, Cell, PieChart, Pie, Legend,
 } from "recharts";
 
-// ── Mock data ──────────────────────────────────────────────────────────────
 const REVENUE_DATA: Record<string, { date: string; revenue: number; orders: number }[]> = {
   Week: [
     { date: "Mon", revenue: 3200, orders: 24 },
@@ -64,12 +63,12 @@ const STAT_CARDS = [
 
 const PERIODS = ["Week", "Month", "Year"];
 
-// ── Shimmer ────────────────────────────────────────────────────────────────
+
 function Shimmer({ className = "" }: { className?: string }) {
   return <div className={`animate-pulse bg-gray-200 rounded-lg ${className}`} />;
 }
 
-// ── Custom tooltip ─────────────────────────────────────────────────────────
+
 function CustomTooltip({ active, payload, label }: any) {
   if (!active || !payload?.length) return null;
   return (
@@ -84,7 +83,7 @@ function CustomTooltip({ active, payload, label }: any) {
   );
 }
 
-// ── Custom pie label ───────────────────────────────────────────────────────
+
 const renderCustomLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent }: any) => {
   const RADIAN = Math.PI / 180;
   const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
@@ -98,7 +97,7 @@ const renderCustomLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent
   );
 };
 
-// ── Main ───────────────────────────────────────────────────────────────────
+
 export default function AnalyticsPage() {
   const [loading, setLoading]       = useState(true);
   const [period, setPeriod]         = useState("Week");
@@ -146,8 +145,6 @@ export default function AnalyticsPage() {
 
   return (
     <div className="space-y-4 sm:space-y-6">
-
-      {/* ── Page header ── */}
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-lg sm:text-xl font-bold text-[#4338CA]">Analytics</h1>
@@ -163,7 +160,6 @@ export default function AnalyticsPage() {
         </div>
       </div>
 
-      {/* ── Sales Overview Stats ── */}
       <div>
         <h2 className="text-sm font-semibold text-gray-700 mb-3">Sales Overview</h2>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
@@ -188,7 +184,6 @@ export default function AnalyticsPage() {
         </div>
       </div>
 
-      {/* ── Revenue Trends ── */}
       <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4 sm:p-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
           <div>
@@ -231,17 +226,12 @@ export default function AnalyticsPage() {
         </div>
       </div>
 
-      {/* ── Top Products + Sales by Channel ── */}
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-5">
-
-        {/* Top Selling Products */}
         <div className="lg:col-span-3 bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
           <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
             <h2 className="text-sm font-semibold text-gray-800">Top Selling Products</h2>
             <button className="text-xs text-indigo-600 font-medium hover:underline">View All →</button>
           </div>
-
-          {/* Desktop table */}
           <div className="hidden sm:block overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
@@ -280,8 +270,6 @@ export default function AnalyticsPage() {
               </tbody>
             </table>
           </div>
-
-          {/* Mobile list */}
           <div className="sm:hidden divide-y divide-gray-50">
             {TOP_PRODUCTS.map((p, i) => (
               <div key={p.id} className="flex items-center gap-3 px-4 py-3.5">
@@ -302,7 +290,6 @@ export default function AnalyticsPage() {
           </div>
         </div>
 
-        {/* Sales by Channel */}
         <div className="lg:col-span-2 bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
           <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
             <h2 className="text-sm font-semibold text-gray-800">Sales by Channel</h2>
@@ -310,7 +297,6 @@ export default function AnalyticsPage() {
           </div>
 
           <div className="p-5 space-y-4">
-            {/* Pie chart */}
             <div className="h-44">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
@@ -324,8 +310,6 @@ export default function AnalyticsPage() {
                 </PieChart>
               </ResponsiveContainer>
             </div>
-
-            {/* Channel breakdown */}
             <div className="space-y-2.5">
               {CHANNEL_DATA.map(c => (
                 <div key={c.name} className="space-y-1.5">
@@ -348,8 +332,6 @@ export default function AnalyticsPage() {
           </div>
         </div>
       </div>
-
-      {/* ── Bar chart: Monthly Revenue ── */}
       <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4 sm:p-6">
         <div className="mb-4">
           <h2 className="text-sm font-semibold text-gray-800">Orders by Period</h2>

@@ -18,7 +18,7 @@ export type ChartConfig = Record<
     label?: React.ReactNode
     icon?: React.ComponentType
   } & (
-    | { color?: string; theme?: never }
+    | { color?: string; theme?: true }
     | { color?: never; theme: Record<keyof typeof THEMES, string> }
   )
 >

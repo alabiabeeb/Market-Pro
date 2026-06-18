@@ -1,226 +1,746 @@
-
 "use client";
 
 import { useState } from "react";
-import { Eye, EyeOff, ArrowRight } from "lucide-react";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
+import {
+  Store, Mail, Phone, User, Lock, Check, ArrowRight,
+  ArrowLeft, Building2, Globe, Shield, Sparkles,
+  Crown, Users, Package, CreditCard, Truck, Headphones,
+  Server, Database, Zap, ShoppingBag, Percent, Star
+} from "lucide-react";
 
-export default function SignUpPage() {
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirm, setShowConfirm] = useState(false);
-  const [agreed, setAgreed] = useState(false);
-  const [form, setForm] = useState({ name: "", email: "", password: "", confirm: "" });
+// ── Types ──────────────────────────────────────────────────────────────────
+interface StoreInfo {
+  name: string;
+  subdomain: string;
+  category: string;
+  country: string;
+  phone: string;
+  email: string;
+  address: string;
+}
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setForm({ ...form, [e.target.name]: e.target.value });
+interface AdminAccount {
+  fullName: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+}
+
+interface Plan {
+  id: string;
+  name: string;
+  price: string;
+  features: string[];
+  recommended?: boolean;
+  badge?: string;
+}
+
+// ── Data ───────────────────────────────────────────────────────────────────
+const STORE_CATEGORIES = [
+  "Fashion & Apparel",
+  "Electronics",
+  "Home & Living",
+  "Beauty & Cosmetics",
+  "Food & Beverage",
+  "Health & Wellness",
+  "Sports & Outdoors",
+  "Books & Media",
+  "Toys & Games",
+  "Jewelry & Accessories",
+  "Automotive",
+  "Pet Supplies",
+  "Other"
+];
+
+const COUNTRIES = [
+  "Nigeria",
+  "Ghana",
+  "Kenya",
+  "South Africa",
+  "Egypt",
+  "Morocco",
+  "Tanzania",
+  "Uganda",
+  "Zambia",
+  "Botswana",
+  "Namibia",
+  "Other"
+];
+
+const PLANS: Plan[] = [
+  {
+    id: "starter",
+    name: "Starter",
+    price: "₦15,000/month",
+    features: [
+      "Up to 100 products",
+      "Basic analytics",
+      "Email support",
+      "1 staff account",
+      "1 GB storage"
+    ]
+  },
+  {
+    id: "pro",
+    name: "Professional",
+    price: "₦30,000/month",
+    features: [
+      "Up to 500 products",
+      "Advanced analytics",
+      "Priority support",
+      "5 staff accounts",
+      "10 GB storage",
+      "Custom domain",
+      "Email marketing tools"
+    ],
+    recommended: true,
+    badge: "Most Popular"
+  },
+  {
+    id: "business",
+    name: "Business",
+    price: "₦60,000/month",
+    features: [
+      "Unlimited products",
+      "Enterprise analytics",
+      "24/7 phone support",
+      "Unlimited staff accounts",
+      "50 GB storage",
+      "Custom domain",
+      "Advanced SEO tools",
+      "API access",
+      "Dedicated account manager"
+    ]
+  }
+];
+
+
+function MarketProLogo({ className = "" }: { className?: string }) {
+  return (
+    <div className={`flex items-center gap-3 ${className}`}>
+      <div className="relative">
+        <div className="flex items-center px-3 mb-2 border-b border-gray-100 pb-4">
+                        <img src="/Container.jpg" alt="Logo" className="h-9 w-auto" />
+                </div>
+      </div>
+      <div className="flex flex-col">
+        <span className="text-xl font-bold text-gray-900 dark:text-gray-100 tracking-tight">
+          Market<span className="text-[#7933DC] dark:text-[#7933DC]">Pro</span>
+        </span>
+        <span className="text-[10px] text-gray-500 dark:text-gray-400 -mt-0.5 tracking-wider">
+          SELL SMARTER · GROW FASTER
+        </span>
+      </div>
+    </div>
+  );
+}
+
+
+function StoreInfoStep({ data, onChange, onNext }: {
+  data: StoreInfo;
+  onChange: (data: StoreInfo) => void;
+  onNext: () => void;
+}) {
+  const [errors, setErrors] = useState<Partial<Record<keyof StoreInfo, string>>>({});
+
+  const validate = () => {
+    const newErrors: Partial<Record<keyof StoreInfo, string>> = {};
+    
+    if (!data.name.trim()) newErrors.name = "Store name is required";
+    if (!data.subdomain.trim()) newErrors.subdomain = "Subdomain is required";
+    else if (!/^[a-z0-9-]+$/.test(data.subdomain)) {
+      newErrors.subdomain = "Only lowercase letters, numbers, and hyphens allowed";
+    }
+    if (!data.category) newErrors.category = "Please select a category";
+    if (!data.country) newErrors.country = "Please select your country";
+    if (!data.phone.trim()) newErrors.phone = "Phone number is required";
+    else if (!/^\d{10,15}$/.test(data.phone.replace(/\D/g, ""))) {
+      newErrors.phone = "Enter a valid phone number";
+    }
+    if (!data.email.trim()) newErrors.email = "Email is required";
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
+      newErrors.email = "Enter a valid email address";
+    }
+    if (!data.address.trim()) newErrors.address = "Address is required";
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (validate()) onNext();
+  };
 
   return (
-    <div className="min-h-screen w-full flex overflow-hidden">
+    <form onSubmit={handleSubmit} className="space-y-5">
+      <div>
+        <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">Store Information</h2>
+        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+          Tell us about your store. This will appear on your storefront.
+        </p>
+      </div>
 
-      {/* ── Left panel: branding (hidden on mobile) ── */}
-<div 
-  className="hidden lg:flex lg:w-[40%] xl:w-1/2 relative  flex-col justify-between p-8 xl:p-14"
-  style={{ 
-    backgroundImage: "[#F0F3FF], url('/signup bg.jpg')",
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    backgroundRepeat: "no-repeat",
-    backgroundAttachment: "fixed"
-  }}
->
-  {/* Animated blobs */}
-  <div className="absolute inset-0 overflow-hidden pointer-events-none">
-    <div className="absolute -top-32 -left-32 w-[500px] h-[500px] rounded-full bg-[#f0f3ffb2] blur-[100px] animate-pulse" />
-    <div className="absolute bottom-0 right-0 w-[400px] h-[400px] rounded-full bg-[#f0f3ffb2] blur-[120px] animate-pulse delay-1000" />
-    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] rounded-full bg-blue-500/10 blur-[80px]" />
-  </div>
-
-  {/* Logo */}
-  <div className="relative z-10">
-    <span className="text-black text-[20px] font-bold tracking-tight">
-      Market <span className="text-indigo-700">Pro</span>
-    </span>
-  </div>
-
-  {/* Center illustration mock */}
-  
-
-  {/* Bottom text */}
-  <div className="relative z-10">
-    <div className="inline-block bg-[#3525CD1A] border border-indigo-400/30 text-[#3525CD] text-[10px] font-semibold uppercase tracking-widest px-3 py-1.5 rounded-full mb-3">
-      MarketPro Elite
-    </div>
-    <h2 className="text-[#111C2D] text-[90px] xl:text-5xl font-bold leading-tight mb-3">
-      Build Your Store<br />Today
-    </h2>
-    <p className="text-[#464554] text-[14px] leading-relaxed max-w-xs">
-      Launch a professional e-commerce website with powerful tools and beautiful themes.
-    </p>
-  </div>
-</div>
-
-      {/* ── Right panel: form ── */}
-      <div className="flex-1 flex flex-col items-center justify-center bg-white px-5 sm:px-8 py-10 min-h-screen">
-
-        {/* Mobile logo */}
-        <div className="lg:hidden mb-8 text-center">
-          <span className="text-2xl font-bold tracking-tight text-gray-900">
-            Market <span className="text-indigo-600">Pro</span>
-          </span>
+      <div className="space-y-4">
+        <div>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
+            Store Name <span className="text-red-500">*</span>
+          </label>
+          <div className="relative">
+            <Store size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+            <input
+              type="text"
+              placeholder="e.g. Lagos Fashion Hub"
+              value={data.name}
+              onChange={(e) => onChange({ ...data, name: e.target.value })}
+              className="w-full pl-10 pr-4 py-2.5 text-sm border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-400 transition-all"
+            />
+          </div>
+          {errors.name && <p className="text-xs text-red-500 mt-1">{errors.name}</p>}
         </div>
 
-        <div className="w-full max-w-sm">
-          {/* Heading */}
-          <div className="text-center mb-7">
-            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1.5">
-              Market <span className="text-indigo-600">Pro</span>
-            </h1>
-            <p className="text-sm text-gray-400">Create your premium account.</p>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
+            Store Subdomain <span className="text-red-500">*</span>
+          </label>
+          <div className="flex items-center">
+            <input
+              type="text"
+              placeholder="lagos-fashion"
+              value={data.subdomain}
+              onChange={(e) => onChange({ ...data, subdomain: e.target.value.toLowerCase() })}
+              className="flex-1 px-4 py-2.5 text-sm border border-gray-200 dark:border-gray-700 rounded-l-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-400 transition-all"
+            />
+            <span className="px-3 py-2.5 text-sm bg-gray-100 dark:bg-gray-800 border border-l-0 border-gray-200 dark:border-gray-700 rounded-r-lg text-gray-600 dark:text-gray-400 whitespace-nowrap">
+              .marketpro.ng
+            </span>
+          </div>
+          <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+            Your store will be at: <span className="font-mono">{data.subdomain || "your-store"}.marketpro.ng</span>
+          </p>
+          {errors.subdomain && <p className="text-xs text-red-500 mt-1">{errors.subdomain}</p>}
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
+              Store Category <span className="text-red-500">*</span>
+            </label>
+            <select
+              value={data.category}
+              onChange={(e) => onChange({ ...data, category: e.target.value })}
+              className="w-full px-4 py-2.5 text-sm border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-400 transition-all"
+            >
+              <option value="">Select category</option>
+              {STORE_CATEGORIES.map((cat) => (
+                <option key={cat} value={cat}>{cat}</option>
+              ))}
+            </select>
+            {errors.category && <p className="text-xs text-red-500 mt-1">{errors.category}</p>}
           </div>
 
-          {/* Form */}
-          <div className="space-y-4">
-
-            {/* Full Name */}
-            <div>
-              <label className="block text-xs font-medium text-gray-600 mb-1.5">Full Name</label>
-              <input
-                type="text"
-                name="name"
-                value={form.name}
-                onChange={handleChange}
-                placeholder="Jane Doe"
-                className="w-full px-3.5 py-2.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-400 transition-all placeholder:text-gray-300"
-              />
-            </div>
-
-            {/* Email */}
-            <div>
-              <label className="block text-xs font-medium text-gray-600 mb-1.5">Email Address</label>
-              <input
-                type="email"
-                name="email"
-                value={form.email}
-                onChange={handleChange}
-                placeholder="jane@example.com"
-                className="w-full px-3.5 py-2.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-400 transition-all placeholder:text-gray-300"
-              />
-            </div>
-
-            {/* Password */}
-            <div>
-              <label className="block text-xs font-medium text-gray-600 mb-1.5">Password</label>
-              <div className="relative">
-                <input
-                  type={showPassword ? "text" : "password"}
-                  name="password"
-                  value={form.password}
-                  onChange={handleChange}
-                  placeholder="••••••••"
-                  className="w-full px-3.5 py-2.5 pr-10 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-400 transition-all placeholder:text-gray-300"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
-                >
-                  {showPassword ? <EyeOff size={15} /> : <Eye size={15} />}
-                </button>
-              </div>
-            </div>
-
-            {/* Confirm Password */}
-            <div>
-              <label className="block text-xs font-medium text-gray-600 mb-1.5">Confirm Password</label>
-              <div className="relative">
-                <input
-                  type={showConfirm ? "text" : "password"}
-                  name="confirm"
-                  value={form.confirm}
-                  onChange={handleChange}
-                  placeholder="••••••••"
-                  className="w-full px-3.5 py-2.5 pr-10 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-400 transition-all placeholder:text-gray-300"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowConfirm(!showConfirm)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
-                >
-                  {showConfirm ? <EyeOff size={15} /> : <Eye size={15} />}
-                </button>
-              </div>
-            </div>
-
-            {/* Terms */}
-            <label className="flex items-start gap-2.5 cursor-pointer group">
-              <div
-                onClick={() => setAgreed(!agreed)}
-                className={`w-4 h-4 mt-0.5 rounded border-2 shrink-0 flex items-center justify-center transition-all ${
-                  agreed ? "bg-indigo-600 border-indigo-600" : "border-gray-300 group-hover:border-indigo-400"
-                }`}
-              >
-                {agreed && (
-                  <svg width="9" height="7" viewBox="0 0 9 7" fill="none">
-                    <path d="M1 3.5L3.5 6L8 1" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                )}
-              </div>
-              <span className="text-xs text-gray-500 leading-relaxed">
-                I agree to the{" "}
-                <a href="#" className="text-[#4648D4] hover:underline font-medium">Terms of Service</a>
-                {" "}and{" "}
-                <a href="#" className="text-[#4648D4] hover:underline font-medium">Privacy Policy</a>.
-              </span>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
+              Country <span className="text-red-500">*</span>
             </label>
-
-            {/* Submit */}
-            <button
-              className="w-full flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 active:scale-[0.98] text-white font-semibold text-sm py-2.5 rounded-lg transition-all shadow-md shadow-indigo-200 mt-1"
+            <select
+              value={data.country}
+              onChange={(e) => onChange({ ...data, country: e.target.value })}
+              className="w-full px-4 py-2.5 text-sm border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-400 transition-all"
             >
-              Create Account
-              <ArrowRight size={15} />
+              <option value="">Select country</option>
+              {COUNTRIES.map((country) => (
+                <option key={country} value={country}>{country}</option>
+              ))}
+            </select>
+            {errors.country && <p className="text-xs text-red-500 mt-1">{errors.country}</p>}
+          </div>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
+            Phone Number <span className="text-red-500">*</span>
+          </label>
+          <div className="relative">
+            <Phone size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+            <input
+              type="tel"
+              placeholder="08012345678"
+              value={data.phone}
+              onChange={(e) => onChange({ ...data, phone: e.target.value })}
+              className="w-full pl-10 pr-4 py-2.5 text-sm border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-400 transition-all"
+            />
+          </div>
+          {errors.phone && <p className="text-xs text-red-500 mt-1">{errors.phone}</p>}
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
+            Store Email <span className="text-red-500">*</span>
+          </label>
+          <div className="relative">
+            <Mail size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+            <input
+              type="email"
+              placeholder="info@store.com"
+              value={data.email}
+              onChange={(e) => onChange({ ...data, email: e.target.value })}
+              className="w-full pl-10 pr-4 py-2.5 text-sm border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-400 transition-all"
+            />
+          </div>
+          {errors.email && <p className="text-xs text-red-500 mt-1">{errors.email}</p>}
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
+            Business Address <span className="text-red-500">*</span>
+          </label>
+          <textarea
+            placeholder="123 Main Street, City, State"
+            value={data.address}
+            onChange={(e) => onChange({ ...data, address: e.target.value })}
+            rows={2}
+            className="w-full px-4 py-2.5 text-sm border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-400 transition-all resize-none"
+          />
+          {errors.address && <p className="text-xs text-red-500 mt-1">{errors.address}</p>}
+        </div>
+      </div>
+
+      <div className="flex justify-end pt-4 border-t border-gray-100 dark:border-gray-800">
+        <button
+          type="submit"
+          className="flex items-center gap-2 px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-lg transition-all"
+        >
+          Continue <ArrowRight size={16} />
+        </button>
+      </div>
+    </form>
+  );
+}
+
+
+function AdminAccountStep({ data, onChange, onBack, onNext }: {
+  data: AdminAccount;
+  onChange: (data: AdminAccount) => void;
+  onBack: () => void;
+  onNext: () => void;
+}) {
+  const [errors, setErrors] = useState<Partial<Record<keyof AdminAccount, string>>>({});
+  const [showPassword, setShowPassword] = useState(false);
+
+  const validate = () => {
+    const newErrors: Partial<Record<keyof AdminAccount, string>> = {};
+    
+    if (!data.fullName.trim()) newErrors.fullName = "Full name is required";
+    if (!data.email.trim()) newErrors.email = "Email is required";
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
+      newErrors.email = "Enter a valid email address";
+    }
+    if (!data.password) newErrors.password = "Password is required";
+    else if (data.password.length < 8) {
+      newErrors.password = "Password must be at least 8 characters";
+    } else if (!/[A-Z]/.test(data.password)) {
+      newErrors.password = "Password must contain at least one uppercase letter";
+    } else if (!/\d/.test(data.password)) {
+      newErrors.password = "Password must contain at least one number";
+    }
+    if (data.password !== data.confirmPassword) {
+      newErrors.confirmPassword = "Passwords do not match";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (validate()) onNext();
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-5">
+      <div>
+        <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">Create your admin account</h2>
+        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+          This will be the store owner account with full access to your dashboard.
+        </p>
+      </div>
+
+      <div className="space-y-4">
+        <div>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
+            Full Name <span className="text-red-500">*</span>
+          </label>
+          <div className="relative">
+            <User size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+            <input
+              type="text"
+              placeholder="e.g. Alhaji Musa Ibrahim"
+              value={data.fullName}
+              onChange={(e) => onChange({ ...data, fullName: e.target.value })}
+              className="w-full pl-10 pr-4 py-2.5 text-sm border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-400 transition-all"
+            />
+          </div>
+          {errors.fullName && <p className="text-xs text-red-500 mt-1">{errors.fullName}</p>}
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
+            Email Address <span className="text-red-500">*</span>
+          </label>
+          <div className="relative">
+            <Mail size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+            <input
+              type="email"
+              placeholder="owner@store.com"
+              value={data.email}
+              onChange={(e) => onChange({ ...data, email: e.target.value })}
+              className="w-full pl-10 pr-4 py-2.5 text-sm border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-400 transition-all"
+            />
+          </div>
+          {errors.email && <p className="text-xs text-red-500 mt-1">{errors.email}</p>}
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
+            Password <span className="text-red-500">*</span>
+          </label>
+          <div className="relative">
+            <Lock size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+            <input
+              type={showPassword ? "text" : "password"}
+              placeholder="Min. 8 characters"
+              value={data.password}
+              onChange={(e) => onChange({ ...data, password: e.target.value })}
+              className="w-full pl-10 pr-12 py-2.5 text-sm border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-400 transition-all"
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+            >
+              {showPassword ? "Hide" : "Show"}
             </button>
+          </div>
+          {errors.password && <p className="text-xs text-red-500 mt-1">{errors.password}</p>}
+        </div>
 
-            {/* Divider */}
-            <div className="relative my-1">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-100" />
+        <div>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
+            Confirm Password <span className="text-red-500">*</span>
+          </label>
+          <div className="relative">
+            <Lock size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+            <input
+              type="password"
+              placeholder="Repeat password"
+              value={data.confirmPassword}
+              onChange={(e) => onChange({ ...data, confirmPassword: e.target.value })}
+              className="w-full pl-10 pr-4 py-2.5 text-sm border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-400 transition-all"
+            />
+          </div>
+          {errors.confirmPassword && <p className="text-xs text-red-500 mt-1">{errors.confirmPassword}</p>}
+        </div>
+
+        <div className="bg-blue-50 dark:bg-blue-950/20 border border-blue-100 dark:border-blue-900 rounded-lg p-3">
+          <p className="text-xs font-medium text-blue-700 dark:text-blue-400">Password requirements:</p>
+          <ul className="text-xs text-blue-600 dark:text-blue-500 mt-1 space-y-0.5 list-disc list-inside">
+            <li>At least 8 characters</li>
+            <li>At least one uppercase letter</li>
+            <li>At least one number</li>
+          </ul>
+        </div>
+      </div>
+
+      <div className="flex items-center justify-between gap-3 pt-4 border-t border-gray-100 dark:border-gray-800">
+        <button
+          type="button"
+          onClick={onBack}
+          className="flex items-center gap-2 px-6 py-2.5 text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-all"
+        >
+          <ArrowLeft size={16} /> Back
+        </button>
+        <button
+          type="submit"
+          className="flex items-center gap-2 px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-lg transition-all"
+        >
+          Continue <ArrowRight size={16} />
+        </button>
+      </div>
+    </form>
+  );
+}
+
+// Step 3: Plan Selection
+function PlanStep({ selectedPlan, onSelect, onBack, onComplete }: {
+  selectedPlan: string;
+  onSelect: (planId: string) => void;
+  onBack: () => void;
+  onComplete: () => void;
+}) {
+  return (
+    <div className="space-y-5">
+      <div>
+        <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">Choose your plan</h2>
+        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+          Start with a 14-day free trial. No credit card required.
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {PLANS.map((plan) => (
+          <div
+            key={plan.id}
+            onClick={() => onSelect(plan.id)}
+            className={`relative p-5 rounded-xl border-2 cursor-pointer transition-all ${
+              selectedPlan === plan.id
+                ? "border-indigo-500 bg-indigo-50 dark:bg-indigo-950/30 shadow-lg"
+                : "border-gray-200 dark:border-gray-700 hover:border-indigo-300 dark:hover:border-indigo-700 hover:shadow-md"
+            }`}
+          >
+            {plan.recommended && (
+              <div className="absolute -top-2 left-1/2 -translate-x-1/2 px-3 py-0.5 bg-gradient-to-r from-indigo-500 to-purple-500 text-white text-[10px] font-bold rounded-full">
+                {plan.badge || "RECOMMENDED"}
               </div>
-              <div className="relative flex justify-center">
-                <span className="bg-white px-3 text-xs text-gray-400">OR CONTINUE WITH</span>
-              </div>
-            </div>
+            )}
 
-            {/* Social buttons */}
-            <div className="grid grid-cols-2 gap-3">
-              <button className="flex items-center justify-center gap-2 border border-gray-200 hover:bg-gray-50 text-gray-600 text-xs font-medium py-2.5 rounded-lg transition-colors">
-                {/* Google icon */}
-                <svg width="15" height="15" viewBox="0 0 24 24">
-                  <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                  <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                  <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-                  <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-                </svg>
-                Google
-              </button>
-              <button className="flex items-center justify-center gap-2 border border-gray-200 hover:bg-gray-50 text-gray-600 text-xs font-medium py-2.5 rounded-lg transition-colors">
-                {/* Apple icon */}
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
-                </svg>
-                Apple
-              </button>
-            </div>
+            {selectedPlan === plan.id && (
+              <Check size={18} className="absolute top-3 right-3 text-indigo-600" />
+            )}
 
-            {/* Login link */}
-            <p className="text-center text-xs text-gray-400 mt-2">
-              Already have an account?{" "}
-              <Link href="/auth/login" className="text-[#4648D4] font-medium hover:underline">
-                Log in
-              </Link>
+            <h3 className="text-sm font-bold text-gray-900 dark:text-gray-100">{plan.name}</h3>
+            <p className="text-lg font-bold text-gray-900 dark:text-gray-100 mt-1">{plan.price}</p>
+
+            <ul className="mt-3 space-y-1.5">
+              {plan.features.map((feature) => (
+                <li key={feature} className="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-400">
+                  <Check size={12} className="text-indigo-500 shrink-0" />
+                  {feature}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+
+      <div className="flex items-center justify-between gap-3 pt-4 border-t border-gray-100 dark:border-gray-800">
+        <button
+          type="button"
+          onClick={onBack}
+          className="flex items-center gap-2 px-6 py-2.5 text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-all"
+        >
+          <ArrowLeft size={16} /> Back
+        </button>
+        <button
+          onClick={onComplete}
+          disabled={!selectedPlan}
+          className="flex items-center gap-2 px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 disabled:bg-gray-300 dark:disabled:bg-gray-700 text-white text-sm font-semibold rounded-lg transition-all"
+        >
+          Start Free Trial <Sparkles size={16} />
+        </button>
+      </div>
+
+      <p className="text-center text-xs text-gray-500 dark:text-gray-400">
+        14-day free trial. No credit card required. Cancel anytime
+      </p>
+    </div>
+  );
+}
+
+// Step 4: Welcome / Success
+function WelcomeStep({ storeData, adminData, planData }: {
+  storeData: StoreInfo;
+  adminData: AdminAccount;
+  planData: string;
+}) {
+  const selectedPlan = PLANS.find(p => p.id === planData);
+
+  return (
+    <div className="text-center space-y-6 py-4">
+      <div className="w-20 h-20 rounded-full bg-green-100 dark:bg-green-950/50 flex items-center justify-center mx-auto">
+        <Sparkles size={36} className="text-green-600 dark:text-green-400" />
+      </div>
+
+      <div>
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Welcome to Market Pro! 🎉</h2>
+        <p className="text-gray-500 dark:text-gray-400 mt-1">
+          Your store has been created successfully.
+        </p>
+      </div>
+
+      <div className="max-w-sm mx-auto bg-gray-50 dark:bg-gray-800/50 rounded-xl p-5 text-left space-y-2">
+        <h3 className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Your Store Details</h3>
+        <div className="space-y-1.5">
+          <div>
+            <p className="text-xs text-gray-400">Store URL</p>
+            <p className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+              {storeData.subdomain}.marketpro.ng
+            </p>
+          </div>
+          <div>
+            <p className="text-xs text-gray-400">Store Name</p>
+            <p className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+              {storeData.name}
+            </p>
+          </div>
+          <div>
+            <p className="text-xs text-gray-400">Admin Email</p>
+            <p className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+              {adminData.email}
+            </p>
+          </div>
+          <div>
+            <p className="text-xs text-gray-400">Plan</p>
+            <p className="text-sm font-semibold text-indigo-600 dark:text-indigo-400">
+              {selectedPlan?.name} — 14-Day Free Trial
             </p>
           </div>
         </div>
+      </div>
+
+      <div className="max-w-sm mx-auto text-left space-y-3">
+        <h3 className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+          Next steps to launch your store:
+        </h3>
+        <div className="space-y-2.5">
+          <div className="flex items-start gap-3">
+            <div className="w-6 h-6 rounded-full bg-indigo-100 dark:bg-indigo-950/50 flex items-center justify-center text-indigo-600 dark:text-indigo-400 text-xs font-bold shrink-0 mt-0.5">1</div>
+            <div>
+              <p className="text-sm font-medium text-gray-800 dark:text-gray-200">Add your products</p>
+              <p className="text-xs text-gray-500 dark:text-gray-400">Upload your inventory</p>
+            </div>
+          </div>
+          <div className="flex items-start gap-3">
+            <div className="w-6 h-6 rounded-full bg-indigo-100 dark:bg-indigo-950/50 flex items-center justify-center text-indigo-600 dark:text-indigo-400 text-xs font-bold shrink-0 mt-0.5">2</div>
+            <div>
+              <p className="text-sm font-medium text-gray-800 dark:text-gray-200">Set up payments</p>
+              <p className="text-xs text-gray-500 dark:text-gray-400">Connect your payment gateway</p>
+            </div>
+          </div>
+          <div className="flex items-start gap-3">
+            <div className="w-6 h-6 rounded-full bg-indigo-100 dark:bg-indigo-950/50 flex items-center justify-center text-indigo-600 dark:text-indigo-400 text-xs font-bold shrink-0 mt-0.5">3</div>
+            <div>
+              <p className="text-sm font-medium text-gray-800 dark:text-gray-200">Customize your store</p>
+              <p className="text-xs text-gray-500 dark:text-gray-400">Make it look like yours</p>
+            </div>
+          </div>
+          <div className="flex items-start gap-3">
+            <div className="w-6 h-6 rounded-full bg-indigo-100 dark:bg-indigo-950/50 flex items-center justify-center text-indigo-600 dark:text-indigo-400 text-xs font-bold shrink-0 mt-0.5">4</div>
+            <div>
+              <p className="text-sm font-medium text-gray-800 dark:text-gray-200">Launch your store</p>
+              <p className="text-xs text-gray-500 dark:text-gray-400">Go live and start selling!</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button
+        onClick={() => window.location.href = '/admin'}
+        className="px-8 py-3 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-lg transition-all"
+      >
+        Go to Dashboard
+      </button>
+    </div>
+  );
+}
+
+export default function SignupPage() {
+  const [step, setStep] = useState(1);
+
+  const [storeData, setStoreData] = useState<StoreInfo>({
+    name: "",
+    subdomain: "",
+    category: "",
+    country: "",
+    phone: "",
+    email: "",
+    address: "",
+  });
+
+  const [adminData, setAdminData] = useState<AdminAccount>({
+    fullName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+
+  const [selectedPlan, setSelectedPlan] = useState("");
+
+  const renderStep = () => {
+    switch (step) {
+      case 1:
+        return (
+          <StoreInfoStep
+            data={storeData}
+            onChange={setStoreData}
+            onNext={() => setStep(2)}
+          />
+        );
+      case 2:
+        return (
+          <AdminAccountStep
+            data={adminData}
+            onChange={setAdminData}
+            onBack={() => setStep(1)}
+            onNext={() => setStep(3)}
+          />
+        );
+      case 3:
+        return (
+          <PlanStep
+            selectedPlan={selectedPlan}
+            onSelect={setSelectedPlan}
+            onBack={() => setStep(2)}
+            onComplete={() => setStep(4)}
+          />
+        );
+      case 4:
+        return (
+          <WelcomeStep
+            storeData={storeData}
+            adminData={adminData}
+            planData={selectedPlan}
+          />
+        );
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white dark:from-gray-950 dark:to-gray-900 flex items-center justify-center p-4">
+      <div className="w-full max-w-3.5xl bg-white dark:bg-gray-950 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-800 p-6 md:p-8">
+        <div className="flex justify-center mb-8">
+          <MarketProLogo />
+        </div>
+
+        <div className="flex items-center justify-between mb-6">
+          {[1, 2, 3, 4].map((i) => (
+            <div key={i} className="flex items-center">
+              <div
+                className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold transition-all ${
+                  i <= step
+                    ? "bg-[#7933DC] text-white"
+                    : "bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400"
+                }`}
+              >
+                {i}
+              </div>
+              {i < 4 && (
+                <div
+                  className={`w-55 h-0.5 mx-1 transition-all ${
+                    i < step
+                      ? "bg-[#7933DC]"
+                      : "bg-gray-200 dark:bg-gray-700"
+                  }`}
+                />
+              )}
+            </div>
+          ))}
+        </div>
+
+        {renderStep()}
       </div>
     </div>
   );
