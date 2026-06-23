@@ -14,7 +14,7 @@ interface StoreInfo {
   name: string;
   subdomain: string;
   category: string;
-  country: string;
+  state: string;
   phone: string;
   email: string;
   address: string;
@@ -36,7 +36,6 @@ interface Plan {
   badge?: string;
 }
 
-// ── Data ───────────────────────────────────────────────────────────────────
 const STORE_CATEGORIES = [
   "Fashion & Apparel",
   "Electronics",
@@ -53,18 +52,44 @@ const STORE_CATEGORIES = [
   "Other"
 ];
 
-const COUNTRIES = [
-  "Nigeria",
-  "Ghana",
-  "Kenya",
-  "South Africa",
-  "Egypt",
-  "Morocco",
-  "Tanzania",
-  "Uganda",
-  "Zambia",
-  "Botswana",
-  "Namibia",
+const STATES = [
+  "Abia",
+  "Adamawa",
+  "Akwa Ibom",
+  "Anambra",
+  "Bauchi",
+  "Bayelsa",
+  "Benue",
+  "Borno",
+  "Cross River",
+  "Delta",
+  "Ebonyi",
+  "Edo",
+  "Ekiti",
+  "Enugu",
+  "Gombe",
+  "Imo",
+  "Jigawa",
+  "Kaduna",
+  "Kano",
+  "Katsina",
+  "Kebbi",
+  "Kogi",
+  "Kwara",
+  "Lagos",
+  "Nasarawa",
+  "Niger",
+  "Ogun",
+  "Ondo",
+  "Osun",
+  "Oyo",
+  "Plateau",
+  "Rivers",
+  "Sokoto",
+  "Taraba",
+  "Yobe",
+  "Zamfara",
+  "Federal Capital Territory",
   "Other"
 ];
 
@@ -153,7 +178,7 @@ function StoreInfoStep({ data, onChange, onNext }: {
       newErrors.subdomain = "Only lowercase letters, numbers, and hyphens allowed";
     }
     if (!data.category) newErrors.category = "Please select a category";
-    if (!data.country) newErrors.country = "Please select your country";
+    if (!data.state) newErrors.state = "Please select your state";
     if (!data.phone.trim()) newErrors.phone = "Phone number is required";
     else if (!/^\d{10,15}$/.test(data.phone.replace(/\D/g, ""))) {
       newErrors.phone = "Enter a valid phone number";
@@ -242,19 +267,19 @@ function StoreInfoStep({ data, onChange, onNext }: {
 
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
-              Country <span className="text-red-500">*</span>
+              State <span className="text-red-500">*</span>
             </label>
             <select
-              value={data.country}
-              onChange={(e) => onChange({ ...data, country: e.target.value })}
+              value={data.state}
+              onChange={(e) => onChange({ ...data, state: e.target.value })}
               className="w-full px-4 py-2.5 text-sm border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-400 transition-all"
             >
-              <option value="">Select country</option>
-              {COUNTRIES.map((country) => (
-                <option key={country} value={country}>{country}</option>
+              <option value="">Select state</option>
+              {STATES.map((state) => (
+                <option key={state} value={state}>{state}</option>
               ))}
             </select>
-            {errors.country && <p className="text-xs text-red-500 mt-1">{errors.country}</p>}
+            {errors.state && <p className="text-xs text-red-500 mt-1">{errors.state}</p>}
           </div>
         </div>
 
@@ -652,7 +677,7 @@ export default function SignupPage() {
     name: "",
     subdomain: "",
     category: "",
-    country: "",
+    state: "",
     phone: "",
     email: "",
     address: "",
