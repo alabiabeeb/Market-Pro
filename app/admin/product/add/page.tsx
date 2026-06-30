@@ -227,10 +227,46 @@ export default function AddProductPage() {
     return Object.keys(e).length === 0;
   };
 
+  const STORAGE_KEY = "marketpro_products";
+
   const handleSave = (isDraft = false) => {
     if (!isDraft && !validate()) return;
     setSaving(true);
+
     setTimeout(() => {
+      // Determine stock status badge
+      const stockNum = Number(totalStock) || 0;
+      const stockStatus = stockNum === 0 ? "out" : stockNum < 15 ? "low" : stockNum < 60 ? "medium" : "high";
+
+      // Build the new product object matching the Products table shape
+      const newProduct = {
+        id: Date.now(),
+        name: name || "Untitled Product",
+        sku: barcode || `SKU-${Date.now().toString().slice(-6)}`,
+        category,
+        stock: stockNum,
+        stockStatus,
+        price: basePrice ? `$${basePrice}` : "$0.00",
+        status: isDraft ? "Draft" : (status as "Active" | "Draft" | "Out of Stock"),
+        description,
+        vendor,
+        collection,
+        tags,
+        images: images.map(img => img.url),
+        variants,
+        weight,
+        dimensions: length && breadth && height ? `${length}×${breadth}×${height}cm` : undefined,
+      };
+
+      // Persist to localStorage so the Products page can read it
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        const existing = raw ? JSON.parse(raw) : [];
+        localStorage.setItem(STORAGE_KEY, JSON.stringify([newProduct, ...existing]));
+      } catch (err) {
+        console.error("Failed to save product:", err);
+      }
+
       setSaving(false);
       router.push("/admin/product");
     }, 1200);
