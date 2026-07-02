@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
 import {
-  LayoutDashboard, ShoppingCart, Package, Users, BarChart2,
+  LayoutDashboard, ShoppingCart, Package, Users, BarChart2, Tags,
   Settings, HelpCircle, Store, UserCircle, ChevronRight,
 } from "lucide-react";
 
@@ -14,6 +14,7 @@ const navItems = [
   { label: "Products",  icon: Package,          href: "/admin/product" },
   { label: "Customers", icon: Users,            href: "/admin/customer" },
   { label: "Analytics", icon: BarChart2,        href: "/admin/analytics" },
+  { label: "Category", icon: Tags, href: "/admin/category" }
 ];
 
 const settingsDropdown = [
