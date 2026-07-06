@@ -95,10 +95,14 @@ export function ChartPieLabelList() {
           <div key={item.name} className="flex items-center justify-between w-full">
             <div className="flex items-center gap-3">
               <div className={`w-4 h-4 rounded-full ${item.color}`} />
-              <span className="font-semibold text-slate-900">{item.name}</span>
+              <span className="text-sm font-medium text-muted-foreground">
+                {item.name}
+                </span>
             </div>
 
-            <span className="font-bold text-slate-900">{item.percentage}</span>
+            <span className="text-sm font-medium text-muted-foreground">
+              {item.percentage}
+            </span>
           </div>
         ))}
       </CardFooter>
