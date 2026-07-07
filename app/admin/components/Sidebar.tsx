@@ -14,6 +14,7 @@ const navItems = [
   { label: "Products",  icon: Package,          href: "/admin/product" },
   { label: "Customers", icon: Users,            href: "/admin/customers" },
   { label: "Analytics", icon: BarChart2,        href: "/admin/analytics" },
+  {label: "Categories", icon: Package, href: "/admin/category" },
 ];
 
 const settingsDropdown = [
@@ -28,6 +29,8 @@ const bottomItems = [
 // Items that fan out when + is tapped (shown in reverse so last item is closest to button)
 const fabItems = [
   { label: "Support", icon: HelpCircle, href: "/admin/support" },
+  {label: "Categories", icon: Package, href: "/admin/category" },
+  { label: "Analytics", icon: BarChart2, href: "/admin/analytics" },
   { label: "Store Settings",   icon: Store,      href: "/admin/settings/store" },
   { label: "Profile Settings", icon: UserCircle, href: "/admin/settings/profile" },
 ];
@@ -189,7 +192,7 @@ export default function Sidebar() {
         )}
 
         {/* ── Fixed bottom bar ── */}
-        <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-[#08120C] border-t border-[#E5E7EB] dark:border-[#153323] shadow-[0_-2px_16px_rgba(0,0,0,0.08)]">
+        <nav className="fixed bottom-0 left-0  right-0 z-50 bg-white dark:bg-[#08120C] border-t border-[#E5E7EB] dark:border-[#153323] shadow-[0_-2px_16px_rgba(0,0,0,0.08)]">
           <div className="flex items-center justify-around px-2 py-2 relative">
 
             {/* First 4 nav items */}
@@ -212,7 +215,7 @@ export default function Sidebar() {
             <div ref={fabRef} className="relative flex flex-col items-center">
               <button
                 onClick={() => setFabOpen(prev => !prev)}
-                className={`absolute -top-7 w-14 h-14 rounded-full flex items-center justify-center shadow-xl transition-all duration-300 border-4 border-white dark:border-gray-900 ${
+                className={`absolute -top-8 w-14 h-14 rounded-full flex items-center justify-center shadow-xl transition-all duration-300 border-4 border-white dark:border-gray-900 ${
                   fabOpen
                     ? "bg-[#060F09] dark:bg-gray-700"
                     : "bg-[#0A2E1A] hover:bg-[#060F09]"
