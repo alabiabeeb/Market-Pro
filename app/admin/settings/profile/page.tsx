@@ -83,7 +83,7 @@ export default function ProfileSettingsPage() {
     setToast({ msg: "Password updated!", type: "success" });
   };
 
-  const INPUT = "w-full px-3.5 py-2.5 text-sm border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 placeholder:text-gray-300 dark:placeholder:text-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-400 transition-all";
+  const INPUT = "w-full px-3.5 py-2.5 text-sm border border-[#E5E7EB] dark:border-gray-700 rounded-lg bg-white dark:bg-[#08120C] text-gray-800 dark:text-gray-100 placeholder:text-gray-300 dark:placeholder:text-gray-600 focus:outline-none focus:ring-2 focus:ring-[#C8F135]/40 focus:border-[#0A2E1A] transition-all";
 
   const themeOptions = [
     { id: "light" as const,  label: "Light",  icon: Sun,     desc: "Clean and bright interface" },
@@ -103,18 +103,18 @@ export default function ProfileSettingsPage() {
       {/* ── Personal Information ── */}
       <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm overflow-hidden">
         <div className="flex items-center gap-2 px-5 py-4 border-b border-gray-100 dark:border-gray-800">
-          <User size={15} className="text-indigo-500" />
+          <User size={15} className="text-[#0A2E1A]" />
           <h2 className="text-sm font-semibold text-gray-800 dark:text-gray-100">Personal Information</h2>
         </div>
         <div className="p-5 space-y-5">
           {/* Avatar */}
           <div className="flex items-center gap-4">
             <div className="relative shrink-0">
-              <div className="w-16 h-16 rounded-full bg-indigo-100 overflow-hidden border-2 border-indigo-200">
+              <div className="w-16 h-16 rounded-full bg-[#F7F4EE] overflow-hidden border-2 border-[#E5E7EB]">
                 <img src={avatarUrl} alt="Avatar" className="w-full h-full object-cover" onError={e => { (e.target as HTMLImageElement).src = "https://ui-avatars.com/api/?name=Admin&background=6366f1&color=fff"; }} />
               </div>
               <button onClick={() => avatarInputRef.current?.click()}
-                className="absolute -bottom-0.5 -right-0.5 w-6 h-6 bg-indigo-600 rounded-full flex items-center justify-center border-2 border-white dark:border-gray-900 shadow-sm hover:bg-indigo-700 transition-colors">
+                className="absolute -bottom-0.5 -right-0.5 w-6 h-6 bg-[#0A2E1A] rounded-full flex items-center justify-center border-2 border-white dark:border-gray-900 shadow-sm hover:bg-[#060F09] transition-colors">
                 <Camera size={11} className="text-white" />
               </button>
               <input ref={avatarInputRef} type="file" accept="image/*" className="hidden" onChange={handleAvatarChange} />
@@ -122,7 +122,7 @@ export default function ProfileSettingsPage() {
             <div>
               <p className="text-sm font-semibold text-gray-800 dark:text-gray-100">{profile.name}</p>
               <p className="text-xs text-gray-400">{profile.email}</p>
-              <button onClick={() => avatarInputRef.current?.click()} className="text-xs text-indigo-600 font-medium mt-1 hover:underline">Change photo</button>
+              <button onClick={() => avatarInputRef.current?.click()} className="text-xs text-[#0A2E1A] font-medium mt-1 hover:underline">Change photo</button>
             </div>
           </div>
 
@@ -149,7 +149,7 @@ export default function ProfileSettingsPage() {
           </div>
 
           <div className="flex justify-end">
-            <button onClick={handleSaveProfile} className="bg-[#4F46E5] hover:bg-[#4338CA] text-white text-sm font-medium px-5 py-2.5 rounded-lg transition-colors shadow-sm">
+            <button onClick={handleSaveProfile} className="bg-[#0A2E1A] hover:bg-[#060F09] text-[#C8F135] text-sm font-medium px-5 py-2.5 rounded-lg transition-colors shadow-sm">
               Save Changes
             </button>
           </div>
@@ -159,7 +159,7 @@ export default function ProfileSettingsPage() {
       {/* ── Appearance / Theme ── */}
       <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm overflow-hidden">
         <div className="flex items-center gap-2 px-5 py-4 border-b border-gray-100 dark:border-gray-800">
-          {theme === "dark" ? <Moon size={15} className="text-indigo-500" /> : <Sun size={15} className="text-indigo-500" />}
+          {theme === "dark" ? <Moon size={15} className="text-[#0A2E1A]" /> : <Sun size={15} className="text-[#0A2E1A]" />}
           <h2 className="text-sm font-semibold text-gray-800 dark:text-gray-100">Appearance</h2>
         </div>
         <div className="p-5 space-y-4">
@@ -179,8 +179,8 @@ export default function ProfileSettingsPage() {
                   }}
                     className={`relative flex flex-col items-center gap-2 p-3 sm:p-4 rounded-xl border-2 transition-all ${
                       isActive
-                        ? "border-indigo-500 bg-indigo-50 dark:bg-indigo-950/40"
-                        : "border-gray-100 dark:border-gray-800 hover:border-indigo-200 dark:hover:border-indigo-900 hover:bg-gray-50 dark:hover:bg-gray-800"
+                        ? "border-[#0A2E1A] bg-[#F7F4EE] dark:bg-[#0F1D14]"
+                        : "border-gray-100 dark:border-gray-800 hover:border-[#C8F135] dark:hover:border-[#C8F135] hover:bg-gray-50 dark:hover:bg-gray-800"
                     }`}>
                     {/* Preview box */}
                     <div className={`w-full h-12 rounded-lg border flex items-center justify-center gap-1 ${
@@ -188,7 +188,7 @@ export default function ProfileSettingsPage() {
                         ? "bg-gray-900 border-gray-700"
                         : id === "light"
                         ? "bg-white border-gray-200"
-                        : "bg-gradient-to-r from-white to-gray-900 border-gray-300"
+                        : "bg-linear-to-r from-white to-gray-900 border-gray-300"
                     }`}>
                       <div className={`w-2 h-6 rounded-sm ${id === "dark" ? "bg-gray-700" : "bg-gray-200"}`} />
                       <div className="flex-1 mx-1 space-y-1">
@@ -199,14 +199,14 @@ export default function ProfileSettingsPage() {
 
                     <div className="text-center">
                       <div className="flex items-center gap-1 justify-center">
-                        <Icon size={12} className={isActive ? "text-indigo-600" : "text-gray-400"} />
-                        <span className={`text-xs font-semibold ${isActive ? "text-indigo-600" : "text-gray-600 dark:text-gray-400"}`}>{label}</span>
+                        <Icon size={12} className={isActive ? "text-[#0A2E1A]" : "text-gray-400"} />
+                        <span className={`text-xs font-semibold ${isActive ? "text-[#0A2E1A]" : "text-gray-600 dark:text-gray-400"}`}>{label}</span>
                       </div>
                       <p className="text-[10px] text-gray-400 mt-0.5 hidden sm:block">{desc}</p>
                     </div>
 
                     {isActive && (
-                      <div className="absolute top-2 right-2 w-4 h-4 bg-indigo-600 rounded-full flex items-center justify-center">
+                      <div className="absolute top-2 right-2 w-4 h-4 bg-[#0A2E1A] rounded-full flex items-center justify-center">
                         <Check size={9} className="text-white" />
                       </div>
                     )}
@@ -219,8 +219,8 @@ export default function ProfileSettingsPage() {
           {/* Live toggle switch */}
           <div className="flex items-center justify-between p-3.5 rounded-xl bg-gray-50 dark:bg-gray-800 border border-gray-100 dark:border-gray-700">
             <div className="flex items-center gap-3">
-              <div className={`w-8 h-8 rounded-xl flex items-center justify-center ${theme === "dark" ? "bg-gray-700" : "bg-indigo-50"}`}>
-                {theme === "dark" ? <Moon size={15} className="text-indigo-400" /> : <Sun size={15} className="text-indigo-500" />}
+              <div className={`w-8 h-8 rounded-xl flex items-center justify-center ${theme === "dark" ? "bg-gray-700" : "bg-[#F7F4EE]"}`}>
+                {theme === "dark" ? <Moon size={15} className="text-[#C8F135]" /> : <Sun size={15} className="text-[#0A2E1A]" />}
               </div>
               <div>
                 <p className="text-xs font-semibold text-gray-700 dark:text-gray-200">
@@ -231,11 +231,11 @@ export default function ProfileSettingsPage() {
             </div>
             <button
               onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-              className={`relative w-11 h-6 rounded-full transition-colors duration-300 ${theme === "dark" ? "bg-indigo-600" : "bg-gray-300"}`}
-            >
+              className={`relative w-11 h-6 rounded-full transition-colors duration-300 ${theme === "dark" ? "bg-[#0A2E1A]" : "bg-gray-300"}`}
+              >
               <div className={`absolute top-0.5 w-5 h-5 bg-white rounded-full shadow-md transition-transform duration-300 ${theme === "dark" ? "translate-x-5" : "translate-x-0.5"}`}>
                 <div className="w-full h-full flex items-center justify-center">
-                  {theme === "dark" ? <Moon size={10} className="text-indigo-600" /> : <Sun size={10} className="text-yellow-500" />}
+                  {theme === "dark" ? <Moon size={10} className="text-[#C8F135]" /> : <Sun size={10} className="text-yellow-500" />}
                 </div>
               </div>
             </button>
@@ -246,7 +246,7 @@ export default function ProfileSettingsPage() {
       {/* ── Change Password ── */}
       <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm overflow-hidden">
         <div className="flex items-center gap-2 px-5 py-4 border-b border-gray-100 dark:border-gray-800">
-          <Lock size={15} className="text-indigo-500" />
+          <Lock size={15} className="text-[#0A2E1A]" />
           <h2 className="text-sm font-semibold text-gray-800 dark:text-gray-100">Change Password</h2>
         </div>
         <div className="p-5 space-y-4">
@@ -282,7 +282,7 @@ export default function ProfileSettingsPage() {
             ))}
           </div>
           <div className="flex justify-end">
-            <button onClick={handleSavePassword} className="bg-[#4F46E5] hover:bg-[#4338CA] text-white text-sm font-medium px-5 py-2.5 rounded-lg transition-colors shadow-sm">
+            <button onClick={handleSavePassword} className="bg-[#0A2E1A] hover:bg-[#060F09] text-[#C8F135] text-sm font-medium px-5 py-2.5 rounded-lg transition-colors shadow-sm">
               Save Changes
             </button>
           </div>
@@ -310,7 +310,7 @@ export default function ProfileSettingsPage() {
         <p className="text-[11px] text-gray-400">© 2024 Market Pro SaaS. All rights reserved.</p>
         <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4">
           {["Privacy Policy", "Terms of Service", "API Status", "Contact Support"].map(l => (
-            <a key={l} href="#" className="text-[11px] text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">{l}</a>
+            <a key={l} href="#" className="text-[11px] text-gray-400 hover:text-[#0A2E1A] dark:hover:text-[#C8F135] transition-colors">{l}</a>
           ))}
         </div>
       </div>

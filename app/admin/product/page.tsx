@@ -109,7 +109,7 @@ function ViewProductModal({ product, onClose, onEdit, onDelete }: {
               {product.tags && product.tags.length > 0 && (
                 <div className="flex flex-wrap gap-1.5 pt-1">
                   {product.tags.map(t => (
-                    <span key={t} className="text-[10px] font-medium bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 px-2 py-0.5 rounded-full">{t}</span>
+                    <span key={t} className="text-[10px] font-medium bg-[#F7F4EE] dark:bg-[#0F1D14] text-[#0A2E1A] px-2 py-0.5 rounded-full">{t}</span>
                   ))}
                 </div>
               )}
@@ -346,11 +346,11 @@ export default function ProductsPage() {
     <div className="space-y-4 sm:space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-lg sm:text-xl font-bold text-[#4338CA]">Products</h1>
+          <h1 className="text-lg sm:text-xl font-bold text-[#0A2E1A]">Products</h1>
           <p className="text-xs text-gray-400 mt-0.5">Manage and track all your products</p>
         </div>
         <button onClick={() => router.push("/admin/product/add")}
-          className="flex items-center gap-1.5 bg-[#4F46E5] hover:bg-[#4338CA] text-white text-xs sm:text-sm font-medium px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg transition-colors shadow-sm">
+          className="flex items-center gap-1.5 bg-[#0A2E1A] hover:bg-[#060F09] text-[#C8F135] text-xs sm:text-sm font-medium px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg transition-colors shadow-sm">
           <Plus size={14}/> Add Product
         </button>
       </div>
@@ -377,7 +377,7 @@ export default function ProductsPage() {
               <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"/>
               <input type="text" placeholder="Search products..." value={search}
                 onChange={e=>{ setSearch(e.target.value); setCurrentPage(1); }}
-                className="w-full pl-8 pr-3 py-2 text-xs sm:text-sm border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-400"/>
+                className="w-full pl-8 pr-3 py-2 text-xs sm:text-sm border border-[#E5E7EB] dark:border-gray-700 rounded-lg bg-white dark:bg-[#08120C] text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-[#C8F135]/40 focus:border-[#0A2E1A]"/>
             </div>
             <div className="flex items-center gap-1 bg-gray-100 dark:bg-gray-800 rounded-lg p-1 self-start">
               {CATEGORIES.map(c=>(

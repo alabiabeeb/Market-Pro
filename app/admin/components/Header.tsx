@@ -23,10 +23,10 @@ const INITIAL_NOTIFICATIONS: Notification[] = [
 ];
 
 const TYPE_CONFIG = {
-  order:    { icon: ShoppingCart, bg: "bg-indigo-50 dark:bg-indigo-950/40", color: "text-indigo-500" },
-  alert:    { icon: AlertTriangle, bg: "bg-orange-50 dark:bg-orange-950/40", color: "text-orange-500" },
-  customer: { icon: UserPlus,      bg: "bg-green-50 dark:bg-green-950/40",  color: "text-green-500" },
-  payment:  { icon: CreditCard,    bg: "bg-violet-50 dark:bg-violet-950/40", color: "text-violet-500" },
+  order:    { icon: ShoppingCart, bg: "bg-[#F7F4EE] dark:bg-[#0F1D14]", color: "text-[#0A2E1A]" },
+  alert:    { icon: AlertTriangle, bg: "bg-[#FFF7D6] dark:bg-[#3A2A0A]", color: "text-[#A16207]" },
+  customer: { icon: UserPlus,      bg: "bg-[#F7F4EE] dark:bg-[#0F1D14]",  color: "text-[#0A2E1A]" },
+  payment:  { icon: CreditCard,    bg: "bg-[#F7F4EE] dark:bg-[#0F1D14]", color: "text-[#0A2E1A]" },
 };
 
 export default function Header() {
@@ -61,7 +61,7 @@ export default function Header() {
   };
 
   return (
-    <header className="h-16 bg-white dark:bg-gray-900 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between px-4 sm:px-8 relative">
+    <header className="h-16 bg-white dark:bg-[#08120C] border-b border-[#E5E7EB] dark:border-[#153323] flex items-center justify-between px-4 sm:px-8 relative">
 
       {/* Left: logo on mobile / welcome text on desktop */}
       <div className="min-w-0">
@@ -70,7 +70,7 @@ export default function Header() {
         </Link>
         <div className="hidden md:block">
           <h1 className="text-lg font-semibold text-gray-900 dark:text-gray-100 truncate">
-            Welcome back, <span className="text-[#3525CD] dark:text-indigo-400">Alex</span>
+            Welcome back, <span className="text-[#0A2E1A] dark:text-[#C8F135]">Alex</span>
           </h1>
           <p className="text-xs text-gray-400 mt-0.5">
             Here&apos;s what&apos;s happening with your store today.
@@ -97,7 +97,7 @@ export default function Header() {
 
           {/* Dropdown panel */}
           {open && (
-            <div className="absolute right-0 sm:right-0 -right-4 top-12 z-50 w-[calc(100vw-2rem)] max-w-sm sm:w-96 bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-2xl shadow-2xl overflow-hidden">
+            <div className="absolute right-0 top-12 z-50 w-[calc(100vw-2rem)] max-w-sm sm:w-96 bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-2xl shadow-2xl overflow-hidden">
 
               {/* Header */}
               <div className="flex items-center justify-between px-4 py-3.5 border-b border-gray-100 dark:border-gray-800">
@@ -110,7 +110,7 @@ export default function Header() {
                   )}
                 </div>
                 {unreadCount > 0 && (
-                  <button onClick={markAllRead} className="text-xs text-indigo-600 font-medium hover:underline">
+                  <button onClick={markAllRead} className="text-xs text-[#0A2E1A] dark:text-[#C8F135] font-medium hover:underline">
                     Mark all read
                   </button>
                 )}
@@ -132,7 +132,7 @@ export default function Header() {
                       key={n.id}
                       onClick={() => markAsRead(n.id)}
                       className={`w-full flex items-start gap-3 px-4 py-3 text-left hover:bg-gray-50 dark:hover:bg-gray-800/60 transition-colors relative group ${
-                        !n.read ? "bg-indigo-50/40 dark:bg-indigo-950/20" : ""
+                        !n.read ? "bg-[#F7F4EE] dark:bg-[#0F1D14]" : ""
                       }`}
                     >
                       <div className={`w-8 h-8 rounded-lg ${bg} flex items-center justify-center shrink-0`}>
@@ -141,7 +141,7 @@ export default function Header() {
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-1.5">
                           <p className="text-xs font-semibold text-gray-800 dark:text-gray-100 truncate">{n.title}</p>
-                          {!n.read && <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 shrink-0" />}
+                          {!n.read && <span className="w-1.5 h-1.5 rounded-full bg-[#0A2E1A] dark:bg-[#C8F135] shrink-0" />}
                         </div>
                         <p className="text-[11px] text-gray-500 dark:text-gray-400 mt-0.5 leading-snug">{n.message}</p>
                         <p className="text-[10px] text-gray-400 mt-1">{n.time}</p>

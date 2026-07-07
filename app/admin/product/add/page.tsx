@@ -28,7 +28,7 @@ function Section({ icon, title, subtitle, children }: { icon: React.ReactNode; t
     <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
       <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
         <div className="flex items-center gap-2">
-          <span className="text-indigo-500">{icon}</span>
+          <span className="text-[#0A2E1A]">{icon}</span>
           <h2 className="text-sm font-semibold text-gray-800">{title}</h2>
         </div>
         {subtitle && <p className="text-xs text-gray-400 hidden sm:block">{subtitle}</p>}
@@ -50,7 +50,7 @@ function Field({ label, children, required }: { label: string; children: React.R
   );
 }
 
-const INPUT = "w-full px-3.5 py-2.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-400 transition-all";
+const INPUT = "w-full px-3.5 py-2.5 text-sm border border-[#E5E7EB] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C8F135]/40 focus:border-[#0A2E1A] transition-all bg-white dark:bg-[#08120C] dark:text-gray-100";
 const SELECT = INPUT + " bg-white";
 
 // ── Add Variant Modal ──────────────────────────────────────────────────────
@@ -132,14 +132,14 @@ function AddVariantModal({ onClose, onAdd }: { onClose: () => void; onAdd: (v: V
               onChange={e => setForm({ ...form, sku: e.target.value })} className={INPUT} />
           </Field>
 
-          <div className="bg-indigo-50 border border-indigo-100 rounded-xl p-3 flex items-center gap-2">
+          <div className="bg-[#F7F4EE] border border-[#E5E7EB] rounded-xl p-3 flex items-center gap-2">
             <input type="checkbox" id="sync-price" className="accent-indigo-600" />
-            <label htmlFor="sync-price" className="text-xs text-indigo-700 cursor-pointer">Sync price and stock with parent product</label>
+            <label htmlFor="sync-price" className="text-xs text-[#0A2E1A] cursor-pointer">Sync price and stock with parent product</label>
           </div>
         </div>
         <div className="flex gap-2 px-5 py-4 border-t border-gray-100 bg-gray-50">
           <button onClick={onClose} className="flex-1 py-2.5 rounded-xl border border-gray-200 text-xs font-medium text-gray-600 hover:bg-white">Cancel</button>
-          <button onClick={handleAdd} className="flex-1 py-2.5 rounded-xl bg-indigo-600 text-white text-xs font-semibold hover:bg-indigo-700">Add Variant</button>
+          <button onClick={handleAdd} className="flex-1 py-2.5 rounded-xl bg-[#0A2E1A] text-[#C8F135] text-xs font-semibold hover:bg-[#060F09]">Add Variant</button>
         </div>
       </div>
     </div>
@@ -290,7 +290,7 @@ export default function AddProductPage() {
             Save Draft
           </button>
           <button onClick={() => handleSave(false)} disabled={saving}
-            className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-400 text-white text-sm font-semibold transition-colors">
+            className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-[#0A2E1A] hover:bg-[#060F09] disabled:bg-[#153323] text-[#C8F135] text-sm font-semibold transition-colors">
             {saving ? <span className="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" /> : <Check size={14} />}
             {saving ? "Publishing..." : "Publish"}
           </button>
@@ -325,7 +325,7 @@ export default function AddProductPage() {
                     ))}
                   </div>
                   <div onClick={() => setStatus(status === "Active" ? "Draft" : "Active")}
-                    className={`relative w-9 h-5 rounded-full cursor-pointer transition-colors ${status === "Active" ? "bg-indigo-600" : "bg-gray-200"}`}>
+                    className={`relative w-9 h-5 rounded-full cursor-pointer transition-colors ${status === "Active" ? "bg-[#0A2E1A]" : "bg-gray-200"}`}>
                     <div className={`absolute top-0.5 w-4 h-4 bg-white rounded-full shadow transition-transform ${status === "Active" ? "translate-x-4" : "translate-x-0.5"}`} />
                   </div>
                 </div>
@@ -366,12 +366,12 @@ export default function AddProductPage() {
                         onChange={e => setTagInput(e.target.value)}
                         onKeyDown={e => e.key === "Enter" && addTag()}
                         className={INPUT + " flex-1"} />
-                      <button onClick={addTag} className="px-3 py-2 bg-indigo-50 text-indigo-600 rounded-lg text-xs font-medium hover:bg-indigo-100 border border-indigo-200 transition-colors">Add</button>
+                      <button onClick={addTag} className="px-3 py-2 bg-[#F7F4EE] text-[#0A2E1A] rounded-lg text-xs font-medium hover:bg-[#C8F135]/20 border border-[#E5E7EB] transition-colors">Add</button>
                     </div>
                     {tags.length > 0 && (
                       <div className="flex flex-wrap gap-1.5">
                         {tags.map(t => (
-                          <span key={t} className="flex items-center gap-1 text-xs bg-indigo-50 text-indigo-700 border border-indigo-100 px-2 py-0.5 rounded-full">
+                          <span key={t} className="flex items-center gap-1 text-xs bg-[#F7F4EE] text-[#0A2E1A] border border-[#E5E7EB] px-2 py-0.5 rounded-full">
                             {t}<button onClick={() => removeTag(t)} className="hover:text-red-500"><X size={10} /></button>
                           </span>
                         ))}
@@ -432,7 +432,7 @@ export default function AddProductPage() {
                 <div className="flex items-center gap-3 pt-5">
                   <span className="text-xs font-medium text-gray-600">Track Inventory</span>
                   <div onClick={() => setTrackInventory(!trackInventory)}
-                    className={`relative w-9 h-5 rounded-full cursor-pointer transition-colors ${trackInventory ? "bg-indigo-600" : "bg-gray-200"}`}>
+                    className={`relative w-9 h-5 rounded-full cursor-pointer transition-colors ${trackInventory ? "bg-[#0A2E1A]" : "bg-gray-200"}`}>
                     <div className={`absolute top-0.5 w-4 h-4 bg-white rounded-full shadow transition-transform ${trackInventory ? "translate-x-4" : "translate-x-0.5"}`} />
                   </div>
                 </div>
@@ -458,7 +458,7 @@ export default function AddProductPage() {
                 {images.map((img, i) => (
                   <div key={img.id} className={`relative group rounded-xl overflow-hidden border-2 ${i === 0 ? "border-indigo-400" : "border-gray-200"}`} style={{ width: 80, height: 80 }}>
                     <img src={img.url} alt="" className="w-full h-full object-cover" />
-                    {i === 0 && <span className="absolute bottom-0 left-0 right-0 bg-indigo-600 text-white text-[9px] text-center py-0.5 font-medium">Main</span>}
+                    {i === 0 && <span className="absolute bottom-0 left-0 right-0 bg-[#0A2E1A] text-[#C8F135] text-[9px] text-center py-0.5 font-medium">Main</span>}
                     <button onClick={() => removeImage(img.id)}
                       className="absolute top-1 right-1 w-5 h-5 bg-red-500 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                       <X size={10} />
@@ -467,14 +467,14 @@ export default function AddProductPage() {
                 ))}
                 {/* Upload button */}
                 <button onClick={() => fileInputRef.current?.click()}
-                  className="w-20 h-20 rounded-xl border-2 border-dashed border-gray-300 flex flex-col items-center justify-center gap-1 hover:border-indigo-400 hover:bg-indigo-50/30 transition-all group">
-                  <Plus size={18} className="text-gray-400 group-hover:text-indigo-500" />
-                  <span className="text-[9px] text-gray-400 group-hover:text-indigo-500">Upload</span>
+                  className="w-20 h-20 rounded-xl border-2 border-dashed border-gray-300 flex flex-col items-center justify-center gap-1 hover:border-[#C8F135] hover:bg-[#F7F4EE] transition-all group">
+                  <Plus size={18} className="text-gray-400 group-hover:text-[#0A2E1A]" />
+                  <span className="text-[9px] text-gray-400 group-hover:text-[#0A2E1A]">Upload</span>
                 </button>
                 <input ref={fileInputRef} type="file" accept="image/*" multiple className="hidden" onChange={handleImageUpload} />
               </div>
               {images.length === 0 && (
-                <div className="border-2 border-dashed border-gray-200 rounded-xl p-8 text-center cursor-pointer hover:border-indigo-300 hover:bg-indigo-50/20 transition-all" onClick={() => fileInputRef.current?.click()}>
+                <div className="border-2 border-dashed border-gray-200 rounded-xl p-8 text-center cursor-pointer hover:border-[#C8F135] hover:bg-[#F7F4EE] transition-all" onClick={() => fileInputRef.current?.click()}>
                   <ImageIcon size={24} className="text-gray-300 mx-auto mb-2" />
                   <p className="text-sm text-gray-500 font-medium">Click to upload product images</p>
                   <p className="text-xs text-gray-400 mt-1">PNG, JPG, WEBP up to 5MB each</p>
@@ -502,7 +502,7 @@ export default function AddProductPage() {
               )}
 
               {variants.map(v => (
-                <div key={v.id} className="group rounded-xl border border-gray-100 bg-gray-50/50 hover:border-indigo-100 hover:bg-indigo-50/20 transition-all">
+                <div key={v.id} className="group rounded-xl border border-gray-100 bg-gray-50/50 hover:border-[#C8F135]/60 hover:bg-[#F7F4EE] transition-all">
                   {/* Desktop row */}
                   <div className="hidden sm:grid grid-cols-12 gap-2 items-center px-3 py-2.5">
                     <div className="col-span-1">
@@ -514,7 +514,7 @@ export default function AddProductPage() {
                     <span className="col-span-1 text-xs font-semibold text-gray-700">{v.stock}</span>
                     <div className="col-span-2">
                       <p className="text-xs font-semibold text-gray-800">{v.price}</p>
-                      {v.salePrice && <p className="text-[10px] text-indigo-600">{v.salePrice}</p>}
+                      {v.salePrice && <p className="text-[10px] text-[#0A2E1A]">{v.salePrice}</p>}
                     </div>
                     <span className="col-span-1">
                       <span className="text-[10px] font-semibold bg-green-100 text-green-700 px-1.5 py-0.5 rounded-full">{v.variantStatus}</span>
@@ -544,7 +544,7 @@ export default function AddProductPage() {
               ))}
 
               <button onClick={() => setShowVariantModal(true)}
-                className="flex items-center gap-2 text-xs font-medium text-indigo-600 hover:text-indigo-700 px-1 pt-1 transition-colors">
+                className="flex items-center gap-2 text-xs font-medium text-[#0A2E1A] hover:text-[#060F09] px-1 pt-1 transition-colors">
                 <Plus size={13} /> Add Variant
               </button>
             </div>
@@ -586,7 +586,7 @@ export default function AddProductPage() {
               ].map(([k, v]) => (
                 <div key={k} className="flex justify-between items-center py-1 border-b border-gray-50 last:border-0">
                   <span className="text-gray-400">{k}</span>
-                  <span className={`font-semibold truncate max-w-[120px] text-right ${k === "Status" ? status === "Active" ? "text-green-600" : "text-yellow-600" : "text-gray-700"}`}>{v}</span>
+                  <span className={`font-semibold truncate max-w-30 text-right ${k === "Status" ? status === "Active" ? "text-green-600" : "text-yellow-600" : "text-gray-700"}`}>{v}</span>
                 </div>
               ))}
             </div>
@@ -594,7 +594,7 @@ export default function AddProductPage() {
             {/* Action buttons */}
             <div className="space-y-2 pt-1">
               <button onClick={() => handleSave(false)} disabled={saving}
-                className="w-full flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-400 text-white text-sm font-semibold transition-colors">
+                className="w-full flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-[#0A2E1A] hover:bg-[#060F09] disabled:bg-[#153323] text-[#C8F135] text-sm font-semibold transition-colors">
                 {saving
                   ? <><span className="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" /> Publishing...</>
                   : <><Check size={14} /> Publish Product</>}

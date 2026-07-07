@@ -23,9 +23,9 @@ const CUSTOMERS: Customer[] = [
 ];
 
 const STAT_CARDS = [
-  { label:"Total Customers",  value:"3,842", sub:"+8.1% this month", subColor:"text-green-600",  icon:Users,     iconBg:"bg-indigo-50", iconColor:"text-indigo-500" },
-  { label:"Active Customers", value:"3,102", sub:"80.7% of total",   subColor:"text-green-500",  icon:UserCheck, iconBg:"bg-green-50",  iconColor:"text-green-500" },
-  { label:"Inactive",         value:"614",   sub:"Review required",  subColor:"text-orange-500", icon:TrendingUp,iconBg:"bg-orange-50", iconColor:"text-orange-400" },
+  { label:"Total Customers",  value:"3,842", sub:"+8.1% this month", subColor:"text-[#0A2E1A] dark:text-[#C8F135]",  icon:Users,     iconBg:"bg-[#F7F4EE] dark:bg-[#0F1D14]", iconColor:"text-[#0A2E1A] dark:text-[#C8F135]" },
+  { label:"Active Customers", value:"3,102", sub:"80.7% of total",   subColor:"text-[#0A2E1A] dark:text-[#C8F135]",  icon:UserCheck, iconBg:"bg-[#F7F4EE] dark:bg-[#0F1D14]",  iconColor:"text-[#0A2E1A] dark:text-[#C8F135]" },
+  { label:"Inactive",         value:"614",   sub:"Review required",  subColor:"text-orange-500", icon:TrendingUp,iconBg:"bg-[#FFF7D6] dark:bg-[#3A2A0A]", iconColor:"text-orange-500" },
   { label:"Blocked",          value:"126",   sub:"Action required",  subColor:"text-red-500",    icon:UserX,     iconBg:"bg-red-50",    iconColor:"text-red-400" },
 ];
 
@@ -39,14 +39,14 @@ const PAGE_SIZE = 5;
 
 // ── Shimmer ────────────────────────────────────────────────────────────────
 function Shimmer({ className="" }: { className?:string }) {
-  return <div className={`animate-pulse bg-gray-200 rounded-lg ${className}`}/>;
+  return <div className={`animate-pulse bg-[#E5E7EB] dark:bg-[#153323] rounded-lg ${className}`}/>;
 }
 
 // ── Toast ──────────────────────────────────────────────────────────────────
 function Toast({ message, type="success", onClose }: { message:string; type?:"success"|"error"; onClose:()=>void }) {
   useEffect(()=>{ const t=setTimeout(onClose,3000); return ()=>clearTimeout(t); },[onClose]);
   return (
-    <div className={`fixed bottom-24 md:bottom-6 right-4 z-50 flex items-center gap-2 text-white text-xs font-medium px-4 py-2.5 rounded-xl shadow-xl ${type==="success"?"bg-gray-900":"bg-red-600"}`}>
+    <div className={`fixed bottom-24 md:bottom-6 right-4 z-50 flex items-center gap-2 text-white text-xs font-medium px-4 py-2.5 rounded-xl shadow-xl ${type==="success"?"bg-[#0A2E1A]":"bg-red-600"}`}>
       {type==="success"?<Check size={13}/>:<X size={13}/>}{message}
     </div>
   );
@@ -66,7 +66,7 @@ function CustomerModal({ customer, onClose, onSave, onDelete }: {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm" onClick={onClose}>
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md p-6 space-y-4 max-h-[90vh] overflow-y-auto" onClick={e=>e.stopPropagation()}>
+      <div className="bg-white dark:bg-[#08120C] rounded-2xl shadow-2xl w-full max-w-md p-6 space-y-4 max-h-[90vh] overflow-y-auto" onClick={e=>e.stopPropagation()}>
         <div className="flex items-center justify-between">
           <h2 className="text-base font-bold text-gray-800">{editing?"Edit Customer":"Customer Profile"}</h2>
           <div className="flex items-center gap-2">
@@ -79,7 +79,7 @@ function CustomerModal({ customer, onClose, onSave, onDelete }: {
           </div>
         </div>
 
-        <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl">
+        <div className="flex items-center gap-3 p-3 bg-[#F7F4EE] dark:bg-[#0F1D14] rounded-xl">
           <div className={`w-12 h-12 rounded-full ${customer.color} flex items-center justify-center text-white font-bold`}>{customer.initials}</div>
           <div>
             <p className="text-sm font-semibold text-gray-800">{customer.name}</p>
@@ -92,21 +92,21 @@ function CustomerModal({ customer, onClose, onSave, onDelete }: {
           <div className="space-y-3">
             {[{label:"Full Name",key:"name"},{label:"Email",key:"email"},{label:"Phone",key:"phone"},{label:"Location",key:"location"}].map(({label,key})=>(
               <div key={key}>
-                <label className="block text-xs font-medium text-gray-600 mb-1">{label}</label>
+                <label className="block text-xs font-medium text-gray-600 dark:text-gray-300 mb-1">{label}</label>
                 <input value={(form as any)[key]} onChange={e=>setForm({...form,[key]:e.target.value})}
-                  className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-400"/>
+                  className="w-full px-3 py-2 text-sm border border-[#E5E7EB] dark:border-[#153323] rounded-lg bg-white dark:bg-[#08120C] focus:outline-none focus:ring-2 focus:ring-[#C8F135]/30 focus:border-[#0A2E1A]"/>
               </div>
             ))}
             <div>
-              <label className="block text-xs font-medium text-gray-600 mb-1">Status</label>
+              <label className="block text-xs font-medium text-gray-600 dark:text-gray-300 mb-1">Status</label>
               <select value={form.status} onChange={e=>setForm({...form,status:e.target.value as CStatus})}
-                className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20">
+                className="w-full px-3 py-2 text-sm border border-[#E5E7EB] dark:border-[#153323] rounded-lg bg-white dark:bg-[#08120C] focus:outline-none focus:ring-2 focus:ring-[#C8F135]/30">
                 <option>Active</option><option>Inactive</option><option>Blocked</option>
               </select>
             </div>
             <div className="flex gap-2 pt-1">
-              <button onClick={()=>setEditing(false)} className="flex-1 py-2 rounded-lg border border-gray-200 text-xs text-gray-600 hover:bg-gray-50">Cancel</button>
-              <button onClick={()=>{ onSave(form); setEditing(false); }} className="flex-1 py-2 rounded-lg bg-indigo-600 text-white text-xs font-semibold hover:bg-indigo-700">Save</button>
+              <button onClick={()=>setEditing(false)} className="flex-1 py-2 rounded-lg border border-[#E5E7EB] dark:border-[#153323] text-xs text-gray-600 dark:text-gray-300 hover:bg-[#F7F4EE] dark:hover:bg-[#0F1D14]">Cancel</button>
+              <button onClick={()=>{ onSave(form); setEditing(false); }} className="flex-1 py-2 rounded-lg bg-[#0A2E1A] text-[#C8F135] text-xs font-semibold hover:bg-[#061A11]">Save</button>
             </div>
           </div>
         ) : (
@@ -124,7 +124,7 @@ function CustomerModal({ customer, onClose, onSave, onDelete }: {
                 className="flex-1 py-2.5 rounded-lg border border-red-200 text-red-500 text-xs font-medium hover:bg-red-50 flex items-center justify-center gap-1.5">
                 <Trash2 size={12}/> Delete
               </button>
-              <button onClick={onClose} className="flex-1 py-2.5 rounded-lg bg-indigo-600 text-white text-xs font-semibold hover:bg-indigo-700">
+              <button onClick={onClose} className="flex-1 py-2.5 rounded-lg bg-[#0A2E1A] text-[#C8F135] text-xs font-semibold hover:bg-[#061A11]">
                 Close
               </button>
             </div>
@@ -213,13 +213,13 @@ export default function CustomersPage() {
       <div className="flex justify-between"><Shimmer className="h-6 w-28"/><Shimmer className="h-9 w-32 rounded-lg"/></div>
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         {[1,2,3,4].map(i=>(
-          <div key={i} className="bg-white rounded-xl border border-gray-100 p-4 space-y-3">
+          <div key={i} className="bg-white dark:bg-[#08120C] rounded-xl border border-[#E5E7EB] dark:border-[#153323] p-4 space-y-3">
             <div className="flex justify-between"><Shimmer className="h-3 w-20"/><Shimmer className="h-7 w-7 rounded-lg"/></div>
             <Shimmer className="h-7 w-24"/><Shimmer className="h-3 w-28"/>
           </div>
         ))}
       </div>
-      <div className="bg-white rounded-xl border border-gray-100 p-5 space-y-3">
+      <div className="bg-white dark:bg-[#08120C] rounded-xl border border-[#E5E7EB] dark:border-[#153323] p-5 space-y-3">
         <div className="flex gap-3"><Shimmer className="h-9 flex-1 max-w-sm"/><Shimmer className="h-9 w-48 rounded-lg"/></div>
         {[1,2,3,4,5].map(i=>(
           <div key={i} className="flex items-center gap-3 py-2">
@@ -236,13 +236,13 @@ export default function CustomersPage() {
       {/* ── Header ── */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-lg sm:text-xl font-bold text-[#4338CA]">Customers</h1>
-          <p className="text-xs text-gray-400 mt-0.5">Manage and view all your customers</p>
+          <h1 className="text-lg sm:text-xl font-bold text-[#0A2E1A] dark:text-[#F7F4EE]">Customers</h1>
+          <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Manage and view all your customers</p>
         </div>
         {/* ← Navigate to full Add Customer page */}
         <button
           onClick={() => router.push("/admin/customer/add")}
-          className="flex items-center gap-1.5 bg-[#4F46E5] hover:bg-[#4338CA] text-white text-xs sm:text-sm font-medium px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg transition-colors shadow-sm"
+          className="flex items-center gap-1.5 bg-[#0A2E1A] hover:bg-[#061A11] text-[#C8F135] text-xs sm:text-sm font-medium px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg transition-colors shadow-sm"
         >
           <Plus size={14}/>
           <span className="hidden xs:inline">Add Customer</span>
@@ -253,97 +253,97 @@ export default function CustomersPage() {
       {/* ── Stat Cards ── */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         {STAT_CARDS.map(s=>{ const Icon=s.icon; return (
-          <div key={s.label} className="bg-white rounded-xl border border-gray-100 shadow-sm p-3 sm:p-4 flex flex-col gap-2 hover:shadow-md transition-shadow">
+          <div key={s.label} className="bg-white dark:bg-[#08120C] rounded-xl border border-[#E5E7EB] dark:border-[#153323] shadow-sm p-3 sm:p-4 flex flex-col gap-2 hover:shadow-md transition-shadow">
             <div className="flex items-center justify-between">
               <span className="text-[10px] sm:text-xs text-gray-400 font-medium uppercase tracking-wide leading-tight">{s.label}</span>
               <div className={`w-7 h-7 rounded-lg ${s.iconBg} flex items-center justify-center`}><Icon size={14} className={s.iconColor}/></div>
             </div>
-            <p className="text-xl sm:text-2xl font-bold text-gray-800 leading-none">{s.value}</p>
+            <p className="text-xl sm:text-2xl font-bold text-[#0A2E1A] dark:text-[#F7F4EE] leading-none">{s.value}</p>
             <p className={`text-[10px] sm:text-xs font-medium ${s.subColor}`}>{s.sub}</p>
           </div>
         );})}
       </div>
 
       {/* ── Table Card ── */}
-      <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
+      <div className="bg-white dark:bg-[#08120C] rounded-xl border border-[#E5E7EB] dark:border-[#153323] shadow-sm overflow-hidden">
 
         {/* Toolbar */}
-        <div className="p-4 sm:p-5 border-b border-gray-100 space-y-3">
+        <div className="p-4 sm:p-5 border-b border-[#E5E7EB] dark:border-[#153323] space-y-3">
           <div className="flex flex-col sm:flex-row sm:items-center gap-3">
             <div className="relative flex-1 max-w-sm">
               <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"/>
               <input type="text" placeholder="Search by name or email..." value={search}
                 onChange={e=>{ setSearch(e.target.value); setCurrentPage(1); }}
-                className="w-full pl-8 pr-3 py-2 text-xs sm:text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-400"/>
+                className="w-full pl-8 pr-3 py-2 text-xs sm:text-sm border border-[#E5E7EB] dark:border-[#153323] rounded-lg bg-white dark:bg-[#08120C] focus:outline-none focus:ring-2 focus:ring-[#C8F135]/30 focus:border-[#0A2E1A]"/>
             </div>
-            <div className="flex items-center gap-1 bg-gray-100 rounded-lg p-1 self-start">
+            <div className="flex items-center gap-1 bg-[#F7F4EE] dark:bg-[#0F1D14] rounded-lg p-1 self-start">
               {["All","Active","Inactive","Blocked"].map(f=>(
                 <button key={f} onClick={()=>{ setFilter(f); setCurrentPage(1); }}
-                  className={`text-xs font-medium px-2.5 py-1 rounded-md transition-all ${filter===f?"bg-white text-gray-800 shadow-sm":"text-gray-500 hover:text-gray-700"}`}>{f}</button>
+                  className={`text-xs font-medium px-2.5 py-1 rounded-md transition-all ${filter===f?"bg-[#0A2E1A] text-[#C8F135] shadow-sm":"text-gray-500 dark:text-gray-400 hover:text-[#0A2E1A] dark:hover:text-[#F7F4EE]"}`}>{f}</button>
               ))}
             </div>
           </div>
-          <p className="text-xs text-gray-400">{filtered.length} customer{filtered.length!==1?"s":""} found</p>
+          <p className="text-xs text-gray-500 dark:text-gray-400">{filtered.length} customer{filtered.length!==1?"s":""} found</p>
         </div>
 
         {/* ── Desktop Table ── */}
         <div className="hidden sm:block overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="text-left text-xs text-gray-400 uppercase tracking-wide bg-gray-50/60 border-b border-gray-100">
+              <tr className="text-left text-xs text-gray-400 uppercase tracking-wide bg-[#F7F4EE] dark:bg-[#0F1D14] border-b border-[#E5E7EB] dark:border-[#153323]">
                 {["Customer","Contact","Location","Orders","Total Spent","Rating","Status","Joined",""].map(h=>(
                   <th key={h} className="px-5 py-3 font-medium">{h}</th>
                 ))}
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-50">
+            <tbody className="divide-y divide-[#E5E7EB] dark:divide-[#153323]">
               {paginated.length===0 ? (
                 <tr>
                   <td colSpan={9} className="px-5 py-12 text-center">
                     <div className="flex flex-col items-center gap-2">
-                      <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center">
+                      <div className="w-10 h-10 rounded-full bg-[#F7F4EE] dark:bg-[#0F1D14] flex items-center justify-center">
                         <Search size={16} className="text-gray-400"/>
                       </div>
-                      <p className="text-sm text-gray-400">No customers found.</p>
-                      <button onClick={()=>{ setSearch(""); setFilter("All"); }} className="text-xs text-indigo-600 hover:underline">Clear filters</button>
+                      <p className="text-sm text-gray-500 dark:text-gray-400">No customers found.</p>
+                      <button onClick={()=>{ setSearch(""); setFilter("All"); }} className="text-xs text-[#0A2E1A] dark:text-[#C8F135] hover:underline">Clear filters</button>
                     </div>
                   </td>
                 </tr>
               ) : paginated.map(c=>(
-                <tr key={c.id} className="hover:bg-gray-50/60 transition-colors group cursor-pointer" onClick={()=>setSelected(c)}>
+                <tr key={c.id} className="hover:bg-[#F7F4EE] dark:hover:bg-[#0F1D14] transition-colors group cursor-pointer" onClick={()=>setSelected(c)}>
                   <td className="px-5 py-3.5">
                     <div className="flex items-center gap-2.5">
                       <div className={`w-8 h-8 rounded-full ${c.color} flex items-center justify-center text-white text-[10px] font-bold shrink-0`}>{c.initials}</div>
-                      <span className="text-gray-800 font-semibold">{c.name}</span>
+                      <span className="text-[#0A2E1A] dark:text-[#F7F4EE] font-semibold">{c.name}</span>
                     </div>
                   </td>
                   <td className="px-5 py-3.5">
                     <div className="space-y-0.5">
-                      <div className="flex items-center gap-1.5 text-xs text-gray-500"><Mail size={11} className="text-gray-400"/>{c.email}</div>
+                      <div className="flex items-center gap-1.5 text-xs text-gray-500 dark:text-gray-400"><Mail size={11} className="text-gray-400"/>{c.email}</div>
                       <div className="flex items-center gap-1.5 text-xs text-gray-400"><Phone size={11} className="text-gray-400"/>{c.phone}</div>
                     </div>
                   </td>
-                  <td className="px-5 py-3.5 text-xs text-gray-500">{c.location}</td>
-                  <td className="px-5 py-3.5 font-semibold text-gray-800">{c.orders}</td>
-                  <td className="px-5 py-3.5 font-semibold text-gray-800">{c.spent}</td>
+                  <td className="px-5 py-3.5 text-xs text-gray-500 dark:text-gray-400">{c.location}</td>
+                  <td className="px-5 py-3.5 font-semibold text-[#0A2E1A] dark:text-[#F7F4EE]">{c.orders}</td>
+                  <td className="px-5 py-3.5 font-semibold text-[#0A2E1A] dark:text-[#F7F4EE]">{c.spent}</td>
                   <td className="px-5 py-3.5"><Stars count={c.rating}/></td>
                   <td className="px-5 py-3.5">
                     <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${STATUS_STYLE[c.status]}`}>{c.status}</span>
                   </td>
-                  <td className="px-5 py-3.5 text-xs text-gray-400">{c.joined}</td>
+                  <td className="px-5 py-3.5 text-xs text-gray-500 dark:text-gray-400">{c.joined}</td>
                   <td className="px-5 py-3.5" onClick={e=>e.stopPropagation()}>
                     <div className="relative">
                       <button
                         onClick={e=>{ e.stopPropagation(); setOpenMenu(openMenu===c.id?null:c.id); }}
-                        className="p-1.5 rounded-lg hover:bg-gray-100 opacity-0 group-hover:opacity-100 transition-all"
+                        className="p-1.5 rounded-lg hover:bg-[#F7F4EE] dark:hover:bg-[#0F1D14] opacity-0 group-hover:opacity-100 transition-all"
                       >
                         <MoreVertical size={14} className="text-gray-400"/>
                       </button>
                       {openMenu===c.id&&(
-                        <div className="absolute right-0 top-8 z-20 bg-white border border-gray-100 rounded-xl shadow-lg py-1 w-36" onClick={e=>e.stopPropagation()}>
-                          <button onClick={()=>{ setSelected(c); setOpenMenu(null); }} className="w-full text-left px-3 py-1.5 text-xs font-medium text-gray-600 hover:bg-gray-50 flex items-center gap-2"><Eye size={12}/>View</button>
-                          <button onClick={()=>{ setSelected(c); setOpenMenu(null); }} className="w-full text-left px-3 py-1.5 text-xs font-medium text-gray-600 hover:bg-gray-50 flex items-center gap-2"><Pencil size={12}/>Edit</button>
-                          <div className="border-t border-gray-100 my-1"/>
+                        <div className="absolute right-0 top-8 z-20 bg-white dark:bg-[#08120C] border border-[#E5E7EB] dark:border-[#153323] rounded-xl shadow-lg py-1 w-36" onClick={e=>e.stopPropagation()}>
+                          <button onClick={()=>{ setSelected(c); setOpenMenu(null); }} className="w-full text-left px-3 py-1.5 text-xs font-medium text-gray-600 dark:text-gray-300 hover:bg-[#F7F4EE] dark:hover:bg-[#0F1D14] flex items-center gap-2"><Eye size={12}/>View</button>
+                          <button onClick={()=>{ setSelected(c); setOpenMenu(null); }} className="w-full text-left px-3 py-1.5 text-xs font-medium text-gray-600 dark:text-gray-300 hover:bg-[#F7F4EE] dark:hover:bg-[#0F1D14] flex items-center gap-2"><Pencil size={12}/>Edit</button>
+                          <div className="border-t border-[#E5E7EB] dark:border-[#153323] my-1"/>
                           <button onClick={()=>{ setDeleteTarget(c); setOpenMenu(null); }} className="w-full text-left px-3 py-1.5 text-xs font-medium text-red-500 hover:bg-red-50 flex items-center gap-2"><Trash2 size={12}/>Delete</button>
                         </div>
                       )}
@@ -356,22 +356,22 @@ export default function CustomersPage() {
         </div>
 
         {/* ── Mobile Cards ── */}
-        <div className="sm:hidden divide-y divide-gray-50">
+        <div className="sm:hidden divide-y divide-[#E5E7EB] dark:divide-[#153323]">
           {paginated.length===0 ? (
             <div className="py-10 text-center space-y-2">
               <p className="text-sm text-gray-400">No customers found.</p>
               <button onClick={()=>{ setSearch(""); setFilter("All"); }} className="text-xs text-indigo-600 hover:underline">Clear filters</button>
             </div>
           ) : paginated.map(c=>(
-            <div key={c.id} className="flex items-center gap-3 px-4 py-3.5 hover:bg-gray-50/60 active:bg-gray-100 cursor-pointer transition-colors" onClick={()=>setSelected(c)}>
+            <div key={c.id} className="flex items-center gap-3 px-4 py-3.5 hover:bg-[#F7F4EE] dark:hover:bg-[#0F1D14] active:bg-gray-100 cursor-pointer transition-colors" onClick={()=>setSelected(c)}>
               <div className={`w-10 h-10 rounded-full ${c.color} flex items-center justify-center text-white text-[11px] font-bold shrink-0`}>{c.initials}</div>
               <div className="flex-1 min-w-0">
-                <p className="text-xs font-semibold text-gray-800 truncate">{c.name}</p>
-                <p className="text-[10px] text-gray-400 truncate">{c.email}</p>
-                <div className="flex items-center gap-2 mt-1"><Stars count={c.rating}/><span className="text-[10px] text-gray-400">{c.orders} orders</span></div>
+                <p className="text-xs font-semibold text-[#0A2E1A] dark:text-[#F7F4EE] truncate">{c.name}</p>
+                <p className="text-[10px] text-gray-500 dark:text-gray-400 truncate">{c.email}</p>
+                <div className="flex items-center gap-2 mt-1"><Stars count={c.rating}/><span className="text-[10px] text-gray-500 dark:text-gray-400">{c.orders} orders</span></div>
               </div>
               <div className="flex flex-col items-end gap-1.5 shrink-0">
-                <p className="text-xs font-bold text-gray-800">{c.spent}</p>
+                <p className="text-xs font-bold text-[#0A2E1A] dark:text-[#F7F4EE]">{c.spent}</p>
                 <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${STATUS_STYLE[c.status]}`}>{c.status}</span>
               </div>
             </div>
@@ -379,25 +379,25 @@ export default function CustomersPage() {
         </div>
 
         {/* ── Pagination ── */}
-        <div className="px-4 sm:px-5 py-3.5 border-t border-gray-100 flex flex-col xs:flex-row items-center justify-between gap-2">
-          <p className="text-xs text-gray-400">
+        <div className="px-4 sm:px-5 py-3.5 border-t border-[#E5E7EB] dark:border-[#153323] flex flex-col xs:flex-row items-center justify-between gap-2">
+          <p className="text-xs text-gray-500 dark:text-gray-400">
             Showing{" "}
-            <span className="font-medium text-gray-600">{filtered.length===0?0:(currentPage-1)*PAGE_SIZE+1}–{Math.min(currentPage*PAGE_SIZE,filtered.length)}</span>
+            <span className="font-medium text-gray-600 dark:text-gray-300">{filtered.length===0?0:(currentPage-1)*PAGE_SIZE+1}–{Math.min(currentPage*PAGE_SIZE,filtered.length)}</span>
             {" "}of{" "}
-            <span className="font-medium text-gray-600">{filtered.length}</span>
+            <span className="font-medium text-gray-600 dark:text-gray-300">{filtered.length}</span>
           </p>
           <div className="flex items-center gap-1">
             <button onClick={()=>setCurrentPage(p=>Math.max(1,p-1))} disabled={currentPage===1}
-              className="p-1.5 rounded-lg border border-gray-200 hover:bg-gray-50 disabled:opacity-40 transition-colors">
-              <ChevronLeft size={14} className="text-gray-500"/>
+              className="p-1.5 rounded-lg border border-[#E5E7EB] dark:border-[#153323] hover:bg-[#F7F4EE] dark:hover:bg-[#0F1D14] disabled:opacity-40 transition-colors">
+              <ChevronLeft size={14} className="text-gray-500 dark:text-gray-400"/>
             </button>
             {Array.from({length:totalPages},(_,i)=>i+1).map(p=>(
               <button key={p} onClick={()=>setCurrentPage(p)}
-                className={`w-7 h-7 text-xs font-medium rounded-lg transition-colors ${currentPage===p?"bg-[#4F46E5] text-white":"border border-gray-200 text-gray-500 hover:bg-gray-50"}`}>{p}</button>
+                className={`w-7 h-7 text-xs font-medium rounded-lg transition-colors ${currentPage===p?"bg-[#0A2E1A] text-[#C8F135]":"border border-[#E5E7EB] dark:border-[#153323] text-gray-500 dark:text-gray-400 hover:bg-[#F7F4EE] dark:hover:bg-[#0F1D14]"}`}>{p}</button>
             ))}
             <button onClick={()=>setCurrentPage(p=>Math.min(totalPages,p+1))} disabled={currentPage===totalPages}
-              className="p-1.5 rounded-lg border border-gray-200 hover:bg-gray-50 disabled:opacity-40 transition-colors">
-              <ChevronRight size={14} className="text-gray-500"/>
+              className="p-1.5 rounded-lg border border-[#E5E7EB] dark:border-[#153323] hover:bg-[#F7F4EE] dark:hover:bg-[#0F1D14] disabled:opacity-40 transition-colors">
+              <ChevronRight size={14} className="text-gray-500 dark:text-gray-400"/>
             </button>
           </div>
         </div>

@@ -48,17 +48,17 @@ const TOP_PRODUCTS = [
 ];
 
 const CHANNEL_DATA = [
-  { name: "Online Store", value: 54, color: "#6366f1", amount: "$142,580" },
-  { name: "In-Store",     value: 23, color: "#8b5cf6", amount: "$60,695"  },
-  { name: "Wholesale",    value: 14, color: "#a78bfa", amount: "$36,940"  },
-  { name: "Social Media", value: 9,  color: "#c4b5fd", amount: "$23,742"  },
+  { name: "Online Store", value: 54, color: "#0A2E1A", amount: "$142,580" },
+  { name: "In-Store",     value: 23, color: "#C8F135", amount: "$60,695"  },
+  { name: "Wholesale",    value: 14, color: "#153323", amount: "$36,940"  },
+  { name: "Social Media", value: 9,  color: "#5B8C6A", amount: "$23,742"  },
 ];
 
 const STAT_CARDS = [
-  { label: "Average Online Sales", value: "$142.50", change: "+12.5%", positive: true,  icon: DollarSign, iconBg: "bg-indigo-50",  iconColor: "text-indigo-500" },
-  { label: "Customer Online Sales", value: "$854.00", change: "+8.2%",  positive: true,  icon: Users,      iconBg: "bg-violet-50",  iconColor: "text-violet-500" },
-  { label: "Get Small Sales Rate",  value: "24.8%",   change: "+2.4%",  positive: true,  icon: BarChart2,  iconBg: "bg-blue-50",    iconColor: "text-blue-500" },
-  { label: "Total Gross Sales",     value: "$263,957", change: "-1.2%", positive: false, icon: ShoppingBag,iconBg: "bg-pink-50",    iconColor: "text-pink-500" },
+  { label: "Average Online Sales", value: "$142.50", change: "+12.5%", positive: true,  icon: DollarSign, iconBg: "bg-[#F7F4EE]",  iconColor: "text-[#0A2E1A]" },
+  { label: "Customer Online Sales", value: "$854.00", change: "+8.2%",  positive: true,  icon: Users,      iconBg: "bg-[#C8F135]/20",  iconColor: "text-[#0A2E1A]" },
+  { label: "Get Small Sales Rate",  value: "24.8%",   change: "+2.4%",  positive: true,  icon: BarChart2,  iconBg: "bg-[#F7F4EE]",    iconColor: "text-[#0A2E1A]" },
+  { label: "Total Gross Sales",     value: "$263,957", change: "-1.2%", positive: false, icon: ShoppingBag,iconBg: "bg-[#C8F135]/20",    iconColor: "text-[#0A2E1A]" },
 ];
 
 const PERIODS = ["Week", "Month", "Year"];
@@ -147,13 +147,13 @@ export default function AnalyticsPage() {
     <div className="space-y-4 sm:space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-lg sm:text-xl font-bold text-[#4338CA]">Analytics</h1>
+          <h1 className="text-lg sm:text-xl font-bold text-[#0A2E1A]">Analytics</h1>
           <p className="text-xs text-gray-400 mt-0.5">Track your store performance, and customer metrics.</p>
         </div>
         <div className="flex items-center gap-1 bg-gray-100 rounded-lg p-1">
           {PERIODS.map(p => (
             <button key={p} onClick={() => setPeriod(p)}
-              className={`text-xs font-medium px-3 py-1.5 rounded-md transition-all ${period === p ? "bg-indigo-600 text-white shadow-sm" : "text-gray-500 hover:text-gray-700"}`}>
+              className={`text-xs font-medium px-3 py-1.5 rounded-md transition-all ${period === p ? "bg-[#0A2E1A] text-[#C8F135] shadow-sm" : "text-gray-500 hover:text-[#0A2E1A]"}`}>
               {p}
             </button>
           ))}
@@ -189,7 +189,7 @@ export default function AnalyticsPage() {
           <div>
             <h2 className="text-sm font-semibold text-gray-800">Revenue Trends</h2>
             <p className="text-xs text-gray-400 mt-0.5">
-              Total: <span className="font-semibold text-indigo-600">${totalRevenue.toLocaleString()}</span>
+              Total: <span className="font-semibold text-[#0A2E1A]">${totalRevenue.toLocaleString()}</span>
               <span className="mx-2 text-gray-200">·</span>
               Orders: <span className="font-semibold text-gray-700">{totalOrders.toLocaleString()}</span>
             </p>
@@ -247,8 +247,8 @@ export default function AnalyticsPage() {
                     <td className="px-5 py-3">
                       <div className="flex items-center gap-2.5">
                         <span className="text-[10px] font-bold text-gray-400 w-4">{i + 1}</span>
-                        <div className="w-8 h-8 rounded-lg bg-indigo-50 flex items-center justify-center shrink-0">
-                          <ShoppingBag size={13} className="text-indigo-500" />
+                        <div className="w-8 h-8 rounded-lg bg-[#F7F4EE] flex items-center justify-center shrink-0">
+                          <ShoppingBag size={13} className="text-[#0A2E1A]" />
                         </div>
                         <div className="min-w-0">
                           <p className="text-xs font-semibold text-gray-800 truncate max-w-[140px]">{p.name}</p>
@@ -274,8 +274,8 @@ export default function AnalyticsPage() {
             {TOP_PRODUCTS.map((p, i) => (
               <div key={p.id} className="flex items-center gap-3 px-4 py-3.5">
                 <span className="text-[10px] font-bold text-gray-400 w-4 shrink-0">{i + 1}</span>
-                <div className="w-9 h-9 rounded-xl bg-indigo-50 flex items-center justify-center shrink-0">
-                  <ShoppingBag size={14} className="text-indigo-500" />
+                <div className="w-9 h-9 rounded-xl bg-[#F7F4EE] flex items-center justify-center shrink-0">
+                  <ShoppingBag size={14} className="text-[#0A2E1A]" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-xs font-semibold text-gray-800 truncate">{p.name}</p>

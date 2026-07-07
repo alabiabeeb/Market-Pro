@@ -65,7 +65,7 @@ export default function CategoryDetailPage() {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
         <div className="text-center">
-          <Loader2 className="w-12 h-12 text-indigo-600 animate-spin mx-auto" />
+          <Loader2 className="w-12 h-12 text-[#0A2E1A] animate-spin mx-auto" />
           <p className="mt-4 text-gray-500 dark:text-gray-400">Loading category...</p>
         </div>
       </div>
@@ -84,7 +84,7 @@ export default function CategoryDetailPage() {
         </p>
         <button
           onClick={() => router.push("/admin/category")}
-          className="mt-6 px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl transition-colors flex items-center gap-2"
+          className="mt-6 px-6 py-2.5 bg-[#0A2E1A] hover:bg-[#060F09] text-[#C8F135] rounded-xl transition-colors flex items-center gap-2"
         >
           <ArrowLeft className="w-4 h-4" />
           Back to Categories
@@ -110,7 +110,7 @@ export default function CategoryDetailPage() {
         <div className="flex items-center gap-2">
           <button
             onClick={() => router.push(`/admin/category/edit/${category.id}`)}
-            className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl transition-colors flex items-center gap-2"
+            className="px-4 py-2 text-sm font-medium text-[#C8F135] bg-[#0A2E1A] hover:bg-[#060F09] rounded-xl transition-colors flex items-center gap-2"
           >
             <Edit className="w-4 h-4" />
             Edit
@@ -163,7 +163,7 @@ export default function CategoryDetailPage() {
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Sales Channels</h2>
               <div className="flex flex-wrap gap-3">
                 {category.salesChannels.onlineStore && (
-                  <span className="inline-flex items-center gap-2 px-3 py-1.5 bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400 rounded-full text-sm">
+                  <span className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#F7F4EE] dark:bg-[#0F1D14] text-[#0A2E1A] dark:text-[#C8F135] rounded-full text-sm">
                     <ShoppingBag className="w-4 h-4" />
                     Online Store
                   </span>
@@ -229,7 +229,7 @@ export default function CategoryDetailPage() {
             <div className="space-y-2">
               <button
                 onClick={() => router.push(`/admin/category/edit/${category.id}`)}
-                className="w-full px-4 py-2.5 text-sm font-medium text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/30 hover:bg-indigo-100 dark:hover:bg-indigo-900/50 rounded-xl transition-colors flex items-center justify-center gap-2"
+                className="w-full px-4 py-2.5 text-sm font-medium text-[#0A2E1A] dark:text-[#C8F135] bg-[#F7F4EE] dark:bg-[#0F1D14] hover:bg-[#C8F135]/20 dark:hover:bg-[#153323] rounded-xl transition-colors flex items-center justify-center gap-2"
               >
                 <Edit className="w-4 h-4" />
                 Edit Category

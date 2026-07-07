@@ -52,8 +52,8 @@ function StepIndicator({ current }: { current: number }) {
         <div key={s.num} className="flex items-center flex-1 last:flex-none">
           <div className="flex items-center gap-2 shrink-0">
             <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold transition-all ${
-              current > s.num ? "bg-indigo-600 text-white" :
-              current === s.num ? "bg-indigo-600 text-white ring-4 ring-indigo-100" :
+              current > s.num ? "bg-[#0A2E1A] text-[#C8F135]" :
+              current === s.num ? "bg-[#0A2E1A] text-[#C8F135] ring-4 ring-[#C8F135]/30" :
               "bg-gray-100 text-gray-400"
             }`}>
               {current > s.num ? <Check size={13} /> : s.num}
@@ -63,7 +63,7 @@ function StepIndicator({ current }: { current: number }) {
             </span>
           </div>
           {i < STEPS.length - 1 && (
-            <div className={`h-px flex-1 mx-2 sm:mx-3 transition-colors ${current > s.num ? "bg-indigo-600" : "bg-gray-200"}`} />
+            <div className={`h-px flex-1 mx-2 sm:mx-3 transition-colors ${current > s.num ? "bg-[#0A2E1A]" : "bg-gray-200"}`} />
           )}
         </div>
       ))}
@@ -152,11 +152,11 @@ export default function CreateOrderPage() {
       <div className="bg-gray-50 rounded-xl px-6 py-4 text-left space-y-1.5 w-full max-w-xs">
         <p className="text-xs text-gray-400">Customer: <span className="font-semibold text-gray-700">{selectedCustomer?.name}</span></p>
         <p className="text-xs text-gray-400">Items: <span className="font-semibold text-gray-700">{cart.reduce((s,i)=>s+i.qty,0)}</span></p>
-        <p className="text-xs text-gray-400">Total: <span className="font-bold text-indigo-600">${total.toFixed(2)}</span></p>
+        <p className="text-xs text-gray-400">Total: <span className="font-bold text-[#0A2E1A]">${total.toFixed(2)}</span></p>
       </div>
       <div className="flex gap-3 w-full max-w-xs">
         <button onClick={() => router.push("/admin/orders")} className="flex-1 py-2.5 rounded-lg border border-gray-200 text-sm font-medium text-gray-600 hover:bg-gray-50">View Orders</button>
-        <button onClick={() => { setDone(false); setStep(1); setCart([]); setSelectedCustomer(null); }} className="flex-1 py-2.5 rounded-lg bg-indigo-600 text-white text-sm font-medium hover:bg-indigo-700">New Order</button>
+        <button onClick={() => { setDone(false); setStep(1); setCart([]); setSelectedCustomer(null); }} className="flex-1 py-2.5 rounded-lg bg-[#0A2E1A] text-[#C8F135] text-sm font-medium hover:bg-[#060F09]">New Order</button>
       </div>
     </div>
   );
@@ -216,20 +216,20 @@ export default function CreateOrderPage() {
                             <p className="text-xs font-semibold text-gray-800">{c.name}</p>
                             <p className="text-[10px] text-gray-400">{c.email}</p>
                           </div>
-                          {selectedCustomer?.id === c.id && <Check size={13} className="text-indigo-600 ml-auto" />}
+                          {selectedCustomer?.id === c.id && <Check size={13} className="text-[#0A2E1A] ml-auto" />}
                         </button>
                       ))}
                     </div>
                   )}
                   {/* Selected customer */}
                   {selectedCustomer && !customerSearch && (
-                    <div className="flex items-center gap-3 p-3 bg-indigo-50 rounded-xl border border-indigo-100">
+                    <div className="flex items-center gap-3 p-3 bg-[#F7F4EE] rounded-xl border border-[#E5E7EB]">
                       <div className={`w-9 h-9 rounded-full ${selectedCustomer.color} flex items-center justify-center text-white text-xs font-bold shrink-0`}>{selectedCustomer.initials}</div>
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-semibold text-gray-800">{selectedCustomer.name}</p>
                         <p className="text-xs text-gray-500">{selectedCustomer.email}</p>
                       </div>
-                      <button onClick={() => setSelectedCustomer(null)} className="p-1 rounded-lg hover:bg-indigo-100 transition-colors">
+                      <button onClick={() => setSelectedCustomer(null)} className="p-1 rounded-lg hover:bg-[#C8F135]/20 transition-colors">
                         <X size={13} className="text-gray-500" />
                       </button>
                     </div>
@@ -268,7 +268,7 @@ export default function CreateOrderPage() {
                 <div className="p-5 space-y-3">
                   <div className="flex flex-wrap gap-2">
                     {tags.map(t => (
-                      <span key={t} className="flex items-center gap-1 text-xs font-medium bg-indigo-50 text-indigo-700 border border-indigo-200 px-2.5 py-1 rounded-full">
+                      <span key={t} className="flex items-center gap-1 text-xs font-medium bg-[#F7F4EE] text-[#0A2E1A] border border-[#E5E7EB] px-2.5 py-1 rounded-full">
                         {t}
                         <button onClick={() => toggleTag(t)} className="hover:text-red-500 transition-colors"><X size={11} /></button>
                       </span>
@@ -277,7 +277,7 @@ export default function CreateOrderPage() {
                   <div className="flex flex-wrap gap-1.5">
                     {TAGS.filter(t => !tags.includes(t)).map(t => (
                       <button key={t} onClick={() => toggleTag(t)}
-                        className="text-xs text-gray-500 border border-gray-200 px-2.5 py-1 rounded-full hover:border-indigo-300 hover:text-indigo-600 transition-colors">
+                        className="text-xs text-gray-500 border border-gray-200 px-2.5 py-1 rounded-full hover:border-[#C8F135] hover:text-[#0A2E1A] transition-colors">
                         + {t}
                       </button>
                     ))}
@@ -286,7 +286,7 @@ export default function CreateOrderPage() {
                     <input type="text" placeholder="Add custom tag..." value={tagInput} onChange={e => setTagInput(e.target.value)}
                       onKeyDown={e => e.key === "Enter" && addCustomTag()}
                       className="flex-1 px-3 py-2 text-xs border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-400" />
-                    <button onClick={addCustomTag} className="px-3 py-2 bg-indigo-600 text-white rounded-lg text-xs font-medium hover:bg-indigo-700 transition-colors">Add</button>
+                    <button onClick={addCustomTag} className="px-3 py-2 bg-[#0A2E1A] text-[#C8F135] rounded-lg text-xs font-medium hover:bg-[#060F09] transition-colors">Add</button>
                   </div>
                 </div>
               </div>
@@ -299,7 +299,7 @@ export default function CreateOrderPage() {
               <div className="flex items-center gap-2 px-5 py-4 border-b border-gray-100">
                 <ShoppingBag size={14} className="text-indigo-500" />
                 <h2 className="text-sm font-semibold text-gray-800">Product Selection</h2>
-                <span className="ml-auto text-xs text-indigo-600 font-medium">{cart.reduce((s,i)=>s+i.qty,0)} items selected</span>
+                <span className="ml-auto text-xs text-[#0A2E1A] font-medium">{cart.reduce((s,i)=>s+i.qty,0)} items selected</span>
               </div>
               <div className="p-5 space-y-4">
                 {/* Product search */}
@@ -379,9 +379,9 @@ export default function CreateOrderPage() {
                 </div>
                 <div className="p-5 space-y-2.5">
                   {SHIPPING_OPTIONS.map(s => (
-                    <label key={s.id} className={`flex items-center justify-between p-3.5 rounded-xl border-2 cursor-pointer transition-all ${shipping === s.id ? "border-indigo-500 bg-indigo-50/50" : "border-gray-100 hover:border-gray-200"}`}>
+                    <label key={s.id} className={`flex items-center justify-between p-3.5 rounded-xl border-2 cursor-pointer transition-all ${shipping === s.id ? "border-[#0A2E1A] bg-[#F7F4EE]" : "border-gray-100 hover:border-[#C8F135]"}`}>
                       <div className="flex items-center gap-3">
-                        <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center transition-all ${shipping === s.id ? "border-indigo-600 bg-indigo-600" : "border-gray-300"}`}>
+                        <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center transition-all ${shipping === s.id ? "border-[#0A2E1A] bg-[#0A2E1A]" : "border-gray-300"}`}>
                           {shipping === s.id && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
                         </div>
                         <span className="text-sm font-medium text-gray-700">{s.label}</span>
@@ -407,7 +407,7 @@ export default function CreateOrderPage() {
                     { id:"bank",   label:"Bank Transfer" },
                   ].map(p => (
                     <button key={p.id} onClick={() => setPayMethod(p.id)}
-                      className={`py-3 rounded-xl border-2 text-xs font-semibold transition-all ${payMethod === p.id ? "border-indigo-500 bg-indigo-50 text-indigo-700" : "border-gray-100 text-gray-500 hover:border-gray-200"}`}>
+                      className={`py-3 rounded-xl border-2 text-xs font-semibold transition-all ${payMethod === p.id ? "border-[#0A2E1A] bg-[#F7F4EE] text-[#0A2E1A]" : "border-gray-100 text-gray-500 hover:border-[#C8F135]"}`}>
                       {p.label}
                     </button>
                   ))}
@@ -460,15 +460,15 @@ export default function CreateOrderPage() {
               <div className="border-t border-gray-100 pt-3">
                 <div className="flex justify-between items-center">
                   <span className="text-sm font-semibold text-gray-800">Total Amount</span>
-                  <span className="text-lg font-bold text-indigo-600">${total.toFixed(2)}</span>
+                  <span className="text-lg font-bold text-[#0A2E1A]">${total.toFixed(2)}</span>
                 </div>
                 {selectedCustomer && <p className="text-[10px] text-gray-400 mt-1">Estimated delivery: Oct 28 – Oct 30</p>}
               </div>
 
               {/* Pro Tip */}
-              <div className="bg-indigo-50 border border-indigo-100 rounded-xl p-3 space-y-1">
-                <p className="text-[10px] font-semibold text-indigo-700">💡 Pro Tip</p>
-                <p className="text-[10px] text-indigo-600 leading-relaxed">Use ⌘ to quickly search for customers or products anywhere in the wizard.</p>
+              <div className="bg-[#F7F4EE] border border-[#E5E7EB] rounded-xl p-3 space-y-1">
+                <p className="text-[10px] font-semibold text-[#0A2E1A]">💡 Pro Tip</p>
+                <p className="text-[10px] text-[#0A2E1A] leading-relaxed">Use ⌘ to quickly search for customers or products anywhere in the wizard.</p>
               </div>
 
               {/* CTA buttons */}

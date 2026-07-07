@@ -7,8 +7,8 @@ import {
   ChevronDown,
 } from "lucide-react";
 
-const INPUT = "w-full px-3.5 py-2.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-400 transition-all";
-const SELECT = INPUT + " bg-white appearance-none";
+const INPUT = "w-full px-3.5 py-2.5 text-sm border border-[#E5E7EB] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C8F135]/40 focus:border-[#0A2E1A] transition-all bg-white dark:bg-[#08120C] dark:text-gray-100";
+const SELECT = INPUT + " appearance-none";
 
 function Field({ label, required, error, children }: { label: string; required?: boolean; error?: string; children: React.ReactNode }) {
   return (
@@ -26,7 +26,7 @@ function Section({ icon, title, children }: { icon: React.ReactNode; title: stri
   return (
     <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
       <div className="flex items-center gap-2 px-5 py-4 border-b border-gray-100">
-        <span className="text-indigo-500">{icon}</span>
+        <span className="text-[#0A2E1A]">{icon}</span>
         <h2 className="text-sm font-semibold text-gray-800">{title}</h2>
       </div>
       <div className="p-5">{children}</div>
@@ -104,7 +104,7 @@ export default function AddCustomerPage() {
             Save Draft
           </button>
           <button onClick={() => handleSave(false)} disabled={saving}
-            className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-400 text-white text-sm font-semibold transition-colors">
+            className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-[#0A2E1A] hover:bg-[#060F09] disabled:bg-[#153323] text-[#C8F135] text-sm font-semibold transition-colors">
             {saving
               ? <span className="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" />
               : <Check size={14} />}
@@ -191,8 +191,8 @@ export default function AddCustomerPage() {
                     <button key={g} onClick={() => setCustomerGroup(g)}
                       className={`flex-1 py-1.5 rounded-lg text-xs font-semibold border transition-all ${
                         customerGroup === g
-                          ? "bg-indigo-600 text-white border-indigo-600"
-                          : "border-gray-200 text-gray-500 hover:border-indigo-300 hover:text-indigo-600"
+                          ? "bg-[#0A2E1A] text-[#C8F135] border-[#0A2E1A]"
+                          : "border-[#E5E7EB] text-gray-500 hover:border-[#C8F135] hover:text-[#0A2E1A]"
                       }`}>
                       {g}
                     </button>
@@ -206,20 +206,20 @@ export default function AddCustomerPage() {
                   <p className="text-[10px] text-gray-400 mt-0.5">No tax applied to purchases</p>
                 </div>
                 <div onClick={() => setTaxExempt(!taxExempt)}
-                  className={`relative w-9 h-5 rounded-full transition-colors shrink-0 ${taxExempt ? "bg-indigo-600" : "bg-gray-200"}`}>
+                  className={`relative w-9 h-5 rounded-full transition-colors shrink-0 ${taxExempt ? "bg-[#0A2E1A]" : "bg-gray-200"}`}>
                   <div className={`absolute top-0.5 w-4 h-4 bg-white rounded-full shadow transition-transform ${taxExempt ? "translate-x-4" : "translate-x-0.5"}`} />
                 </div>
               </label>
 
-              <div className="bg-indigo-50 border border-indigo-100 rounded-xl p-3 space-y-2">
+              <div className="bg-[#F7F4EE] border border-[#E5E7EB] rounded-xl p-3 space-y-2">
                 <label className="flex items-center justify-between cursor-pointer">
-                  <p className="text-xs font-semibold text-indigo-700">Do Savings</p>
+                  <p className="text-xs font-semibold text-[#0A2E1A]">Do Savings</p>
                   <div onClick={() => setDoSavings(!doSavings)}
-                    className={`relative w-8 h-4 rounded-full transition-colors shrink-0 ${doSavings ? "bg-indigo-600" : "bg-indigo-200"}`}>
+                    className={`relative w-8 h-4 rounded-full transition-colors shrink-0 ${doSavings ? "bg-[#0A2E1A]" : "bg-[#C8F135]/50"}`}>
                     <div className={`absolute top-0.5 w-3 h-3 bg-white rounded-full shadow transition-transform ${doSavings ? "translate-x-4" : "translate-x-0.5"}`} />
                   </div>
                 </label>
-                <p className="text-[10px] text-indigo-600 leading-relaxed">{savingsNote}</p>
+                <p className="text-[10px] text-[#0A2E1A] leading-relaxed">{savingsNote}</p>
               </div>
             </div>
           </Section>

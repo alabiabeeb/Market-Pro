@@ -97,14 +97,14 @@ export default function CategoryPage() {
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
   const getStatusStyles = (status: string) => {
-    return status === "Active" 
-      ? "bg-green-50 text-green-700 border-green-200 dark:bg-green-900/30 dark:text-green-400 dark:border-green-800" 
+    return status === "Active"
+      ? "bg-[#F7F4EE] text-[#0A2E1A] border-[#C8F135]/50 dark:bg-[#0F1D14] dark:text-[#C8F135] dark:border-[#C8F135]/30"
       : "bg-gray-50 text-gray-600 border-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600";
   };
 
   const getStatusDot = (status: string) => {
     return status === "Active"
-      ? "bg-green-500"
+      ? "bg-[#0A2E1A] dark:bg-[#C8F135]"
       : "bg-gray-400";
   };
 
@@ -159,29 +159,29 @@ export default function CategoryPage() {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
         <div className="text-center">
-          <div className="w-12 h-12 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin mx-auto"></div>
-          <p className="mt-4 text-gray-500">Loading categories...</p>
+          <div className="w-12 h-12 border-4 border-[#0A2E1A] dark:border-[#C8F135] border-t-transparent rounded-full animate-spin mx-auto"></div>
+          <p className="mt-4 text-gray-500 dark:text-gray-400">Loading categories...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col w-full bg-gray-50 dark:bg-gray-900">
+    <div className="flex flex-col w-full bg-[#F7F4EE] dark:bg-[#060F09]">
       {/* Main Content */}
       <div className="p-4 sm:p-6 lg:p-8">
         {/* Header Section */}
         <div className="mb-6">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">Category</h1>
+              <h1 className="text-2xl sm:text-3xl font-bold text-[#0A2E1A] dark:text-[#F7F4EE]">Category</h1>
               <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
                 Organize your products into categories to help customers find what they're looking for.
               </p>
             </div>
             <button 
               onClick={() => router.push("/admin/category/add")} 
-              className="inline-flex items-center gap-2 px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-xl transition-all duration-200 shadow-lg shadow-indigo-600/20"
+              className="inline-flex items-center gap-2 px-4 py-2.5 bg-[#0A2E1A] hover:bg-[#061A11] text-[#C8F135] text-sm font-medium rounded-xl transition-all duration-200 shadow-lg shadow-[#0A2E1A]/20"
             >
               <Plus className="w-4 h-4" />
               Create Category
@@ -199,19 +199,19 @@ export default function CategoryPage() {
               placeholder="Search categories..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all dark:text-white"
+              className="w-full pl-10 pr-4 py-2.5 bg-white dark:bg-[#08120C] border border-[#E5E7EB] dark:border-[#153323] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#C8F135]/30 focus:border-[#0A2E1A] transition-all dark:text-white"
             />
           </div>
 
           {/* Actions */}
           <div className="flex items-center gap-2">
             {/* View Toggle */}
-            <div className="flex items-center gap-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-1">
+            <div className="flex items-center gap-1 bg-white dark:bg-[#08120C] border border-[#E5E7EB] dark:border-[#153323] rounded-xl p-1">
               <button
                 onClick={() => setViewMode("list")}
                 className={`p-1.5 rounded-lg transition-colors ${
                   viewMode === "list" 
-                    ? "bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400" 
+                    ? "bg-[#F7F4EE] dark:bg-[#0F1D14] text-[#0A2E1A] dark:text-[#C8F135]" 
                     : "text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
                 }`}
               >
@@ -221,7 +221,7 @@ export default function CategoryPage() {
                 onClick={() => setViewMode("grid")}
                 className={`p-1.5 rounded-lg transition-colors ${
                   viewMode === "grid" 
-                    ? "bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400" 
+                    ? "bg-[#F7F4EE] dark:bg-[#0F1D14] text-[#0A2E1A] dark:text-[#C8F135]" 
                     : "text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
                 }`}
               >
@@ -229,7 +229,7 @@ export default function CategoryPage() {
               </button>
             </div>
 
-            <button className="flex items-center gap-2 px-3 py-2.5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+            <button className="flex items-center gap-2 px-3 py-2.5 bg-white dark:bg-[#08120C] border border-[#E5E7EB] dark:border-[#153323] rounded-xl text-sm text-gray-600 dark:text-gray-300 hover:bg-[#F7F4EE] dark:hover:bg-[#0F1D14] transition-colors">
               <Filter className="w-4 h-4" />
               Filter
             </button>
@@ -237,7 +237,7 @@ export default function CategoryPage() {
         </div>
 
         {/* Table/Grid View */}
-        <div className="bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-xl shadow-sm">
+        <div className="bg-white dark:bg-[#08120C] border border-[#E5E7EB] dark:border-[#153323] rounded-xl shadow-sm">
           {categories.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-16">
               <div className="w-16 h-16 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center mb-4">
@@ -247,7 +247,7 @@ export default function CategoryPage() {
               <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">Create your first category to get started.</p>
               <button
                 onClick={() => router.push("/admin/category/add")}
-                className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl transition-colors"
+                className="px-4 py-2 bg-[#0A2E1A] hover:bg-[#061A11] text-[#C8F135] rounded-xl transition-colors"
               >
                 Create Category
               </button>
@@ -259,7 +259,7 @@ export default function CategoryPage() {
                 <div className="overflow-x-auto">
                   <table className="w-full">
                     <thead>
-                      <tr className="bg-gray-50 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600">
+                      <tr className="bg-[#F7F4EE] dark:bg-[#0F1D14] border-b border-[#E5E7EB] dark:border-[#153323]">
                         <th className="text-left text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase tracking-wider px-4 py-3">
                           <div className="flex items-center gap-1">
                             Category
@@ -280,18 +280,18 @@ export default function CategoryPage() {
                         </th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-gray-50 dark:divide-gray-700">
+                    <tbody className="divide-y divide-[#E5E7EB] dark:divide-[#153323]">
                       {paginatedCategories.map((category) => (
                         <tr 
                           key={category.id}
-                          className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 transition-colors"
+                          className="hover:bg-[#F7F4EE] dark:hover:bg-[#0F1D14] transition-colors"
                           onMouseEnter={() => setSelectedCategory(category.id)}
                           onMouseLeave={() => setSelectedCategory(null)}
                         >
                           <td className="px-4 py-3">
                             <div className="flex items-center gap-3">
-                              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-100 to-purple-100 dark:from-indigo-900/30 dark:to-purple-900/30 flex items-center justify-center">
-                                <span className="text-xs font-bold text-indigo-600 dark:text-indigo-400">
+                              <div className="w-8 h-8 rounded-lg bg-[#F7F4EE] dark:bg-[#0F1D14] flex items-center justify-center">
+                                <span className="text-xs font-bold text-[#0A2E1A] dark:text-[#C8F135]">
                                   {category.name.charAt(0)}
                                 </span>
                               </div>
@@ -325,14 +325,14 @@ export default function CategoryPage() {
                             <div className="flex items-center justify-end gap-1">
                               <button 
                                 onClick={() => handleViewCategory(category)}
-                                className="p-1.5 text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 rounded-lg transition-colors"
+                                className="p-1.5 text-gray-400 hover:text-[#0A2E1A] hover:bg-[#F7F4EE] dark:hover:bg-[#0F1D14] rounded-lg transition-colors"
                                 title="View Category"
                               >
                                 <Eye className="w-4 h-4" />
                               </button>
                               <button 
                                 onClick={() => handleEditCategory(category)}
-                                className="p-1.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded-lg transition-colors"
+                                className="p-1.5 text-gray-400 hover:text-[#0A2E1A] hover:bg-[#F7F4EE] dark:hover:bg-[#0F1D14] rounded-lg transition-colors"
                                 title="Edit Category"
                               >
                                 <Edit className="w-4 h-4" />
@@ -345,7 +345,7 @@ export default function CategoryPage() {
                                 <Trash2 className="w-4 h-4" />
                               </button>
                               <button 
-                                className="p-1.5 text-gray-400 hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg transition-colors"
+                                className="p-1.5 text-gray-400 hover:text-gray-600 hover:bg-[#F7F4EE] dark:hover:bg-[#0F1D14] rounded-lg transition-colors"
                                 title="More Options"
                               >
                                 <MoreVertical className="w-4 h-4" />
@@ -365,12 +365,12 @@ export default function CategoryPage() {
                   {paginatedCategories.map((category) => (
                     <div 
                       key={category.id}
-                      className="bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-xl p-4 hover:shadow-lg transition-all duration-200"
+                      className="bg-white dark:bg-[#08120C] border border-[#E5E7EB] dark:border-[#153323] rounded-xl p-4 hover:shadow-lg transition-all duration-200"
                     >
                       <div className="flex items-start justify-between mb-3">
                         <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-100 to-purple-100 dark:from-indigo-900/30 dark:to-purple-900/30 flex items-center justify-center">
-                            <span className="text-sm font-bold text-indigo-600 dark:text-indigo-400">
+                          <div className="w-10 h-10 rounded-xl bg-[#F7F4EE] dark:bg-[#0F1D14] flex items-center justify-center">
+                            <span className="text-sm font-bold text-[#0A2E1A] dark:text-[#C8F135]">
                               {category.name.charAt(0)}
                             </span>
                           </div>
@@ -394,14 +394,14 @@ export default function CategoryPage() {
                         </button>
                       </div>
                       
-                      <div className="flex items-center justify-between pt-3 border-t border-gray-100 dark:border-gray-700">
+                      <div className="flex items-center justify-between pt-3 border-t border-[#E5E7EB] dark:border-[#153323]">
                         <span className="text-sm text-gray-600 dark:text-gray-400">
                           {category.products} products
                         </span>
                         <div className="flex items-center gap-1">
                           <button 
                             onClick={() => handleViewCategory(category)}
-                            className="p-1.5 text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 rounded-lg transition-colors"
+                            className="p-1.5 text-gray-400 hover:text-[#0A2E1A] dark:hover:text-[#C8F135] rounded-lg transition-colors"
                           >
                             <Eye className="w-3.5 h-3.5" />
                           </button>
@@ -425,7 +425,7 @@ export default function CategoryPage() {
               )}
 
               {/* Pagination */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 px-4 py-3 border-t border-gray-100 dark:border-gray-700 bg-gray-50/30 dark:bg-gray-800/40">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 px-4 py-3 border-t border-[#E5E7EB] dark:border-[#153323] bg-[#F7F4EE]/60 dark:bg-[#0F1D14]/60">
                 <span className="text-sm text-gray-600 dark:text-gray-400">
                   Showing {startIndex + 1} to {Math.min(startIndex + itemsPerPage, filteredCategories.length)} of {filteredCategories.length} categories
                 </span>
@@ -433,17 +433,17 @@ export default function CategoryPage() {
                   <button
                     onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
                     disabled={currentPage === 1}
-                    className="px-3 py-1.5 text-sm text-gray-600 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    className="px-3 py-1.5 text-sm text-gray-600 dark:text-gray-300 bg-white dark:bg-[#08120C] border border-[#E5E7EB] dark:border-[#153323] rounded-lg hover:bg-[#F7F4EE] dark:hover:bg-[#0F1D14] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                   >
                     <ChevronLeft className="w-4 h-4" />
                   </button>
-                  <button className="px-3 py-1.5 text-sm font-medium text-white bg-indigo-600 rounded-lg">
+                  <button className="px-3 py-1.5 text-sm font-medium text-[#C8F135] bg-[#0A2E1A] rounded-lg">
                     {currentPage}
                   </button>
                   <button
                     onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
                     disabled={currentPage === totalPages}
-                    className="px-3 py-1.5 text-sm text-gray-600 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    className="px-3 py-1.5 text-sm text-gray-600 dark:text-gray-300 bg-white dark:bg-[#08120C] border border-[#E5E7EB] dark:border-[#153323] rounded-lg hover:bg-[#F7F4EE] dark:hover:bg-[#0F1D14] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                   >
                     <ChevronRight className="w-4 h-4" />
                   </button>
@@ -457,7 +457,7 @@ export default function CategoryPage() {
       {/* Delete Confirmation Modal */}
       {showDeleteModal && categoryToDelete && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-          <div className="bg-white dark:bg-gray-800 rounded-2xl max-w-md w-full p-6 shadow-2xl">
+          <div className="bg-white dark:bg-[#08120C] rounded-2xl max-w-md w-full p-6 shadow-2xl">
             <div className="flex items-start justify-between mb-4">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center">
@@ -481,7 +481,7 @@ export default function CategoryPage() {
             <div className="flex gap-3">
               <button
                 onClick={() => setShowDeleteModal(false)}
-                className="flex-1 px-4 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                className="flex-1 px-4 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-[#08120C] border border-[#E5E7EB] dark:border-[#153323] rounded-xl hover:bg-[#F7F4EE] dark:hover:bg-[#0F1D14] transition-colors"
               >
                 Cancel
               </button>
