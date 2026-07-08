@@ -1,0 +1,29 @@
+<svg width="600" height="520" viewBox="0 0 600 520" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="600" height="520" rx="32" fill="#FFFFFF" stroke="#E5E7EB" stroke-width="2"/>
+  <text x="40" y="58" font-family="Inter, sans-serif" font-size="32" font-weight="700" fill="#111827">Competitive Markets</text>
+  <circle cx="340" cy="260" r="140" fill="#F8FAFC"/>
+  <path d="M340 120 A140 140 0 0 1 452 298 L384 317 A80 80 0 0 0 340 180 Z" fill="#818CF8"/>
+  <path d="M452 298 A140 140 0 0 1 300 380 L308 316 A80 80 0 0 0 384 242 Z" fill="#A5B4FC"/>
+  <path d="M300 380 A140 140 0 0 1 216 214 L276 230 A80 80 0 0 0 308 316 Z" fill="#4338CA"/>
+  <path d="M216 214 A140 140 0 0 1 340 120 L340 180 A80 80 0 0 0 276 230 Z" fill="#4ADE80"/>
+  <circle cx="340" cy="260" r="46" fill="#FFFFFF"/>
+  <text x="340" y="100" text-anchor="middle" font-family="Inter, sans-serif" font-size="26" font-weight="700" fill="#111827">55%</text>
+  <g font-family="Inter, sans-serif" font-size="16" fill="#111827">
+    <text x="40" y="170">Aura Wireless Headphones</text>
+    <text x="40" y="215">Chrono Smartwatch v2</text>
+    <text x="40" y="260">Mechanical Keyboard Pro</text>
+    <text x="40" y="305">Portable Bluetooth Speaker</text>
+  </g>
+  <g>
+    <rect x="24" y="154" width="16" height="16" rx="4" fill="#818CF8"/>
+    <rect x="24" y="199" width="16" height="16" rx="4" fill="#A5B4FC"/>
+    <rect x="24" y="244" width="16" height="16" rx="4" fill="#4338CA"/>
+    <rect x="24" y="289" width="16" height="16" rx="4" fill="#4ADE80"/>
+  </g>
+  <g font-family="Inter, sans-serif" font-size="18" fill="#111827" font-weight="700">
+    <text x="360" y="178">55%</text>
+    <text x="360" y="238">30%</text>
+    <text x="360" y="298">15%</text>
+    <text x="360" y="358">15%</text>
+  </g>
+</svg>
