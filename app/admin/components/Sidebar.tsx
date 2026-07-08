@@ -1,20 +1,20 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
 import {
   LayoutDashboard, ShoppingCart, Package, Users, BarChart2,
-  Settings, HelpCircle, Store, UserCircle, ChevronRight, Plus,Tag
+  Settings, HelpCircle, Store, UserCircle, ChevronRight, Plus, Tag
 } from "lucide-react";
 
 const navItems = [
   { label: "Dashboard", icon: LayoutDashboard, href: "/admin" },
   { label: "Orders",    icon: ShoppingCart,    href: "/admin/orders" },
-  { label: "Products",  icon: Package,          href: "/admin/product" },
-  { label: "Customers", icon: Users,            href: "/admin/customers" },
-  { label: "Analytics", icon: BarChart2,        href: "/admin/analytics" },
-  {label: "Categories", icon: Tag, href: "/admin/category" },
+  { label: "Products",  icon: Package,         href: "/admin/product" },
+  { label: "Customers", icon: Users,           href: "/admin/customers" },
+  { label: "Analytics", icon: BarChart2,       href: "/admin/analytics" },
+  { label: "Categories", icon: Tag,            href: "/admin/category" },
 ];
 
 const settingsDropdown = [
@@ -26,21 +26,22 @@ const bottomItems = [
   { label: "Support", icon: HelpCircle, href: "/admin/support" },
 ];
 
-// Items that fan out when + is tapped (shown in reverse so last item is closest to button)
+// FAB items - all nav items not shown in bottom bar
 const fabItems = [
   { label: "Support", icon: HelpCircle, href: "/admin/support" },
-  {label: "Categories", icon: Package, href: "/admin/category" },
+  { label: "Categories", icon: Tag, href: "/admin/category" },
   { label: "Analytics", icon: BarChart2, href: "/admin/analytics" },
-  { label: "Store Settings",   icon: Store,      href: "/admin/settings/store" },
+  { label: "Store Settings", icon: Store, href: "/admin/settings/store" },
   { label: "Profile Settings", icon: UserCircle, href: "/admin/settings/profile" },
 ];
 
 export default function Sidebar() {
-  const pathname  = usePathname();
+  const pathname = usePathname();
+  const router = useRouter();
   const [settingsOpen, setSettingsOpen] = useState(false);
-  const [fabOpen, setFabOpen]           = useState(false);
+  const [fabOpen, setFabOpen] = useState(false);
   const settingsRef = useRef<HTMLDivElement>(null);
-  const fabRef      = useRef<HTMLDivElement>(null);
+  const fabRef = useRef<HTMLDivElement>(null);
 
   const isSettingsActive = pathname.startsWith("/admin/settings");
 
@@ -57,18 +58,27 @@ export default function Sidebar() {
   // Close FAB menu on outside click
   useEffect(() => {
     const h = (e: MouseEvent) => {
-      if (fabRef.current && !fabRef.current.contains(e.target as Node))
+      if (fabRef.current && !fabRef.current.contains(e.target as Node)) {
         setFabOpen(false);
+      }
     };
     document.addEventListener("mousedown", h);
     return () => document.removeEventListener("mousedown", h);
   }, []);
 
   // Close FAB on route change
-  useEffect(() => { setFabOpen(false); }, [pathname]);
+  useEffect(() => { 
+    setFabOpen(false); 
+  }, [pathname]);
 
-  // Which bottom-bar icons to always show (first 4 nav items)
+  // Bottom bar items (first 4 nav items)
   const bottomNavItems = navItems.slice(0, 4);
+
+  // Handle FAB item click
+  const handleFabItemClick = (href: string) => {
+    setFabOpen(false);
+    router.push(href);
+  };
 
   return (
     <>
@@ -157,14 +167,14 @@ export default function Sidebar() {
 
         {/* ── FAB fan-out items ── */}
         {fabOpen && (
-          <div className="fixed right-4 z-50" style={{ bottom: "80px" }}>
+          <div className="fixed right-4 z-50" style={{ bottom: "88px" }}>
             <div className="flex flex-col items-end gap-3">
               {fabItems.map(({ label, icon: Icon, href }, i) => {
                 const isActive = pathname === href || (href !== "/admin" && pathname.startsWith(href));
                 return (
-                  <Link
+                  <button
                     key={label}
-                    href={href}
+                    onClick={() => handleFabItemClick(href)}
                     className="flex items-center gap-3 group"
                     style={{
                       animation: `fadeSlideUp 0.2s ease forwards`,
@@ -184,7 +194,7 @@ export default function Sidebar() {
                     }`}>
                       <Icon size={20} className={isActive ? "text-[#C8F135]" : "text-[#0A2E1A]"} />
                     </div>
-                  </Link>
+                  </button>
                 );
               })}
             </div>
@@ -192,7 +202,7 @@ export default function Sidebar() {
         )}
 
         {/* ── Fixed bottom bar ── */}
-        <nav className="fixed bottom-0 left-0  right-0 z-50 bg-white dark:bg-[#08120C] border-t border-[#E5E7EB] dark:border-[#153323] shadow-[0_-2px_16px_rgba(0,0,0,0.08)]">
+        <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-[#08120C] border-t border-[#E5E7EB] dark:border-[#153323] shadow-[0_-2px_16px_rgba(0,0,0,0.08)]">
           <div className="flex items-center justify-around px-2 py-2 relative">
 
             {/* First 4 nav items */}
