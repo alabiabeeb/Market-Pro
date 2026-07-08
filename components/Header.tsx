@@ -21,6 +21,7 @@ export default function Header() {
     };
 
     window.addEventListener("scroll", handleScroll);
+    handleScroll(); // set correct state on mount (e.g. if page loads mid-scroll)
 
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -29,8 +30,8 @@ export default function Header() {
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 border-b ${
         scrolled
-          ? "bg-[#F3FFCA] backdrop-blur-lg shadow-lg"
-          : "bg-[#F3FFCA] backdrop-blur-lg shadow-lg"
+          ? "bg-[#F3FFCA] backdrop-blur-lg shadow-lg border-[#b5d82f]"
+          : "bg-transparent border-transparent"
       }`}
     >
       <div className="max-w-7xl mx-auto h-16 px-5 sm:px-8 lg:px-10 flex items-center justify-between">
@@ -38,7 +39,6 @@ export default function Header() {
         <Link href="/">
           <img
             src="/logo.png"
-            // style={{boxShadow:"0 0 20px grey"}}
             alt="Logo"
             className="w-20 h-auto transition-all duration-300"
           />
@@ -50,11 +50,10 @@ export default function Header() {
             <Link
               key={item.label}
               href={item.href}
-              
               className={`text-sm font-medium transition-colors duration-300 ${
                 scrolled
                   ? "text-[#0A2E1A] hover:text-black"
-                  : "text-[#0A2E1A] hover:text-black"
+                  : "text-white/90 hover:text-white"
               }`}
             >
               {item.label}
@@ -69,7 +68,7 @@ export default function Header() {
             className={`text-sm font-medium transition-colors duration-300 ${
               scrolled
                 ? "text-[#0A2E1A] hover:text-black"
-                : "text-[#0A2E1A] hover:text-black"
+                : "text-white/90 hover:text-white"
             }`}
           >
             Log in
@@ -81,7 +80,7 @@ export default function Header() {
             className={`group relative overflow-hidden rounded-full px-6 py-3 text-sm font-semibold transition-all duration-300 ${
               scrolled
                 ? "bg-[#0A2E1A] text-[#C8F135]"
-                : "bg-[#0A2E1A] text-[#C8F135]"
+                : "bg-[#C8F135] text-[#0A2E1A]"
             }`}
           >
             {/* BEFORE Layer */}
@@ -115,21 +114,13 @@ export default function Header() {
         <button
           onClick={() => setMenuOpen(!menuOpen)}
           className={`md:hidden p-2 rounded-lg transition ${
-            scrolled
-              ? "hover:bg-[#0A2E1A]/10"
-              : "hover:bg-gray-100"
+            scrolled ? "hover:bg-[#0A2E1A]/10" : "hover:bg-white/10"
           }`}
         >
           {menuOpen ? (
-            <X
-              size={22}
-              className={scrolled ? "text-[#0A2E1A]" : "text-black"}
-            />
+            <X size={22} className={scrolled ? "text-[#0A2E1A]" : "text-white"} />
           ) : (
-            <Menu
-              size={22}
-              className={scrolled ? "text-[#0A2E1A]" : "text-black"}
-            />
+            <Menu size={22} className={scrolled ? "text-[#0A2E1A]" : "text-white"} />
           )}
         </button>
       </div>
@@ -140,7 +131,7 @@ export default function Header() {
           className={`md:hidden px-5 py-5 border-t transition-all duration-500 ${
             scrolled
               ? "bg-[#F3FFCA] border-[#b5d82f]"
-              : "bg-[#F3FFCA] border-[#b5d82f]"
+              : "bg-[#0A2E1A]/95 backdrop-blur-lg border-white/10"
           }`}
         >
           <div className="space-y-2">
@@ -152,7 +143,7 @@ export default function Header() {
                 className={`block py-3 text-sm font-medium transition-colors ${
                   scrolled
                     ? "text-[#0A2E1A] hover:text-black"
-                    : "text-[#0A2E1A] hover:text-black"
+                    : "text-white/90 hover:text-white"
                 }`}
               >
                 {item.label}
@@ -160,14 +151,18 @@ export default function Header() {
             ))}
           </div>
 
-          <div className="border-t border-black/10 mt-4 pt-4 space-y-3">
+          <div
+            className={`border-t mt-4 pt-4 space-y-3 ${
+              scrolled ? "border-black/10" : "border-white/10"
+            }`}
+          >
             <Link
               href="/login"
               onClick={() => setMenuOpen(false)}
               className={`block text-center py-3 text-sm font-medium transition-colors ${
                 scrolled
                   ? "text-[#0A2E1A] hover:text-black"
-                  : "text-[#0A2E1A] hover:text-black"
+                  : "text-white/90 hover:text-white"
               }`}
             >
               Log in
@@ -179,24 +174,10 @@ export default function Header() {
               className={`group relative flex justify-center overflow-hidden rounded-full px-6 py-3 text-sm font-semibold ${
                 scrolled
                   ? "bg-[#0A2E1A] text-[#C8F135]"
-                  : "bg-[#0A2E1A] text-[#C8F135]"
+                  : "bg-[#C8F135] text-[#0A2E1A]"
               }`}
             >
-              <span
-                className={`absolute inset-0 -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ${
-                  scrolled ? "bg-[#0A2E1A] text-[#C8F135]" : "bg-[#0A2E1A]"
-                }`}
-              />
-
-              <span
-                className={`relative z-10 transition-colors duration-500 ${
-                  scrolled
-                    ? "group-hover:text-[#0A2E1A]"
-                    : "group-hover:text-[#C8F135]"
-                }`}
-              >
-                Get Started →
-              </span>
+              Get Started →
             </Link>
           </div>
         </div>

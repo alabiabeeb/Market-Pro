@@ -8,6 +8,7 @@ import {
   ChevronRight, Play,
 } from "lucide-react";
 import Header from "@/components/Header";
+import Hero from "@/components/Hero";
 
 // ── Animated counter ───────────────────────────────────────────────────────
 function Counter({ end, suffix = "" }: { end: number; suffix?: string }) {
@@ -106,150 +107,143 @@ export default function LandingPage() {
     <div className="min-h-screen font-sans" style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>
         <Header />
       {/* ── HERO ── */}
-      <section className="pt-16 min-h-screen flex flex-col justify-center relative overflow-hidden"
-        style={{ backgroundColor: "#0A2E1A" }}>
-        {/* Background texture */}
-        <div className="absolute inset-0 opacity-[0.04]"
-          style={{
-            backgroundImage: "radial-gradient(circle, #C8F135 1px, transparent 1px)",
-            backgroundSize: "40px 40px",
-          }} />
-        <div className="absolute top-0 right-0 w-96 h-96 rounded-full opacity-10 blur-3xl"
-          style={{ backgroundColor: "#C8F135" }} />
-        <div className="absolute bottom-0 left-0 w-64 h-64 rounded-full opacity-10 blur-3xl"
-          style={{ backgroundColor: "#C8F135" }} />
+      <Hero />
+     <section className="pt-16 min-h-screen flex flex-col justify-center relative overflow-hidden"
+  style={{ backgroundColor: "#F7F4EE" }}>
+  {/* Background texture */}
+  <div className="absolute inset-0 opacity-[0.04]"
+    style={{
+      backgroundImage: "radial-gradient(circle, #0A2E1A 1px, transparent 1px)",
+      backgroundSize: "40px 40px",
+    }} />
+  <div className="absolute top-0 right-0 w-96 h-96 rounded-full opacity-[0.06] blur-3xl"
+    style={{ backgroundColor: "#0A2E1A" }} />
+  <div className="absolute bottom-0 left-0 w-64 h-64 rounded-full opacity-[0.06] blur-3xl"
+    style={{ backgroundColor: "#0A2E1A" }} />
 
-        <div className="relative max-w-7xl mx-auto px-5 sm:px-8 py-20 sm:py-28 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          {/* Left */}
-          <div className="space-y-8">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border text-xs font-semibold tracking-wide"
-              style={{ borderColor: "#C8F135", color: "#C8F135" }}>
-              <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ backgroundColor: "#C8F135" }} />
-              NOW LIVE IN NIGERIA
+  <div className="relative max-w-7xl mx-auto px-5 sm:px-8 py-20 sm:py-28 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+    {/* Left */}
+    <div className="space-y-8 ">
+      <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold tracking-wide"
+        style={{ borderColor: "#0A2E1A", color: "#0A2E1A" }}>
+        {/* <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ backgroundColor: "#0A2E1A" }} /> */}
+        POWERFUL DASHBOARD
+      </div>
+
+      <h1 className="text-[clamp(2.4rem,6vw,4.2rem)] font-black leading-[1.05] tracking-tight"
+        style={{ color: "#0A2E1A" }}>
+        Everything at<br />
+        <span style={{ color: "#C8F135", WebkitTextStroke: "0.5px #0A2E1A" }}>
+          your fingertips
+        </span>
+      </h1>
+
+      <p className="text-lg leading-relaxed max-w-lg" style={{ color: "#0A2E1A99" }}>
+        Manage orders, track inventory, view analytics, and grow your business from one beautiful dashboard.
+      </p>
+
+      {/* Checklist */}
+      <div className="space-y-3">
+        {[
+          "Real-time sales notifications",
+          "Inventory sync across all channels",
+          "Customer insights & analytics",
+          "Staff performance tracking",
+        ].map((item) => (
+          <div key={item} className="flex items-center gap-3">
+            <div className="w-5 h-5 rounded-full flex items-center justify-center shrink-0"
+              style={{ backgroundColor: "#0A2E1A1A" }}>
+              <Check size={12} style={{ color: "#0A2E1A" }} strokeWidth={3} />
             </div>
-
-            <h1 className="text-[clamp(2.4rem,6vw,4.2rem)] font-black leading-[1.05] tracking-tight text-white">
-              Sell more.<br />
-              <span className="relative inline-block px-2 -mx-2"
-                style={{ backgroundColor: "#C8F135", color: "#0A2E1A", borderRadius: "4px" }}>
-                Get paid faster.
-              </span><br />
-              No wahala.
-            </h1>
-
-            <p className="text-lg text-white/70 leading-relaxed max-w-lg">
-              The Nigerian commerce platform with buyer protection, WhatsApp checkout, and every payment method your customers already use.
-            </p>
-
-            <div className="flex flex-col sm:flex-row gap-3">
-              <Link href="/auth/signup"
-                className="inline-flex items-center justify-center gap-2 px-7 py-4 rounded-full text-base font-bold transition-all hover:opacity-90"
-                style={{ backgroundColor: "#C8F135", color: "#0A2E1A" }}>
-                Open your store free <ArrowRight size={18} />
-              </Link>
-              <button className="inline-flex items-center justify-center gap-2 px-6 py-4 rounded-full text-sm font-semibold border border-white/20 text-white hover:border-white/40 transition-all">
-                <Play size={15} /> Watch how it works
-              </button>
-            </div>
-
-            <p className="text-sm text-white/40">No BVN required · Free to start · Setup in 10 minutes</p>
+            <span className="text-sm font-medium" style={{ color: "#0A2E1ACC" }}>{item}</span>
           </div>
+        ))}
+      </div>
+      <p className="text-sm" style={{ color: "#0A2E1A66" }}>No BVN required · Free to start · Setup in 10 minutes</p>
+    </div>
 
-          {/* Right — dashboard mockup */}
-          <div className="relative">
-            <div className="rounded-2xl overflow-hidden shadow-2xl border border-white/10"
-              style={{ backgroundColor: "#0F3D22" }}>
-              {/* Mock browser bar */}
-              <div className="flex items-center gap-2 px-4 py-3 border-b border-white/10">
-                <div className="flex gap-1.5">
-                  <div className="w-3 h-3 rounded-full bg-red-500/60" />
-                  <div className="w-3 h-3 rounded-full bg-yellow-500/60" />
-                  <div className="w-3 h-3 rounded-full bg-green-500/60" />
-                </div>
-                <div className="flex-1 mx-4 h-6 rounded-full bg-white/10 text-[10px] text-white/40 flex items-center px-3">
-                  marketpro.ng/yourstore
-                </div>
-              </div>
-              {/* Mock dashboard content */}
-              <div className="p-5 space-y-4">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-xs text-white/40">Today's revenue</p>
-                    <p className="text-2xl font-black text-white">₦482,500</p>
-                  </div>
-                  <div className="px-3 py-1.5 rounded-full text-xs font-bold"
-                    style={{ backgroundColor: "#C8F135", color: "#0A2E1A" }}>
-                    +24% ↑
-                  </div>
-                </div>
-                <div className="grid grid-cols-3 gap-2">
-                  {[["Orders", "142"], ["Delivered", "138"], ["Pending", "4"]].map(([k, v]) => (
-                    <div key={k} className="rounded-xl p-3 space-y-1" style={{ backgroundColor: "#0A2E1A" }}>
-                      <p className="text-[10px] text-white/40">{k}</p>
-                      <p className="text-lg font-bold text-white">{v}</p>
-                    </div>
-                  ))}
-                </div>
-                {/* Recent orders */}
-                <div className="space-y-2">
-                  {[
-                    { name: "Chiamaka B.", amount: "₦45,000", status: "Delivered" },
-                    { name: "Abdul K.", amount: "₦12,500", status: "In Transit" },
-                    { name: "Ngozi A.", amount: "₦78,000", status: "Paid" },
-                  ].map((o, i) => (
-                    <div key={i} className="flex items-center justify-between px-3 py-2.5 rounded-xl"
-                      style={{ backgroundColor: "#0A2E1A" }}>
-                      <div className="flex items-center gap-2.5">
-                        <div className="w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-bold text-white"
-                          style={{ backgroundColor: ["#C8F135","#10b981","#f97316"][i] }}>
-                          {o.name.slice(0,2)}
-                        </div>
-                        <span className="text-xs text-white/80 font-medium">{o.name}</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <span className="text-xs font-bold text-white">{o.amount}</span>
-                        <span className="text-[9px] font-semibold px-1.5 py-0.5 rounded-full"
-                          style={{ backgroundColor: o.status === "Delivered" ? "#C8F135" : o.status === "Paid" ? "#C8F135" : "#f97316", color: o.status === "Delivered" ? "#0A2E1A" : "white" }}>
-                          {o.status}
-                        </span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-            {/* Floating badge */}
-            <div className="absolute -bottom-4 -left-4 bg-white rounded-2xl shadow-xl px-4 py-3 flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ backgroundColor: "#C8F135" }}>
-                <Shield size={15} style={{ color: "#0A2E1A" }} />
-              </div>
-              <div>
-                <p className="text-[10px] text-gray-400">Buyer Protection</p>
-                <p className="text-xs font-bold text-gray-800">Escrow active</p>
-              </div>
-            </div>
+    {/* Right — dashboard mockup */}
+    <div className="relative">
+      <div className="rounded-2xl overflow-hidden shadow-2xl border"
+        style={{ backgroundColor: "#0A2E1A", borderColor: "#0A2E1A1A" }}>
+        {/* Mock browser bar */}
+        <div className="flex items-center gap-2 px-4 py-3 border-b border-white/10">
+          <div className="flex gap-1.5">
+            <div className="w-3 h-3 rounded-full bg-red-500/60" />
+            <div className="w-3 h-3 rounded-full bg-yellow-500/60" />
+            <div className="w-3 h-3 rounded-full bg-green-500/60" />
+          </div>
+          <div className="flex-1 mx-4 h-6 rounded-full bg-white/10 text-[10px] text-white/40 flex items-center px-3">
+            marketpro.ng/yourstore
           </div>
         </div>
 
-        {/* Stats strip */}
-        <div className="relative border-t border-white/10">
-          <div className="max-w-7xl mx-auto px-5 sm:px-8 py-8 grid grid-cols-2 sm:grid-cols-4 gap-6">
+        {/* Mock dashboard content */}
+        <div className="p-5 space-y-4">
+          <div className="grid grid-cols-3 gap-2">
             {[
-              { n: 50000, s: "+", label: "Merchants" },
-              { n: 2, s: "B+", label: "₦ Processed" },
-              { n: 99, s: "%", label: "Uptime" },
-              { n: 10, s: "min", label: "Setup time" },
-            ].map(({ n, s, label }) => (
-              <div key={label} className="text-center">
-                <p className="text-3xl font-black" style={{ color: "#C8F135" }}>
-                  <Counter end={n} suffix={s} />
-                </p>
-                <p className="text-sm text-white/40 mt-1">{label}</p>
+              ["Today's Sales", "₦245,000", "+12%"],
+              ["Orders", "28", "+8%"],
+              ["Customers", "156", "+23%"],
+            ].map(([k, v, delta]) => (
+              <div key={k} className="rounded-xl p-3 space-y-1 bg-white/[0.04]">
+                <p className="text-[10px] text-white/40">{k}</p>
+                <p className="text-lg font-bold text-white">{v}</p>
+                <p className="text-[10px] font-semibold text-emerald-400">{delta}</p>
               </div>
             ))}
           </div>
+
+          {/* Bar chart */}
+          <div className="flex items-end gap-1.5 h-32 bg-white/[0.03] rounded-xl p-4">
+            {[40, 55, 35, 70, 50, 85, 60, 78, 65, 90].map((h, i) => (
+              <div key={i} className="flex-1 rounded-t"
+                style={{ height: `${h}%`, backgroundColor: "#C8F135", opacity: 0.5 + (h / 200) }} />
+            ))}
+          </div>
         </div>
-      </section>
+      </div>
+
+      {/* Floating badge — top right */}
+      <div className="absolute -top-4 -right-4 bg-white rounded-2xl shadow-xl px-4 py-3 flex items-center gap-2.5">
+        <div className="w-8 h-8 rounded-full flex items-center justify-center bg-emerald-100">
+          <TrendingUp size={15} className="text-emerald-600" />
+        </div>
+        <div>
+          <p className="text-xs font-bold text-gray-800">New Order!</p>
+          <p className="text-[10px] text-gray-400">₦45,000 · Just now</p>
+        </div>
+      </div>
+
+      {/* Floating badge — bottom left */}
+      <div className="absolute -bottom-4 -left-4 rounded-2xl shadow-xl px-4 py-3"
+        style={{ backgroundColor: "#0A2E1A" }}>
+        <p className="text-[10px] text-white/50">Monthly Revenue</p>
+        <p className="text-base font-black text-white">₦2.5M</p>
+        <p className="text-[10px] font-semibold" style={{ color: "#C8F135" }}>↑ 34% from last month</p>
+      </div>
+    </div>
+  </div>
+
+  {/* Stats strip */}
+  <div className="relative border-t" style={{ borderColor: "#0A2E1A14" }}>
+    <div className="max-w-7xl mx-auto px-5 sm:px-8 py-8 grid grid-cols-2 sm:grid-cols-4 gap-6">
+      {[
+        { n: 50000, s: "+", label: "Merchants" },
+        { n: 2, s: "B+", label: "₦ Processed" },
+        { n: 99, s: "%", label: "Uptime" },
+        { n: 10, s: "min", label: "Setup time" },
+      ].map(({ n, s, label }) => (
+        <div key={label} className="text-center">
+          <p className="text-3xl font-black" style={{ color: "#0A2E1A" }}>
+            <Counter end={n} suffix={s} />
+          </p>
+          <p className="text-sm mt-1" style={{ color: "#0A2E1A66" }}>{label}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
 
       {/* ── SOCIAL PROOF STRIP ── */}
       <section className="py-4 bg-[#F7F4EE] border-y border-gray-200 overflow-hidden">
