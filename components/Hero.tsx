@@ -6,7 +6,7 @@ export default function Hero() {
     <section className="relative min-h-screen flex flex-col justify-between overflow-hidden">
       {/* Background image */}
       <div
-        className="absolute inset-0 bg-cover bg-center"
+        className="absolute inset-0 bg-cover bg-center w-full sm:absolute inset-0 bg-cover bg-center"
         style={{ backgroundImage: "url('/hero_bg.png')" }} // replace with your image
       />
 
@@ -27,43 +27,45 @@ export default function Hero() {
 
 
       {/* Main content */}
-      <div className="relative z-10 flex-1 flex flex-col justify-center px-6 sm:px-10 max-w-4xl">
-        <h1 className="font-black leading-[0.95] tracking-tight text-[clamp(2.8rem,8vw,6rem)] text-white">
+      <div className="relative z-10 mt-14 flex-1 flex flex-col justify-center px-6 sm:px-10 max-w-4xl">
+        <h1 className=" text-center font-black leading-[0.95] tracking-tight text-[clamp(2.8rem,8vw,6rem)] text-white sm:text-start font-black leading-[0.95] tracking-tight text-[clamp(2.8rem,8vw,6rem)] text-white">
           Be the next
         </h1>
         <h1
-          className="font-black leading-[0.95] tracking-tight text-[clamp(2.8rem,8vw,6rem)]"
+          className="text-center font-black leading-[0.95] tracking-tight text-[clamp(2.8rem,8vw,6rem)] sm:text-start font-black leading-[0.95] tracking-tight text-[clamp(2.8rem,8vw,6rem)]"
           style={{ color: "#C8F135" }}
         >
           thriving brand
         </h1>
 
         <div className="mt-6 space-y-1">
-          <p className="text-lg sm:text-xl text-white/70">
-            Launch your online store in minutes. Sell everywhere.
+          <p className="text-lg text-center sm:text-xl text-start text-white/70">
+            Launch your online store in minutes. Sell everywhere, 
+            <span className="text-lg sm:hidden text-xl font-bold text-white"> Completely free.</span>
           </p>
-          <p className="text-lg sm:text-xl font-bold text-white">Completely free.</p>
+          <p className="text-lg hidden sm:text-xl font-bold text-white">Completely free.</p>
         </div>
 
-        <div className="mt-8 flex items-center gap-6">
-          <Link
-            href="/auth/signup"
-            className="inline-flex items-center gap-2 px-7 py-4 rounded-full text-base font-bold bg-white text-gray-900 transition-opacity hover:opacity-90"
-          >
-            Start for free <ArrowRight size={18} />
-          </Link>
+        <div className="mt-8 flex flex-col items-start gap-5 w-full sm:flex-row sm:items-center sm:gap-6">
+  <Link
+    href="/auth/signup"
+    className="inline-flex w-full sm:w-auto items-center justify-center gap-2 px-7 py-4 rounded-full text-base font-bold bg-white text-gray-900 transition-opacity hover:opacity-90"
+  >
+    Start for free <ArrowRight size={18} />
+  </Link>
 
-          <button className="flex items-center gap-3 text-white font-semibold text-sm">
-            <span className="w-11 h-11 rounded-full border border-white/30 flex items-center justify-center">
-              <Play size={14} className="ml-0.5" />
-            </span>
-            Watch story
-          </button>
-        </div>
+  <button className="flex items-center gap-3 text-white font-semibold text-sm rounded-full w-full sm:w-auto justify-center sm:justify-start pl-2 pr-5 py-2 backdrop-blur-md bg-white/10 border border-white/20 hover:bg-white/15 transition-colors">
+  <span className="w-9 h-9 sm:w-11 sm:h-11 shrink-0 rounded-full border border-white/30 flex items-center justify-center backdrop-blur-sm bg-white/10">
+    <Play size={12} className="ml-0.5 sm:hidden" />
+    <Play size={14} className="ml-0.5 hidden sm:block" />
+  </span>
+  Watch story
+</button>
+</div>
       </div>
 
       {/* Bottom row: stats + app badges */}
-      <div className="relative z-10 px-6 sm:px-10 pb-10">
+      <div className="relative z-10 px-6 mr-10 sm:px-10 pb-10">
         {/* Stats */}
         <div className="flex items-center gap-4 text-sm text-white/70 mb-6 justify-end">
           <span className="flex items-center gap-1.5">
