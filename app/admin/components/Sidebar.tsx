@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
 import {
   LayoutDashboard, ShoppingCart, Package, Users, BarChart2,
-  Settings, HelpCircle, Store, UserCircle, ChevronRight, Plus,
+  Settings, HelpCircle, Store, UserCircle, ChevronRight, Plus,Tag
 } from "lucide-react";
 
 const navItems = [
@@ -14,7 +14,7 @@ const navItems = [
   { label: "Products",  icon: Package,          href: "/admin/product" },
   { label: "Customers", icon: Users,            href: "/admin/customers" },
   { label: "Analytics", icon: BarChart2,        href: "/admin/analytics" },
-  {label: "Categories", icon: Package, href: "/admin/category" },
+  {label: "Categories", icon: Tag, href: "/admin/category" },
 ];
 
 const settingsDropdown = [
@@ -79,7 +79,7 @@ export default function Sidebar() {
         {/* Logo */}
         <div className="flex items-center px-3 mb-5 border-b border-[#E5E7EB] dark:border-[#153323] pb-4">
           <Link href="/admin">
-            <img src="/Container.jpg" alt="Logo" className="h-9 w-auto" />
+            <img src="/Container.png" alt="Logo" className="h-9 w-auto" />
           </Link>
         </div>
 
