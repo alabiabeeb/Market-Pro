@@ -12,7 +12,7 @@ const navItems = [
   { label: "Dashboard", icon: LayoutDashboard, href: "/admin" },
   { label: "Orders",    icon: ShoppingCart,    href: "/admin/orders" },
   { label: "Products",  icon: Package,         href: "/admin/product" },
-  { label: "Customers", icon: Users,           href: "/admin/customers" },
+  { label: "Customers", icon: Users,           href: "/admin/customer" },
   { label: "Analytics", icon: BarChart2,       href: "/admin/analytics" },
   { label: "Categories", icon: Tag,            href: "/admin/category" },
 ];
@@ -20,19 +20,21 @@ const navItems = [
 const settingsDropdown = [
   { label: "Store Settings",   icon: Store,      href: "/admin/settings/store" },
   { label: "Profile Settings", icon: UserCircle, href: "/admin/settings/profile" },
+  {label: "Domain", icon: HelpCircle, href: "/admin/settings/domain" }
 ];
 
 const bottomItems = [
   { label: "Support", icon: HelpCircle, href: "/admin/support" },
 ];
 
-// FAB items - all nav items not shown in bottom bar
+// FAB items
 const fabItems = [
   { label: "Support", icon: HelpCircle, href: "/admin/support" },
   { label: "Categories", icon: Tag, href: "/admin/category" },
   { label: "Analytics", icon: BarChart2, href: "/admin/analytics" },
   { label: "Store Settings", icon: Store, href: "/admin/settings/store" },
   { label: "Profile Settings", icon: UserCircle, href: "/admin/settings/profile" },
+  { label: "Domain", icon: HelpCircle, href: "/admin/settings/domain" }
 ];
 
 export default function Sidebar() {
@@ -55,31 +57,20 @@ export default function Sidebar() {
     return () => document.removeEventListener("mousedown", h);
   }, []);
 
-  // Close FAB menu on outside click
-  useEffect(() => {
-    const h = (e: MouseEvent) => {
-      if (fabRef.current && !fabRef.current.contains(e.target as Node)) {
-        setFabOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", h);
-    return () => document.removeEventListener("mousedown", h);
-  }, []);
+
 
   // Close FAB on route change
   useEffect(() => { 
     setFabOpen(false); 
   }, [pathname]);
 
-  // Bottom bar items (first 4 nav items)
   const bottomNavItems = navItems.slice(0, 4);
 
-  // Handle FAB item click
-  const handleFabItemClick = (href: string) => {
-    setFabOpen(false);
-    router.push(href);
-  };
-
+  // Handle FAB item click - using window.location for guaranteed navigation
+const handleFabClick = (href: string) => {
+  console.log("Clicked:", href);
+  alert(href);
+};
   return (
     <>
       {/* ════════════════════════════════
@@ -157,49 +148,66 @@ export default function Sidebar() {
       ════════════════════════════════ */}
       <div className="md:hidden">
 
-        {/* ── Backdrop when FAB is open ── */}
-        {fabOpen && (
-          <div
-            className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm"
-            onClick={() => setFabOpen(false)}
-          />
-        )}
+     {/* ── Backdrop when FAB is open ── */}
+{fabOpen && (
+  <div
+    className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm"
+    onClick={() => setFabOpen(false)}
+  />
+)}
 
-        {/* ── FAB fan-out items ── */}
-        {fabOpen && (
-          <div className="fixed right-4 z-50" style={{ bottom: "88px" }}>
-            <div className="flex flex-col items-end gap-3">
-              {fabItems.map(({ label, icon: Icon, href }, i) => {
-                const isActive = pathname === href || (href !== "/admin" && pathname.startsWith(href));
-                return (
-                  <button
-                    key={label}
-                    onClick={() => handleFabItemClick(href)}
-                    className="flex items-center gap-3 group"
-                    style={{
-                      animation: `fadeSlideUp 0.2s ease forwards`,
-                      animationDelay: `${i * 40}ms`,
-                      opacity: 0,
-                    }}
-                  >
-                    {/* Label */}
-                    <span className="text-white text-sm font-semibold bg-gray-900/80 dark:bg-gray-800/90 px-3 py-1.5 rounded-xl shadow-md backdrop-blur-sm">
-                      {label}
-                    </span>
-                    {/* Icon circle */}
-                    <div className={`w-12 h-12 rounded-full flex items-center justify-center shadow-lg transition-all ${
-                      isActive
-                        ? "bg-[#0A2E1A] ring-2 ring-white ring-offset-1"
-                        : "bg-white dark:bg-gray-800"
-                    }`}>
-                      <Icon size={20} className={isActive ? "text-[#C8F135]" : "text-[#0A2E1A]"} />
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
+{/* ── FAB fan-out items ── */}
+{fabOpen && (
+  <div
+    ref={fabRef}
+    className="fixed right-4 bottom-24 z-[9999] flex flex-col items-end gap-3"
+  >
+    {fabItems.map(({ label, icon: Icon, href }, i) => {
+      const isActive =
+        pathname === href ||
+        (href !== "/admin" && pathname.startsWith(href));
+
+      return (
+        <Link
+          key={label}
+          href={href}
+          onClick={() => {
+            setFabOpen(false);
+          }}
+          className="flex items-center gap-3"
+          style={{
+            animation: "fadeSlideUp .25s ease forwards",
+            animationDelay: `${i * 40}ms`,
+            opacity: 0,
+          }}
+        >
+          {/* Label */}
+          <span className="text-white text-sm font-semibold bg-gray-900/80 dark:bg-gray-800/90 px-3 py-1.5 rounded-xl shadow-md backdrop-blur-sm">
+            {label}
+          </span>
+
+          {/* Icon */}
+          <div
+            className={`w-12 h-12 rounded-full flex items-center justify-center shadow-lg transition-all ${
+              isActive
+                ? "bg-[#0A2E1A]"
+                : "bg-white dark:bg-gray-800"
+            }`}
+          >
+            <Icon
+              size={20}
+              className={
+                isActive
+                  ? "text-[#C8F135]"
+                  : "text-[#0A2E1A]"
+              }
+            />
           </div>
-        )}
+        </Link>
+      );
+    })}
+  </div>
+)}
 
         {/* ── Fixed bottom bar ── */}
         <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-[#08120C] border-t border-[#E5E7EB] dark:border-[#153323] shadow-[0_-2px_16px_rgba(0,0,0,0.08)]">
