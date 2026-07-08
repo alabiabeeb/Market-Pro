@@ -7,7 +7,7 @@ export default function Hero() {
       {/* Background image */}
       <div
         className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: "url('/signup bg.jpg')" }} // replace with your image
+        style={{ backgroundImage: "url('/hero_bg.png')" }} // replace with your image
       />
 
       {/* Dark green tint overlay */}
