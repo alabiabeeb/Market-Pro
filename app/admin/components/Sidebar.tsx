@@ -5,7 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
 import {
   LayoutDashboard, ShoppingCart, Package, Users, BarChart2,
-  Settings, HelpCircle, Store, UserCircle, ChevronRight, Plus, Tag
+  Settings, HelpCircle, Store, UserCircle, ChevronRight, Plus, Tag,Percent
 } from "lucide-react";
 
 const navItems = [
@@ -15,12 +15,13 @@ const navItems = [
   { label: "Customers", icon: Users,           href: "/admin/customer" },
   { label: "Analytics", icon: BarChart2,       href: "/admin/analytics" },
   { label: "Categories", icon: Tag,            href: "/admin/category" },
+// { label: "Promotions", icon: Percent, href: "/admin/promotions" },
+{ label: "Cart Recovery", icon: ShoppingCart, href: "/admin/cart-recovery" },
 ];
 
 const settingsDropdown = [
   { label: "Store Settings",   icon: Store,      href: "/admin/settings/store" },
   { label: "Profile Settings", icon: UserCircle, href: "/admin/settings/profile" },
-  {label: "Domain", icon: HelpCircle, href: "/admin/settings/domain" }
 ];
 
 const bottomItems = [
@@ -34,7 +35,8 @@ const fabItems = [
   { label: "Analytics", icon: BarChart2, href: "/admin/analytics" },
   { label: "Store Settings", icon: Store, href: "/admin/settings/store" },
   { label: "Profile Settings", icon: UserCircle, href: "/admin/settings/profile" },
-  { label: "Domain", icon: HelpCircle, href: "/admin/settings/domain" }
+// { label: "Promotions", icon: Percent, href: "/admin/promotions" },
+{ label: "Cart Recovery", icon: ShoppingCart, href: "/admin/cart-recovery" },
 ];
 
 export default function Sidebar() {

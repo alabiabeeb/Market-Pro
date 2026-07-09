@@ -4,8 +4,10 @@ import { useEffect, useState } from "react";
 import {
   Store, MapPin, Truck, CreditCard, Share2,
   ImageIcon, Plus, Pencil, Check, X, Trash2, Calendar,
-  Search, Loader2, AlertCircle, Building2,
+  Search, Loader2, AlertCircle, Building2, Globe,
+  ExternalLink, Copy, ArrowLeft
 } from "lucide-react";
+import Link from "next/link";
 
 // ── Types ──────────────────────────────────────────────────────────────────
 interface ShippingZone {
@@ -306,6 +308,161 @@ function BankModal({ current, onClose, onSave }: {
   );
 }
 
+// ── Domain Settings Component ──────────────────────────────────────────────
+function DomainSettings() {
+  const [domain, setDomain] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [errors, setErrors] = useState<{ domain?: string; general?: string }>({});
+  const [success, setSuccess] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const [currentDomain, setCurrentDomain] = useState<string | null>(null);
+
+  const dnsRecords = [
+    { type: "A", name: "@", value: "76.76.21.21", ttl: "Auto" },
+    { type: "CNAME", name: "www", value: "cname.marketpro.ng", ttl: "Auto" },
+  ];
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setErrors({});
+    setSuccess(false);
+
+    if (!domain.trim()) {
+      setErrors({ domain: "Domain name is required" });
+      return;
+    }
+
+    const domainRegex = /^(?!-)[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*\.[A-Za-z]{2,}$/;
+    if (!domainRegex.test(domain.trim())) {
+      setErrors({ domain: "Please enter a valid domain (e.g., mystore.com)" });
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      setCurrentDomain(domain.trim());
+      setSuccess(true);
+      setDomain("");
+      setTimeout(() => setSuccess(false), 5000);
+    } catch (error) {
+      setErrors({ general: "Failed to add domain. Please try again." });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleCopy = (text: string) => {
+    navigator.clipboard.writeText(text);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  const handleRemoveDomain = () => {
+    if (confirm("Are you sure you want to remove your custom domain?")) {
+      setCurrentDomain(null);
+    }
+  };
+
+  return (
+    <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm overflow-hidden">
+      <div className="px-5 py-4 border-b border-gray-100 dark:border-gray-800 flex items-center gap-2">
+        <Globe size={15} className="text-[#0A2E1A]" />
+        <h2 className="text-sm font-semibold text-gray-800 dark:text-gray-100">Custom Domain</h2>
+        <span className="ml-auto text-[10px] font-medium text-[#C8F135] bg-[#C8F135]/10 px-2 py-0.5 rounded-full">Growth Plan</span>
+      </div>
+      <div className="p-5 space-y-4">
+        {/* Current Domain */}
+        {currentDomain ? (
+          <div className="flex items-center justify-between p-3 bg-green-50 dark:bg-green-950/20 rounded-lg border border-green-200 dark:border-green-800">
+            <div>
+              <div className="flex items-center gap-2">
+                <Globe size={14} className="text-green-600 dark:text-green-400" />
+                <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">{currentDomain}</span>
+                <span className="text-[10px] bg-green-200 dark:bg-green-800 text-green-700 dark:text-green-300 px-2 py-0.5 rounded-full">Active</span>
+              </div>
+            </div>
+            <button onClick={handleRemoveDomain} className="text-xs text-red-600 hover:text-red-700 font-medium">Remove</button>
+          </div>
+        ) : (
+          <div className="text-center py-4">
+            <p className="text-sm text-gray-500 dark:text-gray-400">No custom domain connected</p>
+            <p className="text-xs text-gray-400 mt-1">Your store is at: <span className="font-mono">yourstore.marketpro.ng</span></p>
+          </div>
+        )}
+
+        {/* Add Domain Form */}
+        <form onSubmit={handleSubmit} className="space-y-3">
+          <div className="flex flex-col sm:flex-row gap-2">
+            <input
+              type="text"
+              placeholder="e.g., amakafashion.com"
+              value={domain}
+              onChange={(e) => { setDomain(e.target.value); setErrors({}); }}
+              className={`flex-1 px-3.5 py-2.5 text-sm border rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-[#C8F135]/40 transition-all ${
+                errors.domain ? "border-red-300 focus:ring-red-100 bg-red-50 dark:bg-red-950/30" : "border-gray-200 dark:border-gray-700 focus:border-[#0A2E1A]"
+              }`}
+            />
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="px-5 py-2.5 bg-[#0A2E1A] hover:bg-[#060F09] disabled:bg-gray-400 text-[#C8F135] text-sm font-medium rounded-lg transition-colors flex items-center justify-center gap-2 whitespace-nowrap"
+            >
+              {isLoading ? <Loader2 size={14} className="animate-spin" /> : <Plus size={14} />}
+              {isLoading ? "Adding..." : "Add Domain"}
+            </button>
+          </div>
+          {errors.domain && <p className="text-xs text-red-500">{errors.domain}</p>}
+          {errors.general && <p className="text-xs text-red-500">{errors.general}</p>}
+          {success && (
+            <div className="flex items-center gap-2 text-xs text-green-600 bg-green-50 dark:bg-green-950/30 px-3 py-2 rounded-lg border border-green-200 dark:border-green-800">
+              <Check size={14} /> Domain added successfully! DNS propagation may take up to 24 hours.
+            </div>
+          )}
+        </form>
+
+        {/* DNS Records */}
+        <div className="pt-3 border-t border-gray-100 dark:border-gray-800">
+          <p className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-2">DNS Configuration</p>
+          <div className="overflow-x-auto">
+            <table className="w-full text-xs">
+              <thead>
+                <tr className="text-left border-b border-gray-100 dark:border-gray-800">
+                  <th className="pb-1.5 font-semibold text-gray-500">Type</th>
+                  <th className="pb-1.5 font-semibold text-gray-500">Name</th>
+                  <th className="pb-1.5 font-semibold text-gray-500">Value</th>
+                  <th className="pb-1.5 font-semibold text-gray-500">TTL</th>
+                  <th className="pb-1.5 font-semibold text-gray-500">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {dnsRecords.map((record, i) => (
+                  <tr key={i} className="border-b border-gray-50 dark:border-gray-800 last:border-0">
+                    <td className="py-1.5 font-mono text-gray-700 dark:text-gray-300">{record.type}</td>
+                    <td className="py-1.5 font-mono text-gray-700 dark:text-gray-300">{record.name}</td>
+                    <td className="py-1.5 font-mono text-gray-700 dark:text-gray-300 break-all">{record.value}</td>
+                    <td className="py-1.5 text-gray-500">{record.ttl}</td>
+                    <td className="py-1.5">
+                      <button onClick={() => handleCopy(record.value)} className="p-1 text-gray-400 hover:text-[#0A2E1A] dark:hover:text-[#C8F135] transition-colors">
+                        <Copy size={13} />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          {copied && <p className="text-xs text-green-600 mt-1">Copied to clipboard!</p>}
+          <p className="text-[10px] text-gray-400 mt-2">
+            <AlertCircle size={11} className="inline mr-1" />
+            DNS propagation can take up to 24 hours. Your store remains at <span className="font-mono">yourstore.marketpro.ng</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ── Main Page ──────────────────────────────────────────────────────────────
 export default function StoreSettingsPage() {
   const [saved, setSaved]               = useState(false);
@@ -540,6 +697,9 @@ export default function StoreSettingsPage() {
           </div>
         </div>
       </div>
+
+      {/* ── Domain Settings ── */}
+      <DomainSettings />
 
       {/* Footer */}
       <div className="flex flex-col xs:flex-row items-center justify-between gap-3 pt-1 border-t border-gray-100 dark:border-gray-800">

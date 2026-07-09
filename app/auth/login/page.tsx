@@ -232,7 +232,7 @@ export default function LoginPage() {
 
         {/* Mobile logo */}
         <div className="lg:hidden mb-8">
-          <Link href="/"><img src="/logo.png" alt="MarketPro" className="h-8 w-auto" /></Link>
+          <Link href="/"><img src="/logo.png" alt="MarketPro" className="h-30 w-40" /></Link>
         </div>
 
         <div className="w-full max-w-sm space-y-6">
