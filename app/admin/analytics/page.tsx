@@ -1,10 +1,10 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { TrendingUp, TrendingDown, BarChart2, ShoppingBag, Users, DollarSign } from "lucide-react";
+import { TrendingUp, TrendingDown, BarChart2, ShoppingBag, Users, DollarSign, ChevronLeft, ChevronRight } from "lucide-react";
 import {
   AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid,
-  Tooltip, ResponsiveContainer, Cell, PieChart, Pie, Legend,
+  Tooltip, ResponsiveContainer, Cell, PieChart, Pie,
 } from "recharts";
 
 const REVENUE_DATA: Record<string, { date: string; revenue: number; orders: number }[]> = {
@@ -63,11 +63,9 @@ const STAT_CARDS = [
 
 const PERIODS = ["Week", "Month", "Year"];
 
-
 function Shimmer({ className = "" }: { className?: string }) {
   return <div className={`animate-pulse bg-gray-200 rounded-lg ${className}`} />;
 }
-
 
 function CustomTooltip({ active, payload, label }: any) {
   if (!active || !payload?.length) return null;
@@ -83,7 +81,6 @@ function CustomTooltip({ active, payload, label }: any) {
   );
 }
 
-
 const renderCustomLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent }: any) => {
   const RADIAN = Math.PI / 180;
   const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
@@ -97,84 +94,94 @@ const renderCustomLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent
   );
 };
 
-
 export default function AnalyticsPage() {
-  const [loading, setLoading]       = useState(true);
-  const [period, setPeriod]         = useState("Week");
-  const [chartType, setChartType]   = useState<"revenue" | "orders">("revenue");
+  const [loading, setLoading] = useState(true);
+  const [period, setPeriod] = useState("Week");
+  const [chartType, setChartType] = useState<"revenue" | "orders">("revenue");
+  const [currentProductPage, setCurrentProductPage] = useState(1);
+  const PRODUCTS_PER_PAGE = 3;
 
   useEffect(() => { setTimeout(() => setLoading(false), 1600); }, []);
 
   const revenueData = REVENUE_DATA[period];
   const totalRevenue = revenueData.reduce((s, d) => s + d.revenue, 0);
-  const totalOrders  = revenueData.reduce((s, d) => s + d.orders, 0);
+  const totalOrders = revenueData.reduce((s, d) => s + d.orders, 0);
+
+  // Paginate products for mobile
+  const paginatedProducts = TOP_PRODUCTS.slice(
+    (currentProductPage - 1) * PRODUCTS_PER_PAGE,
+    currentProductPage * PRODUCTS_PER_PAGE
+  );
+  const totalProductPages = Math.ceil(TOP_PRODUCTS.length / PRODUCTS_PER_PAGE);
 
   if (loading) return (
-    <div className="space-y-5">
+    <div className="space-y-5 p-4 sm:p-0">
       <div className="flex justify-between items-center">
         <Shimmer className="h-6 w-32" /><Shimmer className="h-8 w-36 rounded-lg" />
       </div>
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 gap-3">
         {[1,2,3,4].map(i => (
-          <div key={i} className="bg-white rounded-xl border border-gray-100 p-4 space-y-3">
-            <div className="flex justify-between"><Shimmer className="h-3 w-24" /><Shimmer className="h-7 w-7 rounded-lg" /></div>
-            <Shimmer className="h-7 w-28" /><Shimmer className="h-3 w-20" />
+          <div key={i} className="bg-white rounded-xl border border-gray-100 p-3 space-y-2">
+            <div className="flex justify-between"><Shimmer className="h-3 w-20" /><Shimmer className="h-7 w-7 rounded-lg" /></div>
+            <Shimmer className="h-6 w-24" /><Shimmer className="h-3 w-16" />
           </div>
         ))}
       </div>
-      <div className="bg-white rounded-xl border border-gray-100 p-5 space-y-3">
+      <div className="bg-white rounded-xl border border-gray-100 p-4 space-y-3">
         <div className="flex justify-between"><Shimmer className="h-4 w-32" /><Shimmer className="h-8 w-40 rounded-lg" /></div>
-        <Shimmer className="h-52 w-full rounded-xl" />
+        <Shimmer className="h-40 w-full rounded-xl" />
       </div>
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-        <div className="bg-white rounded-xl border border-gray-100 p-5 space-y-3">
+      <div className="space-y-4">
+        <div className="bg-white rounded-xl border border-gray-100 p-4 space-y-3">
           <Shimmer className="h-4 w-36" />
-          {[1,2,3,4,5].map(i => (
+          {[1,2,3].map(i => (
             <div key={i} className="flex items-center gap-3 py-1">
               <Shimmer className="w-8 h-8 rounded-lg" /><Shimmer className="h-3 flex-1" /><Shimmer className="h-3 w-16" />
             </div>
           ))}
         </div>
-        <div className="bg-white rounded-xl border border-gray-100 p-5 space-y-3">
+        <div className="bg-white rounded-xl border border-gray-100 p-4 space-y-3">
           <Shimmer className="h-4 w-32" />
-          <Shimmer className="h-48 w-full rounded-xl" />
+          <Shimmer className="h-36 w-full rounded-xl" />
         </div>
       </div>
     </div>
   );
 
   return (
-    <div className="space-y-4 sm:space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="space-y-4 sm:space-y-6 p-4 sm:p-0">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
           <h1 className="text-lg sm:text-xl font-bold text-[#0A2E1A]">Analytics</h1>
           <p className="text-xs text-gray-400 mt-0.5">Track your store performance, and customer metrics.</p>
         </div>
-        <div className="flex items-center gap-1 bg-gray-100 rounded-lg p-1">
+        <div className="flex items-center gap-1 bg-gray-100 rounded-lg p-1 self-start sm:self-auto overflow-x-auto">
           {PERIODS.map(p => (
             <button key={p} onClick={() => setPeriod(p)}
-              className={`text-xs font-medium px-3 py-1.5 rounded-md transition-all ${period === p ? "bg-[#0A2E1A] text-[#C8F135] shadow-sm" : "text-gray-500 hover:text-[#0A2E1A]"}`}>
+              className={`text-xs font-medium px-3 py-1.5 rounded-md transition-all whitespace-nowrap ${period === p ? "bg-[#0A2E1A] text-[#C8F135] shadow-sm" : "text-gray-500 hover:text-[#0A2E1A]"}`}>
               {p}
             </button>
           ))}
         </div>
       </div>
 
+      {/* Stat Cards - Mobile Optimized */}
       <div>
         <h2 className="text-sm font-semibold text-gray-700 mb-3">Sales Overview</h2>
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+        <div className="grid grid-cols-2 gap-3 sm:gap-4">
           {STAT_CARDS.map(s => {
             const Icon = s.icon;
             return (
-              <div key={s.label} className="bg-white rounded-xl border border-gray-100 shadow-sm p-3 sm:p-4 flex flex-col gap-2 hover:shadow-md transition-shadow">
+              <div key={s.label} className="bg-white rounded-xl border border-gray-100 shadow-sm p-3 sm:p-4 flex flex-col gap-1.5 hover:shadow-md transition-shadow">
                 <div className="flex items-center justify-between">
-                  <span className="text-[10px] sm:text-xs text-gray-400 font-medium leading-tight">{s.label}</span>
-                  <div className={`w-7 h-7 rounded-lg ${s.iconBg} flex items-center justify-center shrink-0`}>
-                    <Icon size={14} className={s.iconColor} />
+                  <span className="text-[9px] sm:text-xs text-gray-400 font-medium leading-tight">{s.label}</span>
+                  <div className={`w-6 h-6 sm:w-7 sm:h-7 rounded-lg ${s.iconBg} flex items-center justify-center shrink-0`}>
+                    <Icon size={12} className={s.iconColor} />
                   </div>
                 </div>
-                <p className="text-lg sm:text-xl font-bold text-gray-800 leading-none">{s.value}</p>
-                <span className={`flex items-center gap-0.5 text-[10px] font-semibold w-fit px-1.5 py-0.5 rounded-full ${s.positive ? "bg-green-50 text-green-600" : "bg-red-50 text-red-500"}`}>
+                <p className="text-base sm:text-xl font-bold text-gray-800 leading-none">{s.value}</p>
+                <span className={`flex items-center gap-0.5 text-[9px] sm:text-[10px] font-semibold w-fit px-1.5 py-0.5 rounded-full ${s.positive ? "bg-green-50 text-green-600" : "bg-red-50 text-red-500"}`}>
                   {s.positive ? <TrendingUp size={9} /> : <TrendingDown size={9} />}
                   {s.change}
                 </span>
@@ -184,11 +191,12 @@ export default function AnalyticsPage() {
         </div>
       </div>
 
+      {/* Revenue Chart */}
       <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4 sm:p-6">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
           <div>
             <h2 className="text-sm font-semibold text-gray-800">Revenue Trends</h2>
-            <p className="text-xs text-gray-400 mt-0.5">
+            <p className="text-[10px] sm:text-xs text-gray-400 mt-0.5">
               Total: <span className="font-semibold text-[#0A2E1A]">₦{totalRevenue.toLocaleString()}</span>
               <span className="mx-2 text-gray-200">·</span>
               Orders: <span className="font-semibold text-gray-700">{totalOrders.toLocaleString()}</span>
@@ -198,7 +206,7 @@ export default function AnalyticsPage() {
             <div className="flex items-center gap-1 bg-gray-100 rounded-lg p-1">
               {(["revenue","orders"] as const).map(t => (
                 <button key={t} onClick={() => setChartType(t)}
-                  className={`text-xs font-medium px-2.5 py-1 rounded-md transition-all capitalize ${chartType === t ? "bg-white text-gray-800 shadow-sm" : "text-gray-500 hover:text-gray-700"}`}>
+                  className={`text-[10px] sm:text-xs font-medium px-2 sm:px-2.5 py-1 rounded-md transition-all capitalize ${chartType === t ? "bg-white text-gray-800 shadow-sm" : "text-gray-500 hover:text-gray-700"}`}>
                   {t}
                 </button>
               ))}
@@ -206,7 +214,7 @@ export default function AnalyticsPage() {
           </div>
         </div>
 
-        <div className="h-48 sm:h-60">
+        <div className="h-40 sm:h-60">
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart data={revenueData} margin={{ top: 5, right: 4, left: -20, bottom: 0 }}>
               <defs>
@@ -226,40 +234,44 @@ export default function AnalyticsPage() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-5 gap-5">
+      {/* Top Products + Channel - Mobile Optimized */}
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 sm:gap-5">
+        {/* Top Products */}
         <div className="lg:col-span-3 bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
-          <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
-            <h2 className="text-sm font-semibold text-gray-800">Top Selling Products</h2>
+          <div className="flex items-center justify-between px-4 sm:px-5 py-3 sm:py-4 border-b border-gray-100">
+            <h2 className="text-sm font-semibold text-gray-800">Top Products</h2>
             <button className="text-xs text-[#0A2E1A] font-medium hover:underline">View All →</button>
           </div>
+
+          {/* Desktop Table */}
           <div className="hidden sm:block overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
                 <tr className="text-left text-xs text-gray-400 uppercase tracking-wide bg-gray-50/60 border-b border-gray-100">
-                  {["Product","Category","Units Sold","Revenue","Change"].map(h => (
-                    <th key={h} className="px-5 py-3 font-medium">{h}</th>
+                  {["Product", "Category", "Units", "Revenue", "Change"].map(h => (
+                    <th key={h} className="px-4 sm:px-5 py-3 font-medium">{h}</th>
                   ))}
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-50">
                 {TOP_PRODUCTS.map((p, i) => (
                   <tr key={p.id} className="hover:bg-gray-50/60 transition-colors">
-                    <td className="px-5 py-3">
+                    <td className="px-4 sm:px-5 py-2.5">
                       <div className="flex items-center gap-2.5">
                         <span className="text-[10px] font-bold text-gray-400 w-4">{i + 1}</span>
-                        <div className="w-8 h-8 rounded-lg bg-[#F7F4EE] flex items-center justify-center shrink-0">
-                          <ShoppingBag size={13} className="text-[#0A2E1A]" />
+                        <div className="w-7 h-7 rounded-lg bg-[#F7F4EE] flex items-center justify-center shrink-0">
+                          <ShoppingBag size={12} className="text-[#0A2E1A]" />
                         </div>
                         <div className="min-w-0">
-                          <p className="text-xs font-semibold text-gray-800 truncate max-w-[140px]">{p.name}</p>
+                          <p className="text-xs font-semibold text-gray-800 truncate max-w-[120px]">{p.name}</p>
                           <p className="text-[10px] text-gray-400 font-mono">{p.sku}</p>
                         </div>
                       </div>
                     </td>
-                    <td className="px-5 py-3 text-xs text-gray-500">{p.category}</td>
-                    <td className="px-5 py-3 text-xs font-semibold text-gray-800">{p.units}</td>
-                    <td className="px-5 py-3 text-xs font-bold text-gray-800">{p.revenue}</td>
-                    <td className="px-5 py-3">
+                    <td className="px-4 sm:px-5 py-2.5 text-xs text-gray-500">{p.category}</td>
+                    <td className="px-4 sm:px-5 py-2.5 text-xs font-semibold text-gray-800">{p.units}</td>
+                    <td className="px-4 sm:px-5 py-2.5 text-xs font-bold text-gray-800">{p.revenue}</td>
+                    <td className="px-4 sm:px-5 py-2.5">
                       <span className={`flex items-center gap-0.5 text-[10px] font-semibold px-1.5 py-0.5 rounded-full w-fit ${p.up ? "bg-green-50 text-green-600" : "bg-red-50 text-red-500"}`}>
                         {p.up ? <TrendingUp size={9} /> : <TrendingDown size={9} />}
                         {p.change}
@@ -270,10 +282,12 @@ export default function AnalyticsPage() {
               </tbody>
             </table>
           </div>
+
+          {/* Mobile Cards */}
           <div className="sm:hidden divide-y divide-gray-50">
-            {TOP_PRODUCTS.map((p, i) => (
+            {paginatedProducts.map((p, i) => (
               <div key={p.id} className="flex items-center gap-3 px-4 py-3.5">
-                <span className="text-[10px] font-bold text-gray-400 w-4 shrink-0">{i + 1}</span>
+                <span className="text-[10px] font-bold text-gray-400 w-4 shrink-0">{i + 1 + (currentProductPage - 1) * PRODUCTS_PER_PAGE}</span>
                 <div className="w-9 h-9 rounded-xl bg-[#F7F4EE] flex items-center justify-center shrink-0">
                   <ShoppingBag size={14} className="text-[#0A2E1A]" />
                 </div>
@@ -281,26 +295,50 @@ export default function AnalyticsPage() {
                   <p className="text-xs font-semibold text-gray-800 truncate">{p.name}</p>
                   <p className="text-[10px] text-gray-400">{p.category} · {p.units} units</p>
                 </div>
-                <div className="flex flex-col items-end gap-1 shrink-0">
+                <div className="flex flex-col items-end gap-0.5 shrink-0">
                   <p className="text-xs font-bold text-gray-800">{p.revenue}</p>
                   <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded-full ${p.up ? "bg-green-50 text-green-600" : "bg-red-50 text-red-500"}`}>{p.change}</span>
                 </div>
               </div>
             ))}
           </div>
+
+          {/* Mobile Pagination */}
+          {totalProductPages > 1 && (
+            <div className="sm:hidden flex items-center justify-between px-4 py-3 border-t border-gray-100">
+              <button
+                onClick={() => setCurrentProductPage(p => Math.max(1, p - 1))}
+                disabled={currentProductPage === 1}
+                className="p-1.5 rounded-lg border border-gray-200 disabled:opacity-40"
+              >
+                <ChevronLeft size={14} className="text-gray-500" />
+              </button>
+              <span className="text-xs text-gray-500">
+                {currentProductPage} / {totalProductPages}
+              </span>
+              <button
+                onClick={() => setCurrentProductPage(p => Math.min(totalProductPages, p + 1))}
+                disabled={currentProductPage === totalProductPages}
+                className="p-1.5 rounded-lg border border-gray-200 disabled:opacity-40"
+              >
+                <ChevronRight size={14} className="text-gray-500" />
+              </button>
+            </div>
+          )}
         </div>
 
+        {/* Sales by Channel */}
         <div className="lg:col-span-2 bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
-          <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
+          <div className="flex items-center justify-between px-4 sm:px-5 py-3 sm:py-4 border-b border-gray-100">
             <h2 className="text-sm font-semibold text-gray-800">Sales by Channel</h2>
             <button className="text-xs text-[#0A2E1A] font-medium hover:underline">View All →</button>
           </div>
 
-          <div className="p-5 space-y-4">
-            <div className="h-44">
+          <div className="p-4 sm:p-5 space-y-4">
+            <div className="h-36 sm:h-44">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
-                  <Pie data={CHANNEL_DATA} cx="50%" cy="50%" innerRadius={45} outerRadius={72}
+                  <Pie data={CHANNEL_DATA} cx="50%" cy="50%" innerRadius={35} outerRadius={55}
                     dataKey="value" labelLine={false} label={renderCustomLabel}>
                     {CHANNEL_DATA.map((entry, i) => (
                       <Cell key={i} fill={entry.color} />
@@ -310,17 +348,17 @@ export default function AnalyticsPage() {
                 </PieChart>
               </ResponsiveContainer>
             </div>
-            <div className="space-y-2.5">
+            <div className="space-y-2">
               {CHANNEL_DATA.map(c => (
-                <div key={c.name} className="space-y-1.5">
+                <div key={c.name} className="space-y-1">
                   <div className="flex items-center justify-between text-xs">
                     <div className="flex items-center gap-2">
-                      <div className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: c.color }} />
+                      <div className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: c.color }} />
                       <span className="text-gray-600 font-medium">{c.name}</span>
                     </div>
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-2">
                       <span className="text-gray-400">{c.value}%</span>
-                      <span className="font-semibold text-gray-800">{c.amount}</span>
+                      <span className="font-semibold text-gray-800 text-[10px] sm:text-xs">{c.amount}</span>
                     </div>
                   </div>
                   <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
@@ -332,14 +370,16 @@ export default function AnalyticsPage() {
           </div>
         </div>
       </div>
+
+      {/* Orders by Period */}
       <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4 sm:p-6">
-        <div className="mb-4">
+        <div className="mb-3 sm:mb-4">
           <h2 className="text-sm font-semibold text-gray-800">Orders by Period</h2>
-          <p className="text-xs text-gray-400 mt-0.5">Number of orders placed during the selected timeframe</p>
+          <p className="text-[10px] sm:text-xs text-gray-400 mt-0.5">Number of orders placed during the selected timeframe</p>
         </div>
-        <div className="h-40 sm:h-52">
+        <div className="h-32 sm:h-52">
           <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={revenueData} margin={{ top: 5, right: 4, left: -20, bottom: 0 }} barSize={18}>
+            <BarChart data={revenueData} margin={{ top: 5, right: 4, left: -20, bottom: 0 }} barSize={14}>
               <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" vertical={false} />
               <XAxis dataKey="date" tick={{ fontSize: 10, fill: "#9ca3af" }} axisLine={false} tickLine={false} />
               <YAxis tick={{ fontSize: 10, fill: "#9ca3af" }} axisLine={false} tickLine={false} />
@@ -353,7 +393,6 @@ export default function AnalyticsPage() {
           </ResponsiveContainer>
         </div>
       </div>
-
     </div>
   );
 }
