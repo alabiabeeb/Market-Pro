@@ -34,7 +34,7 @@ interface Staff {
   status: "active" | "invited" | "suspended";
   avatar?: string;
   joinedDate: string;
-  lastActive?: string;
+  lastActive?: string | null; // ← Add | null here
   permissions: string[];
 }
 
@@ -391,7 +391,7 @@ export default function StaffManagementPage() {
       role: "staff",
       status: "invited",
       joinedDate: "2024-06-01",
-      lastActive: null,
+     lastActive: null,
       permissions: ["view_orders", "view_products", "view_customers"]
     }
   ]);
