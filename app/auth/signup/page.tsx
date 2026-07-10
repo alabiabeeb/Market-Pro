@@ -7,7 +7,8 @@ import {
   ArrowLeft, Building2, Globe, Shield, Sparkles,
   Crown, Users, Package, CreditCard, Truck, Headphones,
   Server, Database, Zap, ShoppingBag, Percent, Star,
-  Eye, EyeOff
+  Eye, EyeOff, Rocket, Gift, Clock, Lock as LockIcon,
+  Infinity, Smartphone, BarChart2
 } from "lucide-react";
 
 // ── Types ──────────────────────────────────────────────────────────────────
@@ -28,29 +29,11 @@ interface AdminAccount {
   confirmPassword: string;
 }
 
-interface Plan {
-  id: string;
-  name: string;
-  price: string;
-  features: string[];
-  recommended?: boolean;
-  badge?: string;
-}
-
+// ── Data ──────────────────────────────────────────────────────────────────
 const STORE_CATEGORIES = [
-  "Fashion & Apparel",
-  "Electronics",
-  "Home & Living",
-  "Beauty & Cosmetics",
-  "Food & Beverage",
-  "Health & Wellness",
-  "Sports & Outdoors",
-  "Books & Media",
-  "Toys & Games",
-  "Jewelry & Accessories",
-  "Automotive",
-  "Pet Supplies",
-  "Other"
+  "Fashion & Apparel", "Electronics", "Home & Living", "Beauty & Cosmetics",
+  "Food & Beverage", "Health & Wellness", "Sports & Outdoors", "Books & Media",
+  "Toys & Games", "Jewelry & Accessories", "Automotive", "Pet Supplies", "Other"
 ];
 
 const STATES = [
@@ -62,54 +45,97 @@ const STATES = [
   "Yobe", "Zamfara", "Federal Capital Territory", "Other"
 ];
 
-const PLANS: Plan[] = [
-  {
-    id: "starter",
-    name: "Starter",
-    price: "₦15,000/month",
-    features: [
-      "Up to 100 products",
-      "Basic analytics",
-      "Email support",
-      "1 staff account",
-      "1 GB storage"
-    ]
-  },
-  {
-    id: "pro",
-    name: "Professional",
-    price: "₦30,000/month",
-    features: [
-      "Up to 500 products",
-      "Advanced analytics",
-      "Priority support",
-      "5 staff accounts",
-      "10 GB storage",
-      "Custom domain",
-      "Email marketing tools"
-    ],
-    recommended: true,
-    badge: "Most Popular"
-  },
-  {
-    id: "business",
-    name: "Business",
-    price: "₦60,000/month",
-    features: [
-      "Unlimited products",
-      "Enterprise analytics",
-      "24/7 phone support",
-      "Unlimited staff accounts",
-      "50 GB storage",
-      "Custom domain",
-      "Advanced SEO tools",
-      "API access",
-      "Dedicated account manager"
-    ]
-  }
+// ── Free Features ──
+const FREE_FEATURES = [
+  { icon: Infinity, label: "Unlimited Products", color: "#C8F135" },
+  { icon: ShoppingBag, label: "Unlimited Orders", color: "#4F46E5" },
+  { icon: Smartphone, label: "Online Store + POS", color: "#10b981" },
+  { icon: CreditCard, label: "Fintava Payments", color: "#f97316" },
+  { icon: Users, label: "Staff Accounts", color: "#8b5cf6" },
+  { icon: Package, label: "Inventory Management", color: "#06b6d4" },
+  { icon: BarChart2, label: "Analytics Dashboard", color: "#ec4899" },
+  { icon: Headphones, label: "24/7 Support", color: "#14b8a6" },
 ];
 
-// ── Step 1: Store Information ────────────────────────────────────────────
+// ── Locked Features (Pro/Business) ──
+const LOCKED_FEATURES = [
+  { icon: Crown, label: "Custom Domain", color: "#C8F135" },
+  { icon: Rocket, label: "Advanced SEO Tools", color: "#4F46E5" },
+  { icon: Users, label: "Unlimited Staff Accounts", color: "#10b981" },
+  { icon: Server, label: "API Access", color: "#f97316" },
+  { icon: Database, label: "50GB Storage", color: "#8b5cf6" },
+  { icon: Shield, label: "Dedicated Account Manager", color: "#ec4899" },
+];
+
+// ── Step 1: Free Plan / Pricing Selection ──────────────────────────────
+function FreePlanStep({ onStartTrial }: { onStartTrial: () => void }) {
+  return (
+    <div className="space-y-8">
+      {/* Header */}
+      <div className="text-center">
+        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#C8F135]/30 text-[#C8F135] text-xs font-semibold mb-4">
+          <Gift size={14} /> Completely Free
+        </div>
+        <h2 className="text-3xl sm:text-4xl font-black text-gray-900 leading-tight">
+          No monthly fees. <br />
+          <span style={{ color: "#C8F135" }}>No setup costs.</span>
+        </h2>
+        <p className="text-gray-500 text-sm mt-2 max-w-md mx-auto">
+          Yes, really. Completely free. Powered by our payment partners.
+        </p>
+      </div>
+
+      {/* Free Features Grid */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        {FREE_FEATURES.map((item) => {
+          const Icon = item.icon;
+          return (
+            <div key={item.label} className="bg-gray-50 border border-gray-100 rounded-xl p-3 text-center hover:border-[#C8F135]/50 transition-all">
+              <div className="w-8 h-8 rounded-full flex items-center justify-center mx-auto mb-1.5" style={{ backgroundColor: item.color + "20" }}>
+                <Icon size={14} style={{ color: item.color }} />
+              </div>
+              <p className="text-[10px] font-medium text-gray-600">{item.label}</p>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Locked Features Preview */}
+      <div className="bg-gray-50 border border-gray-200 rounded-xl p-4">
+        <div className="flex items-center gap-2 mb-3">
+          <LockIcon size={14} className="text-gray-400" />
+          <p className="text-xs font-semibold text-gray-500">Upgrade to unlock:</p>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          {LOCKED_FEATURES.map((item) => {
+            const Icon = item.icon;
+            return (
+              <div key={item.label} className="flex items-center gap-1.5 bg-white border border-gray-200 rounded-full px-2.5 py-1">
+                <Icon size={11} className="text-gray-400" />
+                <span className="text-[10px] text-gray-500">{item.label}</span>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* CTA Button */}
+      <button
+        onClick={onStartTrial}
+        className="w-full py-3.5 rounded-xl text-sm font-bold transition-all hover:opacity-90"
+        style={{ backgroundColor: "#C8F135", color: "#0A2E1A" }}
+      >
+        Start Free Trial → <Sparkles size={16} className="inline ml-1" />
+      </button>
+
+      <p className="text-center text-[10px] text-gray-400">
+        14-day free trial · No credit card required · Cancel anytime
+      </p>
+    </div>
+  );
+}
+
+// ── Step 2: Store Information ────────────────────────────────────────────
 function StoreInfoStep({ data, onChange, onNext }: {
   data: StoreInfo;
   onChange: (data: StoreInfo) => void;
@@ -119,7 +145,6 @@ function StoreInfoStep({ data, onChange, onNext }: {
 
   const validate = () => {
     const newErrors: Partial<Record<keyof StoreInfo, string>> = {};
-    
     if (!data.name.trim()) newErrors.name = "Store name is required";
     if (!data.subdomain.trim()) newErrors.subdomain = "Subdomain is required";
     else if (!/^[a-z0-9-]+$/.test(data.subdomain)) {
@@ -136,7 +161,6 @@ function StoreInfoStep({ data, onChange, onNext }: {
       newErrors.email = "Enter a valid email address";
     }
     if (!data.address.trim()) newErrors.address = "Address is required";
-
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -149,10 +173,11 @@ function StoreInfoStep({ data, onChange, onNext }: {
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
       <div>
-        <h2 className="text-xl font-bold text-gray-900">Store Information</h2>
-        <p className="text-sm text-gray-500 mt-1">
-          Tell us about your store. This will appear on your storefront.
-        </p>
+        <div className="flex items-center gap-2 mb-1">
+          <Store size={18} className="text-[#0A2E1A]" />
+          <h2 className="text-xl font-bold text-gray-900">Store Information</h2>
+        </div>
+        <p className="text-sm text-gray-500">Tell us about your store</p>
       </div>
 
       <div className="space-y-4">
@@ -170,7 +195,7 @@ function StoreInfoStep({ data, onChange, onNext }: {
               className={`w-full pl-10 pr-4 py-2.5 text-sm rounded-lg border transition-all outline-none focus:ring-2 ${
                 errors.name
                   ? "border-red-300 focus:ring-red-100 bg-red-50"
-                  : "border-gray-200 focus:ring-indigo-100 focus:border-indigo-400 bg-white"
+                  : "border-gray-200 focus:ring-[#C8F135]/40 focus:border-[#0A2E1A] bg-white"
               }`}
             />
           </div>
@@ -190,7 +215,7 @@ function StoreInfoStep({ data, onChange, onNext }: {
               className={`flex-1 px-4 py-2.5 text-sm rounded-l-lg border transition-all outline-none focus:ring-2 ${
                 errors.subdomain
                   ? "border-red-300 focus:ring-red-100 bg-red-50"
-                  : "border-gray-200 focus:ring-indigo-100 focus:border-indigo-400 bg-white"
+                  : "border-gray-200 focus:ring-[#C8F135]/40 focus:border-[#0A2E1A] bg-white"
               }`}
             />
             <span className="px-3 py-2.5 text-sm bg-gray-100 border border-l-0 border-gray-200 rounded-r-lg text-gray-600 whitespace-nowrap">
@@ -206,7 +231,7 @@ function StoreInfoStep({ data, onChange, onNext }: {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label className="block text-xs font-semibold text-gray-600 mb-1.5">
-              Store Category <span className="text-red-500">*</span>
+              Category <span className="text-red-500">*</span>
             </label>
             <select
               value={data.category}
@@ -214,7 +239,7 @@ function StoreInfoStep({ data, onChange, onNext }: {
               className={`w-full px-4 py-2.5 text-sm rounded-lg border transition-all outline-none focus:ring-2 ${
                 errors.category
                   ? "border-red-300 focus:ring-red-100 bg-red-50"
-                  : "border-gray-200 focus:ring-indigo-100 focus:border-indigo-400 bg-white"
+                  : "border-gray-200 focus:ring-[#C8F135]/40 focus:border-[#0A2E1A] bg-white"
               }`}
             >
               <option value="">Select category</option>
@@ -235,7 +260,7 @@ function StoreInfoStep({ data, onChange, onNext }: {
               className={`w-full px-4 py-2.5 text-sm rounded-lg border transition-all outline-none focus:ring-2 ${
                 errors.state
                   ? "border-red-300 focus:ring-red-100 bg-red-50"
-                  : "border-gray-200 focus:ring-indigo-100 focus:border-indigo-400 bg-white"
+                  : "border-gray-200 focus:ring-[#C8F135]/40 focus:border-[#0A2E1A] bg-white"
               }`}
             >
               <option value="">Select state</option>
@@ -261,7 +286,7 @@ function StoreInfoStep({ data, onChange, onNext }: {
               className={`w-full pl-10 pr-4 py-2.5 text-sm rounded-lg border transition-all outline-none focus:ring-2 ${
                 errors.phone
                   ? "border-red-300 focus:ring-red-100 bg-red-50"
-                  : "border-gray-200 focus:ring-indigo-100 focus:border-indigo-400 bg-white"
+                  : "border-gray-200 focus:ring-[#C8F135]/40 focus:border-[#0A2E1A] bg-white"
               }`}
             />
           </div>
@@ -282,7 +307,7 @@ function StoreInfoStep({ data, onChange, onNext }: {
               className={`w-full pl-10 pr-4 py-2.5 text-sm rounded-lg border transition-all outline-none focus:ring-2 ${
                 errors.email
                   ? "border-red-300 focus:ring-red-100 bg-red-50"
-                  : "border-gray-200 focus:ring-indigo-100 focus:border-indigo-400 bg-white"
+                  : "border-gray-200 focus:ring-[#C8F135]/40 focus:border-[#0A2E1A] bg-white"
               }`}
             />
           </div>
@@ -301,7 +326,7 @@ function StoreInfoStep({ data, onChange, onNext }: {
             className={`w-full px-4 py-2.5 text-sm rounded-lg border transition-all outline-none focus:ring-2 resize-none ${
               errors.address
                 ? "border-red-300 focus:ring-red-100 bg-red-50"
-                : "border-gray-200 focus:ring-indigo-100 focus:border-indigo-400 bg-white"
+                : "border-gray-200 focus:ring-[#C8F135]/40 focus:border-[#0A2E1A] bg-white"
             }`}
           />
           {errors.address && <p className="text-xs text-red-500 mt-1">{errors.address}</p>}
@@ -321,7 +346,7 @@ function StoreInfoStep({ data, onChange, onNext }: {
   );
 }
 
-// ── Step 2: Admin Account ───────────────────────────────────────────────
+// ── Step 3: Admin Account ───────────────────────────────────────────────
 function AdminAccountStep({ data, onChange, onBack, onNext }: {
   data: AdminAccount;
   onChange: (data: AdminAccount) => void;
@@ -334,7 +359,6 @@ function AdminAccountStep({ data, onChange, onBack, onNext }: {
 
   const validate = () => {
     const newErrors: Partial<Record<keyof AdminAccount, string>> = {};
-    
     if (!data.fullName.trim()) newErrors.fullName = "Full name is required";
     if (!data.email.trim()) newErrors.email = "Email is required";
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
@@ -351,7 +375,6 @@ function AdminAccountStep({ data, onChange, onBack, onNext }: {
     if (data.password !== data.confirmPassword) {
       newErrors.confirmPassword = "Passwords do not match";
     }
-
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -364,10 +387,11 @@ function AdminAccountStep({ data, onChange, onBack, onNext }: {
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
       <div>
-        <h2 className="text-xl font-bold text-gray-900">Create your admin account</h2>
-        <p className="text-sm text-gray-500 mt-1">
-          This will be the store owner account with full access to your dashboard.
-        </p>
+        <div className="flex items-center gap-2 mb-1">
+          <User size={18} className="text-[#0A2E1A]" />
+          <h2 className="text-xl font-bold text-gray-900">Admin Account</h2>
+        </div>
+        <p className="text-sm text-gray-500">Create your store owner account</p>
       </div>
 
       <div className="space-y-4">
@@ -385,7 +409,7 @@ function AdminAccountStep({ data, onChange, onBack, onNext }: {
               className={`w-full pl-10 pr-4 py-2.5 text-sm rounded-lg border transition-all outline-none focus:ring-2 ${
                 errors.fullName
                   ? "border-red-300 focus:ring-red-100 bg-red-50"
-                  : "border-gray-200 focus:ring-indigo-100 focus:border-indigo-400 bg-white"
+                  : "border-gray-200 focus:ring-[#C8F135]/40 focus:border-[#0A2E1A] bg-white"
               }`}
             />
           </div>
@@ -394,7 +418,7 @@ function AdminAccountStep({ data, onChange, onBack, onNext }: {
 
         <div>
           <label className="block text-xs font-semibold text-gray-600 mb-1.5">
-            Email Address <span className="text-red-500">*</span>
+            Email <span className="text-red-500">*</span>
           </label>
           <div className="relative">
             <Mail size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
@@ -406,7 +430,7 @@ function AdminAccountStep({ data, onChange, onBack, onNext }: {
               className={`w-full pl-10 pr-4 py-2.5 text-sm rounded-lg border transition-all outline-none focus:ring-2 ${
                 errors.email
                   ? "border-red-300 focus:ring-red-100 bg-red-50"
-                  : "border-gray-200 focus:ring-indigo-100 focus:border-indigo-400 bg-white"
+                  : "border-gray-200 focus:ring-[#C8F135]/40 focus:border-[#0A2E1A] bg-white"
               }`}
             />
           </div>
@@ -427,7 +451,7 @@ function AdminAccountStep({ data, onChange, onBack, onNext }: {
               className={`w-full pl-10 pr-12 py-2.5 text-sm rounded-lg border transition-all outline-none focus:ring-2 ${
                 errors.password
                   ? "border-red-300 focus:ring-red-100 bg-red-50"
-                  : "border-gray-200 focus:ring-indigo-100 focus:border-indigo-400 bg-white"
+                  : "border-gray-200 focus:ring-[#C8F135]/40 focus:border-[#0A2E1A] bg-white"
               }`}
             />
             <button
@@ -455,7 +479,7 @@ function AdminAccountStep({ data, onChange, onBack, onNext }: {
               className={`w-full pl-10 pr-12 py-2.5 text-sm rounded-lg border transition-all outline-none focus:ring-2 ${
                 errors.confirmPassword
                   ? "border-red-300 focus:ring-red-100 bg-red-50"
-                  : "border-gray-200 focus:ring-indigo-100 focus:border-indigo-400 bg-white"
+                  : "border-gray-200 focus:ring-[#C8F135]/40 focus:border-[#0A2E1A] bg-white"
               }`}
             />
             <button
@@ -492,104 +516,23 @@ function AdminAccountStep({ data, onChange, onBack, onNext }: {
           className="flex items-center gap-2 px-6 py-2.5 rounded-lg text-sm font-semibold transition-all"
           style={{ backgroundColor: "#C8F135", color: "#0A2E1A" }}
         >
-          Continue <ArrowRight size={16} />
+          Create Account <ArrowRight size={16} />
         </button>
       </div>
     </form>
   );
 }
 
-// ── Step 3: Plan Selection ──────────────────────────────────────────────
-function PlanStep({ selectedPlan, onSelect, onBack, onComplete }: {
-  selectedPlan: string;
-  onSelect: (planId: string) => void;
-  onBack: () => void;
-  onComplete: () => void;
-}) {
-  return (
-    <div className="space-y-5">
-      <div>
-        <h2 className="text-xl font-bold text-gray-900">Choose your plan</h2>
-        <p className="text-sm text-gray-500 mt-1">
-          Start with a 14-day free trial. No credit card required.
-        </p>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {PLANS.map((plan) => (
-          <div
-            key={plan.id}
-            onClick={() => onSelect(plan.id)}
-            className={`relative p-5 rounded-xl border-2 cursor-pointer transition-all ${
-              selectedPlan === plan.id
-                ? "border-[#C8F135] bg-[#C8F135]/10 shadow-lg"
-                : "border-gray-200 hover:border-[#C8F135]/50 hover:shadow-md"
-            }`}
-          >
-            {plan.recommended && (
-              <div className="absolute -top-2 left-1/2 -translate-x-1/2 px-3 py-0.5 text-[10px] font-bold rounded-full"
-                style={{ backgroundColor: "#C8F135", color: "#0A2E1A" }}>
-                {plan.badge || "RECOMMENDED"}
-              </div>
-            )}
-
-            {selectedPlan === plan.id && (
-              <Check size={18} className="absolute top-3 right-3" style={{ color: "#C8F135" }} />
-            )}
-
-            <h3 className="text-sm font-bold text-gray-900">{plan.name}</h3>
-            <p className="text-lg font-bold text-gray-900 mt-1">{plan.price}</p>
-
-            <ul className="mt-3 space-y-1.5">
-              {plan.features.map((feature) => (
-                <li key={feature} className="flex items-center gap-2 text-xs text-gray-600">
-                  <Check size={12} style={{ color: "#C8F135" }} className="shrink-0" />
-                  {feature}
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
-      </div>
-
-      <div className="flex items-center justify-between gap-3 pt-4 border-t border-gray-100">
-        <button
-          type="button"
-          onClick={onBack}
-          className="flex items-center gap-2 px-6 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-lg transition-all"
-        >
-          <ArrowLeft size={16} /> Back
-        </button>
-        <button
-          onClick={onComplete}
-          disabled={!selectedPlan}
-          className="flex items-center gap-2 px-6 py-2.5 rounded-lg text-sm font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-          style={{ backgroundColor: selectedPlan ? "#C8F135" : "#D1D5DB", color: selectedPlan ? "#0A2E1A" : "#9CA3AF" }}
-        >
-          Start Free Trial <Sparkles size={16} />
-        </button>
-      </div>
-
-      <p className="text-center text-xs text-gray-500">
-        14-day free trial. No credit card required. Cancel anytime
-      </p>
-    </div>
-  );
-}
-
-// ── Step 4: Welcome / Success ───────────────────────────────────────────
-function WelcomeStep({ storeData, adminData, planData, onDashboard }: {
+// ── Step 4: Welcome / Success with Trial Status ─────────────────────────
+function WelcomeStep({ storeData, adminData, onDashboard }: {
   storeData: StoreInfo;
   adminData: AdminAccount;
-  planData: string;
   onDashboard: () => void;
 }) {
-  const selectedPlan = PLANS.find(p => p.id === planData);
-
   return (
     <div className="text-center space-y-6 py-4">
       <div className="w-20 h-20 rounded-full bg-[#C8F135]/20 flex items-center justify-center mx-auto">
-        <Sparkles size={36} style={{ color: "#C8F135" }} />
+        <Rocket size={36} style={{ color: "#C8F135" }} />
       </div>
 
       <div>
@@ -597,6 +540,22 @@ function WelcomeStep({ storeData, adminData, planData, onDashboard }: {
         <p className="text-gray-500 mt-1">
           Your store has been created successfully.
         </p>
+      </div>
+
+      {/* Trial Status Banner */}
+      <div className="max-w-sm mx-auto bg-gradient-to-r from-[#0A2E1A] to-[#153323] rounded-xl p-4 text-white border border-[#C8F135]/20">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <Clock size={18} className="text-[#C8F135]" />
+            <div className="text-left">
+              <p className="text-xs font-medium">14-Day Free Trial</p>
+              <p className="text-[10px] text-white/60">Unlock full features anytime</p>
+            </div>
+          </div>
+          <button className="px-3 py-1 rounded-lg text-[10px] font-semibold" style={{ backgroundColor: "#C8F135", color: "#0A2E1A" }}>
+            Upgrade Now
+          </button>
+        </div>
       </div>
 
       <div className="max-w-sm mx-auto bg-gray-50 rounded-xl p-5 text-left space-y-2">
@@ -620,35 +579,26 @@ function WelcomeStep({ storeData, adminData, planData, onDashboard }: {
               {adminData.email}
             </p>
           </div>
-          <div>
-            <p className="text-xs text-gray-400">Plan</p>
-            <p className="text-sm font-semibold" style={{ color: "#C8F135" }}>
-              {selectedPlan?.name} — 14-Day Free Trial
-            </p>
-          </div>
         </div>
       </div>
 
       <div className="max-w-sm mx-auto text-left space-y-3">
         <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
-          Next steps to launch your store:
+          Next steps:
         </h3>
         <div className="space-y-2.5">
           {[
-            "Add your products - Upload your inventory",
-            "Set up payments - Connect your payment gateway",
-            "Customize your store - Make it look like yours",
-            "Launch your store - Go live and start selling!"
+            "Add your products",
+            "Set up payments",
+            "Customize your store",
+            "Launch your store"
           ].map((step, i) => (
             <div key={i} className="flex items-start gap-3">
               <div className="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold shrink-0 mt-0.5"
                 style={{ backgroundColor: "#C8F135", color: "#0A2E1A" }}>
                 {i + 1}
               </div>
-              <div>
-                <p className="text-sm font-medium text-gray-800">{step.split(" - ")[0]}</p>
-                <p className="text-xs text-gray-500">{step.split(" - ")[1]}</p>
-              </div>
+              <p className="text-sm font-medium text-gray-800">{step}</p>
             </div>
           ))}
         </div>
@@ -686,8 +636,6 @@ export default function SignupPage() {
     confirmPassword: "",
   });
 
-  const [selectedPlan, setSelectedPlan] = useState("");
-
   const handleGoToDashboard = () => {
     window.location.href = '/admin';
   };
@@ -695,29 +643,22 @@ export default function SignupPage() {
   const renderStep = () => {
     switch (step) {
       case 1:
+        return <FreePlanStep onStartTrial={() => setStep(2)} />;
+      case 2:
         return (
           <StoreInfoStep
             data={storeData}
             onChange={setStoreData}
-            onNext={() => setStep(2)}
-          />
-        );
-      case 2:
-        return (
-          <AdminAccountStep
-            data={adminData}
-            onChange={setAdminData}
-            onBack={() => setStep(1)}
             onNext={() => setStep(3)}
           />
         );
       case 3:
         return (
-          <PlanStep
-            selectedPlan={selectedPlan}
-            onSelect={setSelectedPlan}
+          <AdminAccountStep
+            data={adminData}
+            onChange={setAdminData}
             onBack={() => setStep(2)}
-            onComplete={() => setStep(4)}
+            onNext={() => setStep(4)}
           />
         );
       case 4:
@@ -725,7 +666,6 @@ export default function SignupPage() {
           <WelcomeStep
             storeData={storeData}
             adminData={adminData}
-            planData={selectedPlan}
             onDashboard={handleGoToDashboard}
           />
         );
@@ -779,8 +719,8 @@ export default function SignupPage() {
             </div>
             {[
               { name: "Emeka T.",  event: "New store launched",   time: "2s ago" },
-              { name: "Ngozi A.",  event: "Payment confirmed",       time: "1m ago" },
-              { name: "Hauwa M.", event: "First order received ✓",        time: "4m ago" },
+              { name: "Ngozi A.",  event: "Payment confirmed",     time: "1m ago" },
+              { name: "Hauwa M.",  event: "First order received ✓", time: "4m ago" },
             ].map((a, i) => (
               <div key={i} className="flex items-center gap-3">
                 <div className="w-7 h-7 rounded-full flex items-center justify-center text-[9px] font-bold text-white shrink-0"
@@ -808,7 +748,9 @@ export default function SignupPage() {
 
         {/* Mobile logo */}
         <div className="lg:hidden mb-6">
-          <Link href="/"><img src="/logo.png" alt="MarketPro" className="h-30 w-40" /></Link>
+          <Link href="/">
+            <img src="/logo.png" alt="MarketPro" className="h-30 w-40" />
+          </Link>
         </div>
 
         <div className="w-full max-w-xl space-y-6">

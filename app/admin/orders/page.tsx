@@ -15,14 +15,14 @@ interface Order {
 }
 
 const ORDERS: Order[] = [
-  { id:"#ORD-0092", customer:"Jane Doe",        initials:"JD", color:"bg-blue-500",   date:"May 25, 2025", total:"$124.50", status:"Paid",    email:"jane@example.com",    items:3 },
-  { id:"#ORD-0091", customer:"Alex Smith",      initials:"AS", color:"bg-orange-400", date:"May 23, 2025", total:"$89.00",  status:"Pending", email:"alex@example.com",    items:2 },
-  { id:"#ORD-0090", customer:"Michael Johnson", initials:"MJ", color:"bg-purple-500", date:"May 23, 2025", total:"$299.99", status:"Paid",    email:"michael@example.com", items:5 },
-  { id:"#ORD-0089", customer:"Emily White",     initials:"EW", color:"bg-teal-500",   date:"May 22, 2025", total:"$45.00",  status:"Failed",  email:"emily@example.com",   items:1 },
-  { id:"#ORD-0088", customer:"David Brown",     initials:"DB", color:"bg-pink-500",   date:"May 21, 2025", total:"$210.00", status:"Paid",    email:"david@example.com",   items:4 },
-  { id:"#ORD-0087", customer:"Sarah Lee",       initials:"SL", color:"bg-indigo-400", date:"May 20, 2025", total:"$67.50",  status:"Pending", email:"sarah@example.com",   items:2 },
-  { id:"#ORD-0086", customer:"Omar Hassan",     initials:"OH", color:"bg-green-500",  date:"May 19, 2025", total:"$340.00", status:"Paid",    email:"omar@example.com",    items:6 },
-  { id:"#ORD-0085", customer:"Priya Patel",     initials:"PP", color:"bg-yellow-500", date:"May 18, 2025", total:"$92.00",  status:"Failed",  email:"priya@example.com",   items:2 },
+  { id:"#ORD-0092", customer:"Jane Doe",        initials:"JD", color:"bg-blue-500",   date:"May 25, 2025", total:"₦124.50", status:"Paid",    email:"jane@example.com",    items:3 },
+  { id:"#ORD-0091", customer:"Alex Smith",      initials:"AS", color:"bg-orange-400", date:"May 23, 2025", total:"₦89.00",  status:"Pending", email:"alex@example.com",    items:2 },
+  { id:"#ORD-0090", customer:"Michael Johnson", initials:"MJ", color:"bg-purple-500", date:"May 23, 2025", total:"₦299.99", status:"Paid",    email:"michael@example.com", items:5 },
+  { id:"#ORD-0089", customer:"Emily White",     initials:"EW", color:"bg-teal-500",   date:"May 22, 2025", total:"₦45.00",  status:"Failed",  email:"emily@example.com",   items:1 },
+  { id:"#ORD-0088", customer:"David Brown",     initials:"DB", color:"bg-pink-500",   date:"May 21, 2025", total:"₦210.00", status:"Paid",    email:"david@example.com",   items:4 },
+  { id:"#ORD-0087", customer:"Sarah Lee",       initials:"SL", color:"bg-indigo-400", date:"May 20, 2025", total:"₦67.50",  status:"Pending", email:"sarah@example.com",   items:2 },
+  { id:"#ORD-0086", customer:"Omar Hassan",     initials:"OH", color:"bg-green-500",  date:"May 19, 2025", total:"₦340.00", status:"Paid",    email:"omar@example.com",    items:6 },
+  { id:"#ORD-0085", customer:"Priya Patel",     initials:"PP", color:"bg-yellow-500", date:"May 18, 2025", total:"₦92.00",  status:"Failed",  email:"priya@example.com",   items:2 },
 ];
 
 const STAT_CARDS = [
@@ -147,7 +147,7 @@ function ViewOrderModal({ order, onClose, onStatusChange, onEdit, onDelete }: {
                       <p className="text-[10px] text-gray-400">Qty: {item.qty}</p>
                     </div>
                   </div>
-                  <p className="text-xs font-bold text-gray-800 dark:text-gray-100">${(item.price * item.qty).toFixed(2)}</p>
+                  <p className="text-xs font-bold text-gray-800 dark:text-gray-100">₦{(item.price * item.qty).toFixed(2)}</p>
                 </div>
               ))}
             </div>
@@ -157,9 +157,9 @@ function ViewOrderModal({ order, onClose, onStatusChange, onEdit, onDelete }: {
           <div className="bg-gray-50 dark:bg-gray-800/50 rounded-xl p-4 space-y-2">
             <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-1">Order Summary</p>
             {[
-              ["Subtotal", `$${subtotal.toFixed(2)}`],
-              ["Shipping", `$${shipping.toFixed(2)}`],
-              ["Tax (4.9%)", `$${tax.toFixed(2)}`],
+              ["Subtotal", `₦${subtotal.toFixed(2)}`],
+              ["Shipping", `₦${shipping.toFixed(2)}`],
+              ["Tax (4.9%)", `₦${tax.toFixed(2)}`],
             ].map(([k,v])=>(
               <div key={k} className="flex justify-between text-xs text-gray-500 dark:text-gray-400">
                 <span>{k}</span><span className="font-medium text-gray-700 dark:text-gray-300">{v}</span>
@@ -243,7 +243,6 @@ export default function OrdersPage() {
 
   useEffect(()=>{ setTimeout(()=>{ setOrders(ORDERS); setLoading(false); },1600); },[]);
 
-  // ── FIX: use mousedown + closest check so menu doesn't self-close ──
   useEffect(()=>{
     const handler = (e: MouseEvent) => {
       const target = e.target as HTMLElement;

@@ -101,7 +101,7 @@ function AddVariantModal({ onClose, onAdd }: { onClose: () => void; onAdd: (v: V
           <div className="grid grid-cols-2 gap-3">
             <Field label="Price" required>
               <div className="relative">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">$</span>
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">₦</span>
                 <input type="text" placeholder="0.00" value={form.price}
                   onChange={e => setForm({ ...form, price: e.target.value })}
                   className={INPUT + " pl-6"} />
@@ -109,7 +109,7 @@ function AddVariantModal({ onClose, onAdd }: { onClose: () => void; onAdd: (v: V
             </Field>
             <Field label="Sale Price">
               <div className="relative">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">$</span>
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">₦</span>
                 <input type="text" placeholder="0.00" value={form.salePrice}
                   onChange={e => setForm({ ...form, salePrice: e.target.value })}
                   className={INPUT + " pl-6"} />
@@ -182,8 +182,8 @@ export default function AddProductPage() {
 
   // Variants
   const [variants, setVariants]   = useState<Variant[]>([
-    { id: 1, size: "Small", color: "Black", colorHex: "#1f2937", sku: "SKU-001-SM-BLK", stock: 25, price: "$89.99", salePrice: "$72.99", variantStatus: "Active" },
-    { id: 2, size: "Medium", color: "Blue", colorHex: "#3b82f6", sku: "SKU-001-MD-BLU", stock: 15, price: "$89.99", salePrice: "Color Mix", variantStatus: "Active" },
+    { id: 1, size: "Small", color: "Black", colorHex: "#1f2937", sku: "SKU-001-SM-BLK", stock: 25, price: "₦89.99", salePrice: "₦72.99", variantStatus: "Active" },
+    { id: 2, size: "Medium", color: "Blue", colorHex: "#3b82f6", sku: "SKU-001-MD-BLU", stock: 15, price: "₦89.99", salePrice: "Color Mix", variantStatus: "Active" },
   ]);
 
   // Shipping
@@ -246,7 +246,7 @@ export default function AddProductPage() {
         category,
         stock: stockNum,
         stockStatus,
-        price: basePrice ? `$${basePrice}` : "$0.00",
+        price: basePrice ? `₦${basePrice}` : "₦0.00",
         status: isDraft ? "Draft" : (status as "Active" | "Draft" | "Out of Stock"),
         description,
         vendor,
@@ -405,7 +405,7 @@ export default function AddProductPage() {
                 <div key={label}>
                   <Field label={label} required={req}>
                     <div className="relative">
-                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">$</span>
+                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">₦</span>
                       <input type="text" placeholder="0.00" value={value}
                         onChange={e => { (set as any)(e.target.value); if (error) setErrors(prev => ({ ...prev, basePrice: "" })); }}
                         className={INPUT + " pl-6" + (error ? " border-red-300" : "")} />
@@ -578,7 +578,7 @@ export default function AddProductPage() {
               {[
                 ["Name", name || "—"],
                 ["Category", category],
-                ["Base Price", basePrice ? `$${basePrice}` : "—"],
+                ["Base Price", basePrice ? `₦${basePrice}` : "—"],
                 ["Stock", totalStock || "—"],
                 ["Status", status],
                 ["Variants", String(variants.length)],

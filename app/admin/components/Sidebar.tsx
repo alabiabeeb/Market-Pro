@@ -3,45 +3,45 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
+import { useTrial } from "./TrialProvider";
 import {
   LayoutDashboard, ShoppingCart, Package, Users, BarChart2,
-  Settings, HelpCircle, Store, UserCircle, ChevronRight, Plus, Tag,Percent
+  Settings, HelpCircle, Store, UserCircle, ChevronRight, Plus, Tag, Percent, Layout,
+  Crown, Lock, Sparkles, Globe
 } from "lucide-react";
 
+// ── Nav items with feature keys ──
 const navItems = [
-  { label: "Dashboard", icon: LayoutDashboard, href: "/admin" },
-  { label: "Orders",    icon: ShoppingCart,    href: "/admin/orders" },
-  { label: "Products",  icon: Package,         href: "/admin/product" },
-  { label: "Customers", icon: Users,           href: "/admin/customer" },
-  { label: "Analytics", icon: BarChart2,       href: "/admin/analytics" },
-  { label: "Categories", icon: Tag,            href: "/admin/category" },
-// { label: "Promotions", icon: Percent, href: "/admin/promotions" },
-{ label: "Cart Recovery", icon: ShoppingCart, href: "/admin/cart-recovery" },
+  { label: "Dashboard", icon: LayoutDashboard, href: "/admin", feature: "dashboard" },
+  { label: "Orders", icon: ShoppingCart, href: "/admin/orders", feature: "orders" },
+  { label: "Products", icon: Package, href: "/admin/product", feature: "products" },
+  { label: "Customers", icon: Users, href: "/admin/customer", feature: "customers" },
+  { label: "Analytics", icon: BarChart2, href: "/admin/analytics", feature: "analytics" },
+  { label: "Categories", icon: Tag, href: "/admin/category", feature: "categories" },
+  { label: "Staff", icon: Users, href: "/admin/staff", feature: "staff_management" },
+  { label: "Template Builder", icon: Layout, href: "/admin/template-builder", feature: "template_builder" },
+  { label: "Cart Recovery", icon: ShoppingCart, href: "/admin/cart-recovery", feature: "cart_recovery" },
 ];
 
-const settingsDropdown = [
-  { label: "Store Settings",   icon: Store,      href: "/admin/settings/store" },
-  { label: "Profile Settings", icon: UserCircle, href: "/admin/settings/profile" },
+// ── All nav items for mobile FAB ──
+const allNavItems = [
+  ...navItems,
+  { label: "Support", icon: HelpCircle, href: "/admin/support", feature: "support" },
+  { label: "Store Settings", icon: Store, href: "/admin/settings/store", feature: "store_settings" },
+  { label: "Profile Settings", icon: UserCircle, href: "/admin/settings/profile", feature: "profile_settings" },
 ];
 
-const bottomItems = [
-  { label: "Support", icon: HelpCircle, href: "/admin/support" },
-];
+const bottomNavItems = navItems.slice(0, 4);
 
-// FAB items
-const fabItems = [
-  { label: "Support", icon: HelpCircle, href: "/admin/support" },
-  { label: "Categories", icon: Tag, href: "/admin/category" },
-  { label: "Analytics", icon: BarChart2, href: "/admin/analytics" },
-  { label: "Store Settings", icon: Store, href: "/admin/settings/store" },
-  { label: "Profile Settings", icon: UserCircle, href: "/admin/settings/profile" },
-// { label: "Promotions", icon: Percent, href: "/admin/promotions" },
-{ label: "Cart Recovery", icon: ShoppingCart, href: "/admin/cart-recovery" },
-];
+// FAB items - all nav items not shown in bottom bar
+const fabItems = allNavItems.filter(
+  item => !bottomNavItems.some(bottom => bottom.href === item.href)
+);
 
 export default function Sidebar() {
   const pathname = usePathname();
   const router = useRouter();
+  const { canAccessFeature, isTrial, isPremium, showUpgradePrompt } = useTrial();
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [fabOpen, setFabOpen] = useState(false);
   const settingsRef = useRef<HTMLDivElement>(null);
@@ -49,7 +49,6 @@ export default function Sidebar() {
 
   const isSettingsActive = pathname.startsWith("/admin/settings");
 
-  // Close desktop settings dropdown on outside click
   useEffect(() => {
     const h = (e: MouseEvent) => {
       if (settingsRef.current && !settingsRef.current.contains(e.target as Node))
@@ -59,20 +58,21 @@ export default function Sidebar() {
     return () => document.removeEventListener("mousedown", h);
   }, []);
 
+  useEffect(() => {
+    const h = (e: MouseEvent) => {
+      if (fabRef.current && !fabRef.current.contains(e.target as Node))
+        setFabOpen(false);
+    };
+    document.addEventListener("mousedown", h);
+    return () => document.removeEventListener("mousedown", h);
+  }, []);
 
+  useEffect(() => { setFabOpen(false); }, [pathname]);
 
-  // Close FAB on route change
-  useEffect(() => { 
-    setFabOpen(false); 
-  }, [pathname]);
+  const isFeatureLocked = (feature: string) => {
+    return !canAccessFeature(feature);
+  };
 
-  const bottomNavItems = navItems.slice(0, 4);
-
-  // Handle FAB item click - using window.location for guaranteed navigation
-const handleFabClick = (href: string) => {
-  console.log("Clicked:", href);
-  alert(href);
-};
   return (
     <>
       {/* ════════════════════════════════
@@ -88,60 +88,72 @@ const handleFabClick = (href: string) => {
 
         {/* Main Nav */}
         <nav className="flex-1 space-y-0.5">
-          {navItems.map(({ label, icon: Icon, href }) => {
+          {navItems.map(({ label, icon: Icon, href, feature }) => {
             const isActive = pathname === href;
+            const isLocked = isFeatureLocked(feature);
+
+            if (isLocked) {
+              return (
+                <button
+                  key={label}
+                  onClick={showUpgradePrompt}
+                  className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all text-gray-400 hover:bg-[#F7F4EE] dark:hover:bg-[#0F1D14] group relative"
+                >
+                  <Icon size={16} className="opacity-50" />
+                  <span className="flex-1 text-left">{label}</span>
+                  <Lock size={12} className="text-gray-400 opacity-50" />
+                  <span className="absolute right-8 text-[8px] font-bold text-[#C8F135] bg-[#C8F135]/10 px-1.5 py-0.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
+                    🔒
+                  </span>
+                </button>
+              );
+            }
+
             return (
-              <Link key={label} href={href}
+              <Link
+                key={label}
+                href={href}
                 className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
                   isActive
                     ? "bg-[#0A2E1A] text-[#C8F135] shadow-sm"
                     : "text-gray-500 dark:text-gray-400 hover:bg-[#F7F4EE] dark:hover:bg-[#0F1D14] hover:text-[#0A2E1A] dark:hover:text-[#F7F4EE]"
-                }`}>
+                }`}
+              >
                 <Icon size={16} />{label}
               </Link>
             );
           })}
-
-          {/* Settings with dropdown */}
-          <div ref={settingsRef} className="relative">
-            <button onClick={() => setSettingsOpen(!settingsOpen)}
-              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
-                isSettingsActive
-                  ? "bg-[#0A2E1A] text-[#C8F135] shadow-sm"
-                  : "text-gray-500 dark:text-gray-400 hover:bg-[#F7F4EE] dark:hover:bg-[#0F1D14] hover:text-[#0A2E1A] dark:hover:text-[#F7F4EE]"
-              }`}>
-              <Settings size={16} />
-              <span className="flex-1 text-left">Settings</span>
-              <ChevronRight size={14} className={`transition-transform duration-200 ${settingsOpen ? "rotate-90" : ""}`} />
-            </button>
-            {settingsOpen && (
-              <div className="mt-1 ml-3 pl-3 border-l-2 border-[#C8F135]/30 dark:border-[#C8F135]/20 space-y-0.5">
-                {settingsDropdown.map(({ label, icon: Icon, href }) => {
-                  const isActive = pathname === href;
-                  return (
-                    <Link key={label} href={href} onClick={() => setSettingsOpen(false)}
-                      className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium transition-all ${
-                        isActive
-                          ? "bg-[#F7F4EE] dark:bg-[#0F1D14] text-[#0A2E1A]"
-                          : "text-gray-500 dark:text-gray-400 hover:bg-[#F7F4EE] dark:hover:bg-[#0F1D14] hover:text-[#0A2E1A] dark:hover:text-[#F7F4EE]"
-                      }`}>
-                      <Icon size={14} />{label}
-                    </Link>
-                  );
-                })}
-              </div>
-            )}
-          </div>
         </nav>
 
         {/* Bottom Nav */}
         <div className="space-y-0.5 pt-2 border-t border-[#E5E7EB] dark:border-[#153323] mt-2">
-          {bottomItems.map(({ label, icon: Icon, href }) => (
-            <Link key={label} href={href}
-              className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-[#F7F4EE] dark:hover:bg-[#0F1D14] hover:text-[#0A2E1A] dark:hover:text-[#F7F4EE] transition-all">
-              <Icon size={16} />{label}
-            </Link>
-          ))}
+          {[
+            { label: "Support", icon: HelpCircle, href: "/admin/support", feature: "support" },
+          ].map(({ label, icon: Icon, href, feature }) => {
+            const isLocked = isFeatureLocked(feature);
+            if (isLocked) {
+              return (
+                <button
+                  key={label}
+                  onClick={showUpgradePrompt}
+                  className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-400 hover:bg-[#F7F4EE] dark:hover:bg-[#0F1D14] transition-all"
+                >
+                  <Icon size={16} className="opacity-50" />
+                  {label}
+                  <Lock size={12} className="text-gray-400 opacity-50 ml-auto" />
+                </button>
+              );
+            }
+            return (
+              <Link
+                key={label}
+                href={href}
+                className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-[#F7F4EE] dark:hover:bg-[#0F1D14] hover:text-[#0A2E1A] dark:hover:text-[#F7F4EE] transition-all"
+              >
+                <Icon size={16} />{label}
+              </Link>
+            );
+          })}
         </div>
       </aside>
 
@@ -150,66 +162,82 @@ const handleFabClick = (href: string) => {
       ════════════════════════════════ */}
       <div className="md:hidden">
 
-     {/* ── Backdrop when FAB is open ── */}
-{fabOpen && (
-  <div
-    className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm"
-    onClick={() => setFabOpen(false)}
-  />
-)}
-
-{/* ── FAB fan-out items ── */}
-{fabOpen && (
-  <div
-    ref={fabRef}
-    className="fixed right-4 bottom-24 z-[9999] flex flex-col items-end gap-3"
-  >
-    {fabItems.map(({ label, icon: Icon, href }, i) => {
-      const isActive =
-        pathname === href ||
-        (href !== "/admin" && pathname.startsWith(href));
-
-      return (
-        <Link
-          key={label}
-          href={href}
-          onClick={() => {
-            setFabOpen(false);
-          }}
-          className="flex items-center gap-3"
-          style={{
-            animation: "fadeSlideUp .25s ease forwards",
-            animationDelay: `${i * 40}ms`,
-            opacity: 0,
-          }}
-        >
-          {/* Label */}
-          <span className="text-white text-sm font-semibold bg-gray-900/80 dark:bg-gray-800/90 px-3 py-1.5 rounded-xl shadow-md backdrop-blur-sm">
-            {label}
-          </span>
-
-          {/* Icon */}
+        {/* ── Backdrop when FAB is open ── */}
+        {fabOpen && (
           <div
-            className={`w-12 h-12 rounded-full flex items-center justify-center shadow-lg transition-all ${
-              isActive
-                ? "bg-[#0A2E1A]"
-                : "bg-white dark:bg-gray-800"
-            }`}
+            className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm"
+            onClick={() => setFabOpen(false)}
+          />
+        )}
+
+        {/* ── FAB fan-out items ── */}
+        {fabOpen && (
+          <div
+            ref={fabRef}
+            className="fixed right-4 bottom-24 z-[9999] flex flex-col items-end gap-3"
           >
-            <Icon
-              size={20}
-              className={
-                isActive
-                  ? "text-[#C8F135]"
-                  : "text-[#0A2E1A]"
+            {fabItems.map(({ label, icon: Icon, href, feature }, i) => {
+              const isActive = pathname === href || (href !== "/admin" && pathname.startsWith(href));
+              const isLocked = isFeatureLocked(feature);
+
+              if (isLocked) {
+                return (
+                  <button
+                    key={label}
+                    onClick={showUpgradePrompt}
+                    className="flex items-center gap-3"
+                    style={{
+                      animation: "fadeSlideUp .25s ease forwards",
+                      animationDelay: `${i * 40}ms`,
+                      opacity: 0,
+                    }}
+                  >
+                    <span className="text-white text-sm font-semibold bg-gray-900/80 dark:bg-gray-800/90 px-3 py-1.5 rounded-xl shadow-md backdrop-blur-sm">
+                      {label} 🔒
+                    </span>
+                    <div className="w-12 h-12 rounded-full flex items-center justify-center shadow-lg bg-gray-300 dark:bg-gray-700">
+                      <Lock size={20} className="text-gray-500" />
+                    </div>
+                  </button>
+                );
               }
-            />
+
+              return (
+                <Link
+                  key={label}
+                  href={href}
+                  onClick={() => setFabOpen(false)}
+                  className="flex items-center gap-3"
+                  style={{
+                    animation: "fadeSlideUp .25s ease forwards",
+                    animationDelay: `${i * 40}ms`,
+                    opacity: 0,
+                  }}
+                >
+                  <span className="text-white text-sm font-semibold bg-gray-900/80 dark:bg-gray-800/90 px-3 py-1.5 rounded-xl shadow-md backdrop-blur-sm">
+                    {label}
+                  </span>
+                  <div
+                    className={`w-12 h-12 rounded-full flex items-center justify-center shadow-lg transition-all ${
+                      isActive
+                        ? "bg-[#0A2E1A]"
+                        : "bg-white dark:bg-gray-800"
+                    }`}
+                  >
+                    <Icon
+                      size={20}
+                      className={
+                        isActive
+                          ? "text-[#C8F135]"
+                          : "text-[#0A2E1A]"
+                      }
+                    />
+                  </div>
+                </Link>
+              );
+            })}
           </div>
-        </Link>
-      );
-    })}
-  </div>
-)}
+        )}
 
         {/* ── Fixed bottom bar ── */}
         <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-[#08120C] border-t border-[#E5E7EB] dark:border-[#153323] shadow-[0_-2px_16px_rgba(0,0,0,0.08)]">

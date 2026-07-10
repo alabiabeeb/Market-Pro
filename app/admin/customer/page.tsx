@@ -12,14 +12,14 @@ type CStatus = "Active"|"Inactive"|"Blocked";
 interface Customer { id:number; name:string; initials:string; color:string; email:string; phone:string; location:string; orders:number; spent:string; status:CStatus; joined:string; rating:number; }
 
 const CUSTOMERS: Customer[] = [
-  { id:1, name:"Jane Doe",        initials:"JD", color:"bg-blue-500",   email:"jane@example.com",    phone:"+1 555-001-0001", location:"New York, US",     orders:12, spent:"$1,240.00", status:"Active",   joined:"Jan 12, 2024", rating:5 },
-  { id:2, name:"Alex Smith",      initials:"AS", color:"bg-orange-400", email:"alex@example.com",    phone:"+1 555-002-0002", location:"Los Angeles, US",  orders:7,  spent:"$890.50",   status:"Active",   joined:"Mar 4, 2024",  rating:4 },
-  { id:3, name:"Michael Johnson", initials:"MJ", color:"bg-purple-500", email:"michael@example.com", phone:"+1 555-003-0003", location:"Chicago, US",      orders:23, spent:"$3,410.00", status:"Active",   joined:"Nov 8, 2023",  rating:5 },
-  { id:4, name:"Emily White",     initials:"EW", color:"bg-teal-500",   email:"emily@example.com",   phone:"+1 555-004-0004", location:"Houston, US",      orders:2,  spent:"$145.00",   status:"Inactive", joined:"Jun 22, 2024", rating:3 },
-  { id:5, name:"David Brown",     initials:"DB", color:"bg-pink-500",   email:"david@example.com",   phone:"+1 555-005-0005", location:"Phoenix, US",      orders:15, spent:"$2,100.00", status:"Active",   joined:"Feb 14, 2024", rating:4 },
-  { id:6, name:"Sarah Lee",       initials:"SL", color:"bg-indigo-400", email:"sarah@example.com",   phone:"+1 555-006-0006", location:"Philadelphia, US", orders:9,  spent:"$670.00",   status:"Blocked",  joined:"Apr 30, 2024", rating:2 },
-  { id:7, name:"Omar Hassan",     initials:"OH", color:"bg-green-500",  email:"omar@example.com",    phone:"+1 555-007-0007", location:"San Antonio, US",  orders:31, spent:"$5,820.00", status:"Active",   joined:"Sep 1, 2023",  rating:5 },
-  { id:8, name:"Priya Patel",     initials:"PP", color:"bg-yellow-500", email:"priya@example.com",   phone:"+1 555-008-0008", location:"Dallas, US",       orders:4,  spent:"$320.00",   status:"Inactive", joined:"Jul 18, 2024", rating:3 },
+  { id:1, name:"Jane Doe",        initials:"JD", color:"bg-blue-500",   email:"jane@example.com",    phone:"+1 555-001-0001", location:"New York, US",     orders:12, spent:"₦1,240.00", status:"Active",   joined:"Jan 12, 2024", rating:5 },
+  { id:2, name:"Alex Smith",      initials:"AS", color:"bg-orange-400", email:"alex@example.com",    phone:"+1 555-002-0002", location:"Los Angeles, US",  orders:7,  spent:"₦890.50",   status:"Active",   joined:"Mar 4, 2024",  rating:4 },
+  { id:3, name:"Michael Johnson", initials:"MJ", color:"bg-purple-500", email:"michael@example.com", phone:"+1 555-003-0003", location:"Chicago, US",      orders:23, spent:"₦3,410.00", status:"Active",   joined:"Nov 8, 2023",  rating:5 },
+  { id:4, name:"Emily White",     initials:"EW", color:"bg-teal-500",   email:"emily@example.com",   phone:"+1 555-004-0004", location:"Houston, US",      orders:2,  spent:"₦145.00",   status:"Inactive", joined:"Jun 22, 2024", rating:3 },
+  { id:5, name:"David Brown",     initials:"DB", color:"bg-pink-500",   email:"david@example.com",   phone:"+1 555-005-0005", location:"Phoenix, US",      orders:15, spent:"₦2,100.00", status:"Active",   joined:"Feb 14, 2024", rating:4 },
+  { id:6, name:"Sarah Lee",       initials:"SL", color:"bg-indigo-400", email:"sarah@example.com",   phone:"+1 555-006-0006", location:"Philadelphia, US", orders:9,  spent:"₦670.00",   status:"Blocked",  joined:"Apr 30, 2024", rating:2 },
+  { id:7, name:"Omar Hassan",     initials:"OH", color:"bg-green-500",  email:"omar@example.com",    phone:"+1 555-007-0007", location:"San Antonio, US",  orders:31, spent:"₦5,820.00", status:"Active",   joined:"Sep 1, 2023",  rating:5 },
+  { id:8, name:"Priya Patel",     initials:"PP", color:"bg-yellow-500", email:"priya@example.com",   phone:"+1 555-008-0008", location:"Dallas, US",       orders:4,  spent:"₦320.00",   status:"Inactive", joined:"Jul 18, 2024", rating:3 },
 ];
 
 const STAT_CARDS = [

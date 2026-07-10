@@ -17,21 +17,21 @@ interface Product {
 }
 
 const PRODUCTS: Product[] = [
-  { id:1, name:"Ergonomic Office Chair",     sku:"SKU-CHAIR-001", category:"Furniture",   stock:145, stockStatus:"high",   price:"$299.00", status:"Active",
+  { id:1, name:"Ergonomic Office Chair",     sku:"SKU-CHAIR-001", category:"Furniture",   stock:145, stockStatus:"high",   price:"₦299.00", status:"Active",
     description:"A premium ergonomic chair designed for all-day comfort with adjustable lumbar support.", vendor:"ErgoLine", tags:["Best Seller","Office"] },
-  { id:2, name:"Wireless Mechanical Keyboard",sku:"SKU-KB-002",   category:"Electronics", stock:12,  stockStatus:"low",    price:"$149.50", status:"Active",
+  { id:2, name:"Wireless Mechanical Keyboard",sku:"SKU-KB-002",   category:"Electronics", stock:12,  stockStatus:"low",    price:"₦149.50", status:"Active",
     description:"RGB backlit mechanical keyboard with hot-swappable switches.", vendor:"TechCraft", tags:["New"] },
-  { id:3, name:"Noise Cancelling Headphones", sku:"SKU-HP-003",   category:"Electronics", stock:0,   stockStatus:"out",    price:"$349.00", status:"Out of Stock",
+  { id:3, name:"Noise Cancelling Headphones", sku:"SKU-HP-003",   category:"Electronics", stock:0,   stockStatus:"out",    price:"₦349.00", status:"Out of Stock",
     description:"Premium over-ear headphones with active noise cancellation and 30-hour battery life.", vendor:"AudioPro" },
-  { id:4, name:"Minimalist Desk Lamp",        sku:"SKU-LMP-004",  category:"Lighting",    stock:50,  stockStatus:"medium", price:"$89.00",  status:"Draft",
+  { id:4, name:"Minimalist Desk Lamp",        sku:"SKU-LMP-004",  category:"Lighting",    stock:50,  stockStatus:"medium", price:"₦89.00",  status:"Draft",
     description:"Dimmable LED desk lamp with a sleek minimalist design.", vendor:"LightHouse" },
-  { id:5, name:"Standing Desk Frame",         sku:"SKU-DSK-005",  category:"Furniture",   stock:8,   stockStatus:"low",    price:"$499.00", status:"Active",
+  { id:5, name:"Standing Desk Frame",         sku:"SKU-DSK-005",  category:"Furniture",   stock:8,   stockStatus:"low",    price:"₦499.00", status:"Active",
     description:"Electric height-adjustable standing desk frame, supports up to 100kg.", vendor:"ErgoLine" },
-  { id:6, name:"USB-C Hub 7-in-1",            sku:"SKU-HUB-006",  category:"Electronics", stock:200, stockStatus:"high",   price:"$59.99",  status:"Active",
+  { id:6, name:"USB-C Hub 7-in-1",            sku:"SKU-HUB-006",  category:"Electronics", stock:200, stockStatus:"high",   price:"₦59.99",  status:"Active",
     description:"7-in-1 USB-C hub with HDMI, USB 3.0, SD card reader and PD charging.", vendor:"TechCraft" },
-  { id:7, name:"Bamboo Monitor Stand",        sku:"SKU-STD-007",  category:"Furniture",   stock:30,  stockStatus:"medium", price:"$45.00",  status:"Active",
+  { id:7, name:"Bamboo Monitor Stand",        sku:"SKU-STD-007",  category:"Furniture",   stock:30,  stockStatus:"medium", price:"₦45.00",  status:"Active",
     description:"Eco-friendly bamboo monitor stand with built-in storage drawer.", vendor:"EcoDesk" },
-  { id:8, name:"LED Desk Pad",                sku:"SKU-PAD-008",  category:"Lighting",    stock:0,   stockStatus:"out",    price:"$35.00",  status:"Out of Stock",
+  { id:8, name:"LED Desk Pad",                sku:"SKU-PAD-008",  category:"Lighting",    stock:0,   stockStatus:"out",    price:"₦35.00",  status:"Out of Stock",
     description:"RGB LED desk mat that doubles as an extended mousepad.", vendor:"LightHouse" },
 ];
 

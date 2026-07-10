@@ -152,7 +152,7 @@ export default function CreateOrderPage() {
       <div className="bg-gray-50 rounded-xl px-6 py-4 text-left space-y-1.5 w-full max-w-xs">
         <p className="text-xs text-gray-400">Customer: <span className="font-semibold text-gray-700">{selectedCustomer?.name}</span></p>
         <p className="text-xs text-gray-400">Items: <span className="font-semibold text-gray-700">{cart.reduce((s,i)=>s+i.qty,0)}</span></p>
-        <p className="text-xs text-gray-400">Total: <span className="font-bold text-[#0A2E1A]">${total.toFixed(2)}</span></p>
+        <p className="text-xs text-gray-400">Total: <span className="font-bold text-[#0A2E1A]">₦{total.toFixed(2)}</span></p>
       </div>
       <div className="flex gap-3 w-full max-w-xs">
         <button onClick={() => router.push("/admin/orders")} className="flex-1 py-2.5 rounded-lg border border-gray-200 text-sm font-medium text-gray-600 hover:bg-gray-50">View Orders</button>
@@ -323,7 +323,7 @@ export default function CreateOrderPage() {
                           <p className="text-xs font-semibold text-gray-800 truncate">{p.name}</p>
                           <p className="text-[10px] text-gray-400 font-mono">{p.sku} · Stock: {p.stock}</p>
                         </div>
-                        <p className="text-sm font-bold text-gray-800 shrink-0">${p.price.toFixed(2)}</p>
+                        <p className="text-sm font-bold text-gray-800 shrink-0">₦{p.price.toFixed(2)}</p>
                       </button>
                     ))}
                   </div>
@@ -348,7 +348,7 @@ export default function CreateOrderPage() {
                         </div>
                       </div>
                       <div className="flex flex-col items-end gap-2 shrink-0">
-                        <p className="text-sm font-bold text-gray-800">${(item.price * item.qty).toFixed(2)}</p>
+                        <p className="text-sm font-bold text-gray-800">₦{(item.price * item.qty).toFixed(2)}</p>
                         <div className="flex items-center gap-1.5">
                           <button onClick={() => updateQty(item.id, -1)} className="w-6 h-6 rounded-lg bg-white border border-gray-200 flex items-center justify-center hover:bg-gray-100 transition-colors">
                             <Minus size={11} className="text-gray-600" />
@@ -387,7 +387,7 @@ export default function CreateOrderPage() {
                         <span className="text-sm font-medium text-gray-700">{s.label}</span>
                       </div>
                       <span className={`text-sm font-semibold ${s.price === 0 ? "text-green-600" : "text-gray-800"}`}>
-                        {s.price === 0 ? "Free" : `$${s.price.toFixed(2)}`}
+                        {s.price === 0 ? "Free" : `₦${s.price.toFixed(2)}`}
                       </span>
                       <input type="radio" className="hidden" value={s.id} checked={shipping === s.id} onChange={() => setShipping(s.id)} />
                     </label>
@@ -445,22 +445,22 @@ export default function CreateOrderPage() {
                   {cart.map(i => (
                     <div key={i.id} className="flex items-center justify-between text-xs">
                       <span className="text-gray-600 truncate flex-1 mr-2">{i.name} ×{i.qty}</span>
-                      <span className="font-semibold text-gray-800 shrink-0">${(i.price * i.qty).toFixed(2)}</span>
+                      <span className="font-semibold text-gray-800 shrink-0">₦{(i.price * i.qty).toFixed(2)}</span>
                     </div>
                   ))}
                 </div>
               )}
 
               <div className="border-t border-gray-100 pt-3 space-y-2 text-xs">
-                <div className="flex justify-between text-gray-500"><span>Subtotal</span><span className="font-medium text-gray-700">${subtotal.toFixed(2)}</span></div>
-                <div className="flex justify-between text-gray-500"><span>Shipping ({SHIPPING_OPTIONS.find(s=>s.id===shipping)?.label.split("(")[0].trim()})</span><span className="font-medium text-gray-700">{shippingCost === 0 ? "Free" : `$${shippingCost.toFixed(2)}`}</span></div>
-                <div className="flex justify-between text-gray-500"><span>Tax (4.9%)</span><span className="font-medium text-gray-700">${tax.toFixed(2)}</span></div>
+                <div className="flex justify-between text-gray-500"><span>Subtotal</span><span className="font-medium text-gray-700">₦{subtotal.toFixed(2)}</span></div>
+                <div className="flex justify-between text-gray-500"><span>Shipping ({SHIPPING_OPTIONS.find(s=>s.id===shipping)?.label.split("(")[0].trim()})</span><span className="font-medium text-gray-700">{shippingCost === 0 ? "Free" : `₦${shippingCost.toFixed(2)}`}</span></div>
+                <div className="flex justify-between text-gray-500"><span>Tax (4.9%)</span><span className="font-medium text-gray-700">₦{tax.toFixed(2)}</span></div>
               </div>
 
               <div className="border-t border-gray-100 pt-3">
                 <div className="flex justify-between items-center">
                   <span className="text-sm font-semibold text-gray-800">Total Amount</span>
-                  <span className="text-lg font-bold text-[#0A2E1A]">${total.toFixed(2)}</span>
+                  <span className="text-lg font-bold text-[#0A2E1A]">₦{total.toFixed(2)}</span>
                 </div>
                 {selectedCustomer && <p className="text-[10px] text-gray-400 mt-1">Estimated delivery: Oct 28 – Oct 30</p>}
               </div>

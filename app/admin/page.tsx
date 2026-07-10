@@ -1,8 +1,11 @@
 "use client";
+
 import { ChartPieLabelList } from "@/components/PieChart";
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { TrendingUp, TrendingDown, ShoppingBag, Users, DollarSign, Percent } from "lucide-react";
+import { useTrial } from "./components/TrialProvider";
+import { UpgradeModal } from "./components/UpgradeModal";
+import { TrendingUp, TrendingDown, ShoppingBag, Users, DollarSign, Percent, Sparkles, Crown } from "lucide-react";
 import {
   AreaChart,
   Area,
@@ -46,7 +49,7 @@ const allOrders = [
     initials: "JD",
     color: "bg-blue-500",
     date: "May 25, 2025",
-    total: "$124.50",
+    total: "₦124.50",
     status: "Paid",
     statusStyle: "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400",
   },
@@ -56,7 +59,7 @@ const allOrders = [
     initials: "AS",
     color: "bg-orange-400",
     date: "May 23, 2025",
-    total: "$89.00",
+    total: "₦89.00",
     status: "Pending",
     statusStyle: "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400",
   },
@@ -66,7 +69,7 @@ const allOrders = [
     initials: "MJ",
     color: "bg-purple-500",
     date: "May 23, 2025",
-    total: "$299.99",
+    total: "₦299.99",
     status: "Paid",
     statusStyle: "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400",
   },
@@ -76,17 +79,16 @@ const allOrders = [
     initials: "EW",
     color: "bg-teal-500",
     date: "May 22, 2025",
-    total: "$45.00",
+    total: "₦45.00",
     status: "Failed",
     statusStyle: "bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400",
   },
 ];
 
-// Updated stats without charts
 const statsData = [
   {
     label: "Total Sales",
-    value: "$24,592.00",
+    value: "₦24,592.00",
     change: "+5.2%",
     positive: true,
     icon: DollarSign,
@@ -202,10 +204,12 @@ function Toast({ message, onClose }: { message: string; onClose: () => void }) {
 }
 
 export default function DashboardPage() {
+  const { isTrial, trialDaysRemaining, isPremium } = useTrial();
   const [loading, setLoading] = useState(true);
   const [activePeriod, setActivePeriod] = useState("Week");
   const [toast, setToast] = useState<string | null>(null);
   const [orderFilter, setOrderFilter] = useState("All");
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
 
   useEffect(() => {
     const t = setTimeout(() => setLoading(false), 1800);
@@ -231,7 +235,7 @@ export default function DashboardPage() {
         : typeof value === "string"
           ? parseFloat(value)
           : 0;
-    return [`$${numValue.toLocaleString()}`, "Revenue"];
+    return [`₦${numValue.toLocaleString()}`, "Revenue"];
   };
 
   if (loading) {
@@ -254,6 +258,38 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-4 sm:space-y-6">
+      {/* ── Trial Banner ── */}
+      {isTrial && !isPremium && trialDaysRemaining > 0 && (
+        <div className="bg-gradient-to-r from-[#0A2E1A] to-[#153323] rounded-xl p-4 border border-[#C8F135]/20">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-full bg-[#C8F135]/20 flex items-center justify-center">
+                <Sparkles size={20} className="text-[#C8F135]" />
+              </div>
+              <div>
+                <p className="text-sm font-semibold text-white">
+                  🚀 Free Trial — {trialDaysRemaining} days remaining
+                </p>
+                <p className="text-xs text-white/60">
+                  Upgrade now to unlock all features and keep selling
+                </p>
+              </div>
+            </div>
+            <button
+              onClick={() => setShowUpgradeModal(true)}
+              className="px-4 py-2 rounded-lg text-sm font-semibold bg-[#C8F135] text-[#0A2E1A] hover:opacity-90 transition-all"
+            >
+              Upgrade Now
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* ── Upgrade Modal ── */}
+      {showUpgradeModal && (
+        <UpgradeModal onClose={() => setShowUpgradeModal(false)} />
+      )}
+
       {/* ── Welcome Header ── */}
       <div>
         <h1 className="text-xl sm:text-2xl font-bold text-[#0A2E1A] dark:text-white">
@@ -301,7 +337,7 @@ export default function DashboardPage() {
 
       {/* ── Revenue Trends Chart + Pie Chart ── */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        {/* Revenue Chart - Updated Colors */}
+        {/* Revenue Chart */}
         <div className="bg-white dark:bg-[#08120C] rounded-2xl border border-[#E5E7EB] dark:border-[#153323] shadow-sm p-4 sm:p-6">
           <div className="flex flex-col xs:flex-row xs:items-center justify-between gap-3 mb-4">
             <div>

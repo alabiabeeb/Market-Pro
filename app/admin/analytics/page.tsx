@@ -40,25 +40,25 @@ const REVENUE_DATA: Record<string, { date: string; revenue: number; orders: numb
 };
 
 const TOP_PRODUCTS = [
-  { id: 1, name: "Aura Wireless Headphones",   sku: "SKU-AWH-001", category: "Electronics", units: 248, revenue: "$74,152", change: "+12%", up: true },
-  { id: 2, name: "Chrono Smartwatch v2",        sku: "SKU-SW-002",  category: "Electronics", units: 187, revenue: "$74,426", change: "+8%",  up: true },
-  { id: 3, name: "Ergonomic Office Chair",      sku: "SKU-CH-003",  category: "Furniture",   units: 142, revenue: "$42,458", change: "-3%",  up: false },
-  { id: 4, name: "Minimalist Desk Lamp",        sku: "SKU-LM-004",  category: "Lighting",    units: 316, revenue: "$28,124", change: "+21%", up: true },
-  { id: 5, name: "Robusta Field Pro",           sku: "SKU-RF-005",  category: "Sports",      units: 98,  revenue: "$19,404", change: "+5%",  up: true },
+  { id: 1, name: "Aura Wireless Headphones",   sku: "SKU-AWH-001", category: "Electronics", units: 248, revenue: "₦74,152", change: "+12%", up: true },
+  { id: 2, name: "Chrono Smartwatch v2",        sku: "SKU-SW-002",  category: "Electronics", units: 187, revenue: "₦74,426", change: "+8%",  up: true },
+  { id: 3, name: "Ergonomic Office Chair",      sku: "SKU-CH-003",  category: "Furniture",   units: 142, revenue: "₦42,458", change: "-3%",  up: false },
+  { id: 4, name: "Minimalist Desk Lamp",        sku: "SKU-LM-004",  category: "Lighting",    units: 316, revenue: "₦28,124", change: "+21%", up: true },
+  { id: 5, name: "Robusta Field Pro",           sku: "SKU-RF-005",  category: "Sports",      units: 98,  revenue: "₦19,404", change: "+5%",  up: true },
 ];
 
 const CHANNEL_DATA = [
-  { name: "Online Store", value: 54, color: "#0A2E1A", amount: "$142,580" },
-  { name: "In-Store",     value: 23, color: "#C8F135", amount: "$60,695"  },
-  { name: "Wholesale",    value: 14, color: "#153323", amount: "$36,940"  },
-  { name: "Social Media", value: 9,  color: "#5B8C6A", amount: "$23,742"  },
+  { name: "Online Store", value: 54, color: "#0A2E1A", amount: "₦142,580" },
+  { name: "In-Store",     value: 23, color: "#C8F135", amount: "₦60,695"  },
+  { name: "Wholesale",    value: 14, color: "#153323", amount: "₦36,940"  },
+  { name: "Social Media", value: 9,  color: "#5B8C6A", amount: "₦23,742"  },
 ];
 
 const STAT_CARDS = [
-  { label: "Average Online Sales", value: "$142.50", change: "+12.5%", positive: true,  icon: DollarSign, iconBg: "bg-[#F7F4EE]",  iconColor: "text-[#0A2E1A]" },
-  { label: "Customer Online Sales", value: "$854.00", change: "+8.2%",  positive: true,  icon: Users,      iconBg: "bg-[#C8F135]/20",  iconColor: "text-[#0A2E1A]" },
+  { label: "Average Online Sales", value: "₦142.50", change: "+12.5%", positive: true,  icon: DollarSign, iconBg: "bg-[#F7F4EE]",  iconColor: "text-[#0A2E1A]" },
+  { label: "Customer Online Sales", value: "₦854.00", change: "+8.2%",  positive: true,  icon: Users,      iconBg: "bg-[#C8F135]/20",  iconColor: "text-[#0A2E1A]" },
   { label: "Get Small Sales Rate",  value: "24.8%",   change: "+2.4%",  positive: true,  icon: BarChart2,  iconBg: "bg-[#F7F4EE]",    iconColor: "text-[#0A2E1A]" },
-  { label: "Total Gross Sales",     value: "$263,957", change: "-1.2%", positive: false, icon: ShoppingBag,iconBg: "bg-[#C8F135]/20",    iconColor: "text-[#0A2E1A]" },
+  { label: "Total Gross Sales",     value: "₦263,957", change: "-1.2%", positive: false, icon: ShoppingBag,iconBg: "bg-[#C8F135]/20",    iconColor: "text-[#0A2E1A]" },
 ];
 
 const PERIODS = ["Week", "Month", "Year"];
@@ -76,7 +76,7 @@ function CustomTooltip({ active, payload, label }: any) {
       <p className="font-semibold text-gray-700 mb-1">{label}</p>
       {payload.map((p: any) => (
         <p key={p.name} style={{ color: p.color }} className="font-medium">
-          {p.name === "revenue" ? `$${p.value.toLocaleString()}` : `${p.value} orders`}
+          {p.name === "revenue" ? `₦${p.value.toLocaleString()}` : `${p.value} orders`}
         </p>
       ))}
     </div>
@@ -189,7 +189,7 @@ export default function AnalyticsPage() {
           <div>
             <h2 className="text-sm font-semibold text-gray-800">Revenue Trends</h2>
             <p className="text-xs text-gray-400 mt-0.5">
-              Total: <span className="font-semibold text-[#0A2E1A]">${totalRevenue.toLocaleString()}</span>
+              Total: <span className="font-semibold text-[#0A2E1A]">₦{totalRevenue.toLocaleString()}</span>
               <span className="mx-2 text-gray-200">·</span>
               Orders: <span className="font-semibold text-gray-700">{totalOrders.toLocaleString()}</span>
             </p>
@@ -211,16 +211,16 @@ export default function AnalyticsPage() {
             <AreaChart data={revenueData} margin={{ top: 5, right: 4, left: -20, bottom: 0 }}>
               <defs>
                 <linearGradient id="analyticsGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#6366f1" stopOpacity={0.2} />
-                  <stop offset="95%" stopColor="#6366f1" stopOpacity={0.01} />
+                  <stop offset="5%" stopColor="#C8F135" stopOpacity={0.3} />
+                  <stop offset="95%" stopColor="#C8F135" stopOpacity={0.01} />
                 </linearGradient>
               </defs>
               <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
               <XAxis dataKey="date" tick={{ fontSize: 10, fill: "#9ca3af" }} axisLine={false} tickLine={false} />
               <YAxis tick={{ fontSize: 10, fill: "#9ca3af" }} axisLine={false} tickLine={false} />
               <Tooltip content={<CustomTooltip />} />
-              <Area type="monotone" dataKey={chartType} stroke="#6366f1" strokeWidth={2.5}
-                fill="url(#analyticsGrad)" dot={{ r: 3, fill: "#6366f1", strokeWidth: 0 }} activeDot={{ r: 5 }} />
+              <Area type="monotone" dataKey={chartType} stroke="#C8F135" strokeWidth={2.5}
+                fill="url(#analyticsGrad)" dot={{ r: 3, fill: "#C8F135", strokeWidth: 0 }} activeDot={{ r: 5 }} />
             </AreaChart>
           </ResponsiveContainer>
         </div>
@@ -230,7 +230,7 @@ export default function AnalyticsPage() {
         <div className="lg:col-span-3 bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
           <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
             <h2 className="text-sm font-semibold text-gray-800">Top Selling Products</h2>
-            <button className="text-xs text-indigo-600 font-medium hover:underline">View All →</button>
+            <button className="text-xs text-[#0A2E1A] font-medium hover:underline">View All →</button>
           </div>
           <div className="hidden sm:block overflow-x-auto">
             <table className="w-full text-sm">
@@ -293,7 +293,7 @@ export default function AnalyticsPage() {
         <div className="lg:col-span-2 bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
           <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
             <h2 className="text-sm font-semibold text-gray-800">Sales by Channel</h2>
-            <button className="text-xs text-indigo-600 font-medium hover:underline">View All →</button>
+            <button className="text-xs text-[#0A2E1A] font-medium hover:underline">View All →</button>
           </div>
 
           <div className="p-5 space-y-4">
@@ -346,7 +346,7 @@ export default function AnalyticsPage() {
               <Tooltip contentStyle={{ borderRadius: "10px", fontSize: "12px", border: "1px solid #e5e7eb" }} formatter={(v) => [v, "Orders"]} />
               <Bar dataKey="orders" radius={[4, 4, 0, 0]}>
                 {revenueData.map((_, i) => (
-                  <Cell key={i} fill={i === revenueData.length - 1 ? "#6366f1" : "#e0e7ff"} />
+                  <Cell key={i} fill={i === revenueData.length - 1 ? "#C8F135" : "#E5E7EB"} />
                 ))}
               </Bar>
             </BarChart>
