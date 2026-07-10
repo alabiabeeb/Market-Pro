@@ -749,7 +749,7 @@ export default function SignupPage() {
         {/* Logo */}
         <div className="relative z-10">
           <Link href="/">
-            <img src="/logo.png" alt="MarketPro" className="h-9 w-auto" />
+            <img src="/logo.png" alt="MarketPro" className="h-9 w-auto " />
           </Link>
         </div>
 
@@ -808,7 +808,7 @@ export default function SignupPage() {
 
         {/* Mobile logo */}
         <div className="lg:hidden mb-8">
-          <Link href="/"><img src="/logo.png" alt="MarketPro" className="h-8 w-auto" /></Link>
+          <Link href="/"><img src="/logo.png" alt="MarketPro" className="h-24 w-auto" /></Link>
         </div>
 
         <div className="w-full max-w-xl space-y-6">
