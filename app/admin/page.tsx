@@ -1,8 +1,11 @@
 "use client";
+
 import { ChartPieLabelList } from "@/components/PieChart";
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { TrendingUp, TrendingDown } from "lucide-react";
+import { useTrial } from "./components/TrialProvider";
+import { UpgradeModal } from "./components/UpgradeModal";
+import { TrendingUp, TrendingDown, ShoppingBag, Users, DollarSign, Percent, Sparkles, Crown } from "lucide-react";
 import {
   AreaChart,
   Area,
@@ -46,9 +49,9 @@ const allOrders = [
     initials: "JD",
     color: "bg-blue-500",
     date: "May 25, 2025",
-    total: "$124.50",
+    total: "₦124.50",
     status: "Paid",
-    statusStyle: "bg-green-100 text-green-700",
+    statusStyle: "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400",
   },
   {
     id: "#ORD-0091",
@@ -56,9 +59,9 @@ const allOrders = [
     initials: "AS",
     color: "bg-orange-400",
     date: "May 23, 2025",
-    total: "$89.00",
+    total: "₦89.00",
     status: "Pending",
-    statusStyle: "bg-yellow-100 text-yellow-700",
+    statusStyle: "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400",
   },
   {
     id: "#ORD-0090",
@@ -66,9 +69,9 @@ const allOrders = [
     initials: "MJ",
     color: "bg-purple-500",
     date: "May 23, 2025",
-    total: "$299.99",
+    total: "₦299.99",
     status: "Paid",
-    statusStyle: "bg-green-100 text-green-700",
+    statusStyle: "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400",
   },
   {
     id: "#ORD-0089",
@@ -76,67 +79,48 @@ const allOrders = [
     initials: "EW",
     color: "bg-teal-500",
     date: "May 22, 2025",
-    total: "$45.00",
+    total: "₦45.00",
     status: "Failed",
-    statusStyle: "bg-red-100 text-red-600",
+    statusStyle: "bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400",
   },
 ];
 
 const statsData = [
   {
     label: "Total Sales",
-    value: "$24,592.00",
+    value: "₦24,592.00",
     change: "+5.2%",
     positive: true,
-    type: "bars",
-    bars: [145, 260, 140, 175, 255, 385, 170],
-    barColors: [
-      "#c7d2fe",
-      "#a5b4fc",
-      "#c7d2fe",
-      "#818cf8",
-      "#a5b4fc",
-      "#6366f1",
-      "#818cf8",
-    ],
+    icon: DollarSign,
+    iconColor: "text-green-500",
+    bgColor: "bg-green-50 dark:bg-green-950/30",
   },
   {
     label: "Orders",
     value: "1,245",
     change: "+8.2%",
     positive: true,
-    type: "bars",
-    bars: [145, 260, 140, 175, 255, 385, 170],
-    barColors: [
-      "#99f6e4",
-      "#5eead4",
-      "#99f6e4",
-      "#2dd4bf",
-      "#5eead4",
-      "#14b8a6",
-      "#2dd4bf",
-    ],
+    icon: ShoppingBag,
+    iconColor: "text-blue-500",
+    bgColor: "bg-blue-50 dark:bg-blue-950/30",
   },
   {
     label: "Customers",
     value: "842",
     change: "+3.4%",
     positive: true,
-    type: "avatars",
-    avatars: [
-      { initials: "JD", color: "bg-indigo-500" },
-      { initials: "AS", color: "bg-orange-400" },
-      { initials: "MJ", color: "bg-violet-500" },
-      { initials: "EW", color: "bg-teal-500" },
-    ],
+    icon: Users,
+    iconColor: "text-purple-500",
+    bgColor: "bg-purple-50 dark:bg-purple-950/30",
   },
   {
     label: "Conversion Rate",
     value: "3.4%",
     change: "-0.8%",
     positive: false,
-    type: "progress",
-    progress: 34,
+    icon: Percent,
+    iconColor: "text-orange-500",
+    bgColor: "bg-orange-50 dark:bg-orange-950/30",
   },
 ];
 
@@ -156,7 +140,6 @@ function StatCardSkeleton() {
         <Shimmer className="h-5 w-12 rounded-full" />
       </div>
       <Shimmer className="h-7 w-28" />
-      <Shimmer className="h-7 w-full" />
     </div>
   );
 }
@@ -214,17 +197,19 @@ function Toast({ message, onClose }: { message: string; onClose: () => void }) {
 
   return (
     <div className="fixed bottom-24 md:bottom-6 right-4 z-50 flex items-center gap-2 bg-[#0A2E1A] text-[#C8F135] text-xs font-medium px-4 py-2.5 rounded-xl shadow-xl animate-in slide-in-from-bottom-4">
-      <span className="w-2 h-2 rounded-full bg-green-400 shrink-0" />
+      <span className="w-2 h-2 rounded-full bg-[#C8F135] shrink-0" />
       {message}
     </div>
   );
 }
 
 export default function DashboardPage() {
+  const { isTrial, trialDaysRemaining, isPremium } = useTrial();
   const [loading, setLoading] = useState(true);
   const [activePeriod, setActivePeriod] = useState("Week");
   const [toast, setToast] = useState<string | null>(null);
   const [orderFilter, setOrderFilter] = useState("All");
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
 
   useEffect(() => {
     const t = setTimeout(() => setLoading(false), 1800);
@@ -243,7 +228,6 @@ export default function DashboardPage() {
     setToast(`Showing ${p.toLowerCase()} revenue data`);
   };
 
-  // Fixed formatter function that handles undefined values
   const revenueFormatter = (value: any) => {
     const numValue =
       typeof value === "number"
@@ -251,18 +235,16 @@ export default function DashboardPage() {
         : typeof value === "string"
           ? parseFloat(value)
           : 0;
-    return [`$${numValue.toLocaleString()}`, "Revenue"];
+    return [`₦${numValue.toLocaleString()}`, "Revenue"];
   };
 
   if (loading) {
     return (
       <div className="space-y-4 sm:space-y-6">
-        {/* Skeleton header */}
         <div className="space-y-1.5">
           <Shimmer className="h-5 w-40" />
           <Shimmer className="h-3 w-64" />
         </div>
-        {/* Stat card skeletons */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
           {[1, 2, 3, 4].map((i) => (
             <StatCardSkeleton key={i} />
@@ -276,79 +258,86 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-4 sm:space-y-6">
-      {/* ── Stat Cards ── */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-        {statsData.map((stat) => (
-          <div
-            key={stat.label}
-            className="bg-white dark:bg-[#08120C] rounded-2xl border border-[#E5E7EB] dark:border-[#153323] shadow-sm p-4 flex flex-col gap-2 hover:shadow-md transition-shadow"
-          >
-            <div className="flex items-start justify-between gap-1">
-              <span className="text-[10px] sm:text-[11px] font-medium text-gray-400 dark:text-gray-500 uppercase tracking-wide leading-tight">
-                {stat.label}
-              </span>
-              <span
-                className={`flex items-center gap-0.5 text-[10px] sm:text-[11px] font-semibold px-1.5 py-0.5 rounded-full shrink-0 ${stat.positive ? "bg-[#C8F135]/20 text-[#0A2E1A] dark:text-[#C8F135]" : "bg-red-50 text-red-500"}`}
-              >
-                {stat.positive ? (
-                  <TrendingUp size={9} />
-                ) : (
-                  <TrendingDown size={9} />
-                )}
-                {stat.change}
-              </span>
+      {/* ── Trial Banner ── */}
+      {isTrial && !isPremium && trialDaysRemaining > 0 && (
+        <div className="bg-gradient-to-r from-[#0A2E1A] to-[#153323] rounded-xl p-4 border border-[#C8F135]/20">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-full bg-[#C8F135]/20 flex items-center justify-center">
+                <Sparkles size={20} className="text-[#C8F135]" />
+              </div>
+              <div>
+                <p className="text-sm font-semibold text-white">
+                  🚀 Free Trial — {trialDaysRemaining} days remaining
+                </p>
+                <p className="text-xs text-white/60">
+                  Upgrade now to unlock all features and keep selling
+                </p>
+              </div>
             </div>
-            <p className="text-lg sm:text-[22px] font-bold text-[#0A2E1A] dark:text-[#F7F4EE] tracking-tight leading-none">
-              {stat.value}
-            </p>
-
-            {stat.type === "bars" && (
-              <div className="flex items-end gap-0.5 h-6 sm:h-7 mt-19">
-                {stat.bars!.map((h, i) => (
-                  <div
-                    key={i}
-                    className="flex-1 rounded-sm transition-all hover:opacity-100 opacity-80"
-                    style={{
-                      height: `${h}%`,
-                      backgroundColor: stat.barColors![i],
-                    }}
-                  />
-                ))}
-              </div>
-            )}
-
-            {stat.type === "avatars" && (
-              <div className="flex items-center mt-1">
-                {stat.avatars!.map((a, i) => (
-                  <div
-                    key={i}
-                    className={`w-5 h-5 sm:w-6 sm:h-6 rounded-full border-2 border-white ${a.color} flex items-center justify-center text-white text-[8px] sm:text-[9px] font-bold ${i > 0 ? "-ml-1.5" : ""}`}
-                  >
-                    {a.initials}
-                  </div>
-                ))}
-                <div className="-ml-1.5 w-5 h-5 sm:w-6 sm:h-6 rounded-full border-2 border-white dark:border-[#08120C] bg-[#E5E7EB] dark:bg-[#153323] flex items-center justify-center text-gray-500 dark:text-gray-300 text-[8px] sm:text-[9px] font-semibold">
-                  +8k
-                </div>
-              </div>
-            )}
-
-            {stat.type === "progress" && (
-              <div className="mt-2">
-                <div className="h-1.5 bg-[#E5E7EB] dark:bg-[#153323] rounded-full overflow-hidden">
-                  <div
-                    className="h-full bg-[#0A2E1A] dark:bg-[#C8F135] rounded-full transition-all duration-1000"
-                    style={{ width: `${stat.progress}%` }}
-                  />
-                </div>
-              </div>
-            )}
+            <button
+              onClick={() => setShowUpgradeModal(true)}
+              className="px-4 py-2 rounded-lg text-sm font-semibold bg-[#C8F135] text-[#0A2E1A] hover:opacity-90 transition-all"
+            >
+              Upgrade Now
+            </button>
           </div>
-        ))}
+        </div>
+      )}
+
+      {/* ── Upgrade Modal ── */}
+      {showUpgradeModal && (
+        <UpgradeModal onClose={() => setShowUpgradeModal(false)} />
+      )}
+
+      {/* ── Welcome Header ── */}
+      <div>
+        <h1 className="text-xl sm:text-2xl font-bold text-[#0A2E1A] dark:text-white">
+          Welcome back, Alex
+        </h1>
+        <p className="text-sm text-gray-500 dark:text-gray-400">
+          Here's what's happening with your store today.
+        </p>
       </div>
 
-      {/* ── Revenue Trends ── */}
+      {/* ── Stat Cards ── */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+        {statsData.map((stat) => {
+          const Icon = stat.icon;
+          return (
+            <div
+              key={stat.label}
+              className="bg-white dark:bg-[#08120C] rounded-2xl border border-[#E5E7EB] dark:border-[#153323] shadow-sm p-4 flex flex-col gap-2 hover:shadow-md transition-shadow"
+            >
+              <div className="flex items-start justify-between">
+                <div className={`p-2 rounded-xl ${stat.bgColor}`}>
+                  <Icon size={16} className={stat.iconColor} />
+                </div>
+                <span
+                  className={`flex items-center gap-0.5 text-[10px] sm:text-[11px] font-semibold px-1.5 py-0.5 rounded-full shrink-0 ${
+                    stat.positive 
+                      ? "bg-[#C8F135]/20 text-[#0A2E1A] dark:text-[#C8F135]" 
+                      : "bg-red-50 text-red-500 dark:bg-red-950/30 dark:text-red-400"
+                  }`}
+                >
+                  {stat.positive ? <TrendingUp size={9} /> : <TrendingDown size={9} />}
+                  {stat.change}
+                </span>
+              </div>
+              <p className="text-lg sm:text-[22px] font-bold text-[#0A2E1A] dark:text-[#F7F4EE] tracking-tight leading-none">
+                {stat.value}
+              </p>
+              <p className="text-xs text-gray-500 dark:text-gray-400">
+                {stat.label}
+              </p>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* ── Revenue Trends Chart + Pie Chart ── */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        {/* Revenue Chart */}
         <div className="bg-white dark:bg-[#08120C] rounded-2xl border border-[#E5E7EB] dark:border-[#153323] shadow-sm p-4 sm:p-6">
           <div className="flex flex-col xs:flex-row xs:items-center justify-between gap-3 mb-4">
             <div>
@@ -364,7 +353,11 @@ export default function DashboardPage() {
                 <button
                   key={p}
                   onClick={() => handlePeriodChange(p)}
-                  className={`text-xs font-medium px-2.5 sm:px-3 py-1 rounded-md transition-all ${activePeriod === p ? "bg-[#0A2E1A] text-[#C8F135] shadow-sm" : "text-gray-500 dark:text-gray-400 hover:text-[#0A2E1A] dark:hover:text-[#F7F4EE]"}`}
+                  className={`text-xs font-medium px-2.5 sm:px-3 py-1 rounded-md transition-all ${
+                    activePeriod === p 
+                      ? "bg-[#0A2E1A] text-[#C8F135] shadow-sm" 
+                      : "text-gray-500 dark:text-gray-400 hover:text-[#0A2E1A] dark:hover:text-[#F7F4EE]"
+                  }`}
                 >
                   {p}
                 </button>
@@ -380,11 +373,11 @@ export default function DashboardPage() {
               >
                 <defs>
                   <linearGradient id="revenueGrad" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#6366f1" stopOpacity={0.25} />
-                    <stop offset="95%" stopColor="#6366f1" stopOpacity={0.02} />
+                    <stop offset="5%" stopColor="#C8F135" stopOpacity={0.3} />
+                    <stop offset="95%" stopColor="#C8F135" stopOpacity={0.02} />
                   </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" strokeOpacity={0.5} />
                 <XAxis
                   dataKey="date"
                   tick={{ fontSize: 10, fill: "#9ca3af" }}
@@ -402,42 +395,48 @@ export default function DashboardPage() {
                     border: "1px solid #C8F135",
                     fontSize: "12px",
                     boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
+                    backgroundColor: "white",
                   }}
                   formatter={revenueFormatter}
+                  labelStyle={{ color: "#0A2E1A" }}
                 />
                 <Area
                   type="monotone"
                   dataKey="revenue"
-                  stroke="#6366f1"
+                  stroke="#C8F135"
                   strokeWidth={2.5}
                   fill="url(#revenueGrad)"
-                  dot={{ r: 4, fill: "#6366f1", strokeWidth: 0 }}
-                  activeDot={{ r: 6 }}
+                  dot={{ r: 4, fill: "#C8F135", strokeWidth: 0 }}
+                  activeDot={{ r: 6, fill: "#C8F135" }}
                 />
               </AreaChart>
             </ResponsiveContainer>
           </div>
         </div>
 
-        <div >
-          <ChartPieLabelList/>
+        {/* Pie Chart */}
+        <div>
+          <ChartPieLabelList />
         </div>
       </div>
 
       {/* ── Recent Orders ── */}
-      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 sm:p-6">
+      <div className="bg-white dark:bg-[#08120C] rounded-2xl border border-[#E5E7EB] dark:border-[#153323] shadow-sm p-4 sm:p-6">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-sm sm:text-base font-semibold text-gray-800">
+          <h2 className="text-sm sm:text-base font-semibold text-[#0A2E1A] dark:text-[#F7F4EE]">
             Recent Orders
           </h2>
           <div className="flex items-center gap-2">
-            {/* Status filter */}
             <div className="hidden sm:flex items-center gap-1 bg-[#F7F4EE] dark:bg-[#0F1D14] rounded-lg p-1">
               {["All", "Paid", "Pending", "Failed"].map((f) => (
                 <button
                   key={f}
                   onClick={() => setOrderFilter(f)}
-                  className={`text-xs font-medium px-2 py-1 rounded-md transition-all ${orderFilter === f ? "bg-[#0A2E1A] text-[#C8F135] shadow-sm" : "text-gray-500 dark:text-gray-400 hover:text-[#0A2E1A] dark:hover:text-[#F7F4EE]"}`}
+                  className={`text-xs font-medium px-2 py-1 rounded-md transition-all ${
+                    orderFilter === f 
+                      ? "bg-[#0A2E1A] text-[#C8F135] shadow-sm" 
+                      : "text-gray-500 dark:text-gray-400 hover:text-[#0A2E1A] dark:hover:text-[#F7F4EE]"
+                  }`}
                 >
                   {f}
                 </button>
@@ -458,7 +457,9 @@ export default function DashboardPage() {
             <button
               key={f}
               onClick={() => setOrderFilter(f)}
-              className={`text-[10px] font-medium px-2 py-1 rounded-md transition-all ${orderFilter === f ? "bg-[#0A2E1A] text-[#C8F135] shadow-sm" : "text-gray-500 dark:text-gray-400"}`}
+              className={`text-[10px] font-medium px-2 py-1 rounded-md transition-all ${
+                orderFilter === f ? "bg-[#0A2E1A] text-[#C8F135] shadow-sm" : "text-gray-500 dark:text-gray-400"
+              }`}
             >
               {f}
             </button>
@@ -502,7 +503,7 @@ export default function DashboardPage() {
                           >
                             {order.initials}
                           </div>
-                          <span className="text-gray-700 font-medium">
+                          <span className="text-gray-700 dark:text-gray-300 font-medium">
                             {order.customer}
                           </span>
                         </div>
@@ -527,7 +528,7 @@ export default function DashboardPage() {
             </div>
 
             {/* Mobile cards */}
-            <div className="md:hidden divide-y divide-gray-50">
+            <div className="md:hidden divide-y divide-gray-50 dark:divide-gray-800">
               {filteredOrders.map((order) => (
                 <div
                   key={order.id}

@@ -2,7 +2,8 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { Bell, ShoppingCart, AlertTriangle, UserPlus, CreditCard, Check, X } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Bell, ShoppingCart,Crown,Globe, AlertTriangle, UserPlus, CreditCard, Check, X, User, Settings, LogOut, Shield, HelpCircle, ChevronRight } from "lucide-react";
 
 // ── Notification data ──────────────────────────────────────────────────────
 interface Notification {
@@ -15,7 +16,7 @@ interface Notification {
 }
 
 const INITIAL_NOTIFICATIONS: Notification[] = [
-  { id: 1, type: "order",    title: "New order received",     message: "#ORD-0092 from Jane Doe — $124.50",      time: "2m ago",  read: false },
+  { id: 1, type: "order",    title: "New order received",     message: "#ORD-0092 from Jane Doe — ₦124.50",      time: "2m ago",  read: false },
   { id: 2, type: "alert",    title: "Low stock alert",         message: "Wireless Mechanical Keyboard — 12 left",  time: "1h ago",  read: false },
   { id: 3, type: "customer", title: "New customer signed up",  message: "Omar Hassan joined your store",           time: "3h ago",  read: false },
   { id: 4, type: "payment",  title: "Payout processed",        message: "₦1,620,000 sent to Access Bank",          time: "5h ago",  read: true  },
@@ -29,18 +30,62 @@ const TYPE_CONFIG = {
   payment:  { icon: CreditCard,    bg: "bg-[#F7F4EE] dark:bg-[#0F1D14]", color: "text-[#0A2E1A]" },
 };
 
+// ── Logout Modal ──────────────────────────────────────────────────────────
+function LogoutModal({ onClose, onConfirm }: { onClose: () => void; onConfirm: () => void }) {
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm" onClick={onClose}>
+      <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl w-full max-w-sm p-6 text-center" onClick={e => e.stopPropagation()}>
+        <div className="w-12 h-12 rounded-full bg-red-100 dark:bg-red-950/40 flex items-center justify-center mx-auto mb-4">
+          <LogOut size={24} className="text-red-500" />
+        </div>
+        <h3 className="text-lg font-bold text-gray-900 dark:text-white">Logout?</h3>
+        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Are you sure you want to logout?</p>
+        <div className="flex gap-3 mt-6">
+          <button
+            onClick={onClose}
+            className="flex-1 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+          >
+            No
+          </button>
+          <button
+            onClick={onConfirm}
+            className="flex-1 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white text-sm font-semibold transition-colors"
+          >
+            Yes, Logout
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function Header() {
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const [notifications, setNotifications] = useState<Notification[]>(INITIAL_NOTIFICATIONS);
+  const [avatarDropdownOpen, setAvatarDropdownOpen] = useState(false);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
+  const avatarRef = useRef<HTMLDivElement>(null);
 
   const unreadCount = notifications.filter(n => !n.read).length;
 
-  // Close on outside click
+  // Close notification panel on outside click
   useEffect(() => {
     const handler = (e: MouseEvent) => {
       if (panelRef.current && !panelRef.current.contains(e.target as Node)) {
         setOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
+
+  // Close avatar dropdown on outside click
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (avatarRef.current && !avatarRef.current.contains(e.target as Node)) {
+        setAvatarDropdownOpen(false);
       }
     };
     document.addEventListener("mousedown", handler);
@@ -58,6 +103,15 @@ export default function Header() {
   const removeNotification = (id: number, e: React.MouseEvent) => {
     e.stopPropagation();
     setNotifications(prev => prev.filter(n => n.id !== id));
+  };
+
+  const handleLogout = () => {
+    setShowLogoutModal(false);
+    setAvatarDropdownOpen(false);
+    // ─── 🔄 REPLACE WITH BACKEND LOGOUT ───
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
+    router.push('/auth/login');
   };
 
   return (
@@ -169,13 +223,104 @@ export default function Header() {
           )}
         </div>
 
-        <img
-          src="/avatar.jpg"
-          alt="User avatar"
-          className="w-8 h-8 sm:w-9 sm:h-9 rounded-full object-cover"
-        />
+        {/* ── Avatar with dropdown ── */}
+        <div className="relative" ref={avatarRef}>
+          <button
+            onClick={() => setAvatarDropdownOpen(!avatarDropdownOpen)}
+            className="focus:outline-none"
+          >
+            <img
+              src="/avatar.jpg"
+              alt="User avatar"
+              className="w-8 h-8 sm:w-9 sm:h-9 rounded-full object-cover border-2 border-transparent hover:border-[#C8F135] transition-all"
+            />
+          </button>
+
+          {/* Avatar Dropdown */}
+          {avatarDropdownOpen && (
+            <div className="absolute right-0 top-12 z-50 w-56 bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-2xl shadow-2xl overflow-hidden">
+              {/* User Info */}
+              <div className="px-4 py-3 border-b border-gray-100 dark:border-gray-800">
+                <div className="flex items-center gap-3">
+                  <img
+                    src="/avatar.jpg"
+                    alt="User avatar"
+                    className="w-10 h-10 rounded-full object-cover"
+                  />
+                  <div>
+                    <p className="text-sm font-semibold text-gray-900 dark:text-white">Alex Johnson</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">alex@marketpro.ng</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Menu Items */}
+              <div className="py-1">
+                <Link
+                  href="/admin/settings/profile"
+                  onClick={() => setAvatarDropdownOpen(false)}
+                  className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                >
+                  <User size={16} className="text-gray-400" />
+                  Profile
+                </Link>
+                <Link
+                  href="/admin/settings/store"
+                  onClick={() => setAvatarDropdownOpen(false)}
+                  className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                >
+                  <Settings size={16} className="text-gray-400" />
+                  Store Settings
+                </Link>
+                <Link
+                  href="/admin/settings/domain"
+                  onClick={() => setAvatarDropdownOpen(false)}
+                  className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                >
+                  <Globe size={16} className="text-gray-400" />
+                  Domain Settings
+                </Link>
+                <div className="border-t border-gray-100 dark:border-gray-800 my-1" />
+                <Link
+                  href="/admin/support"
+                  onClick={() => setAvatarDropdownOpen(false)}
+                  className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                >
+                  <HelpCircle size={16} className="text-gray-400" />
+                  Help & Support
+                </Link>
+                <Link
+                  href="/admin/upgrade"
+                  onClick={() => setAvatarDropdownOpen(false)}
+                  className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-[#C8F135] bg-[#C8F135]/10 hover:bg-[#C8F135]/20 transition-colors"
+                >
+                  <Crown size={16} className="text-[#C8F135]" />
+                  Upgrade to Premium
+                </Link>
+                <div className="border-t border-gray-100 dark:border-gray-800 my-1" />
+                <button
+                  onClick={() => {
+                    setAvatarDropdownOpen(false);
+                    setShowLogoutModal(true);
+                  }}
+                  className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors"
+                >
+                  <LogOut size={16} className="text-red-500" />
+                  Logout
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
 
+      {/* ── Logout Modal ── */}
+      {showLogoutModal && (
+        <LogoutModal
+          onClose={() => setShowLogoutModal(false)}
+          onConfirm={handleLogout}
+        />
+      )}
     </header>
   );
 }
