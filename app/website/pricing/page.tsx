@@ -80,7 +80,7 @@ export default function Pricing() {
             <button
               onClick={() => setYearly(!yearly)}
               className="w-11 h-6 rounded-full relative transition-colors"
-              style={{ backgroundColor: yearly ? "#C8F135" : "#ffffff33" }}
+              style={{ backgroundColor: yearly ? "#7e9b15" : "#ffffff33" }}
               aria-label="Toggle yearly billing"
             >
               <span
