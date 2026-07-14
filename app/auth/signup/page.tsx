@@ -50,7 +50,7 @@ const FREE_FEATURES = [
   { icon: Infinity, label: "Unlimited Products", color: "#C8F135" },
   { icon: ShoppingBag, label: "Unlimited Orders", color: "#4F46E5" },
   { icon: Smartphone, label: "Online Store + POS", color: "#10b981" },
-  { icon: CreditCard, label: "Fintava Payments", color: "#f97316" },
+  { icon: CreditCard, label: "PayStack Payments", color: "#f97316" },
   { icon: Users, label: "Staff Accounts", color: "#8b5cf6" },
   { icon: Package, label: "Inventory Management", color: "#06b6d4" },
   { icon: BarChart2, label: "Analytics Dashboard", color: "#ec4899" },
@@ -81,7 +81,7 @@ function FreePlanStep({ onStartTrial }: { onStartTrial: () => void }) {
           <span style={{ color: "#C8F135" }}>No setup costs.</span>
         </h2>
         <p className="text-gray-500 text-sm mt-2 max-w-md mx-auto">
-          Yes, really. Completely free. Powered by our payment partners.
+          21 days free trial 
         </p>
       </div>
 
