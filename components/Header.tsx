@@ -2,18 +2,20 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 
 const navItems = [
-  { label: "Solutions", href: "/solutions" },
-  { label: "Pricing", href: "/pricing" },
-  { label: "Marketplace", href: "/marketplace" },
-  { label: "Enterprise", href: "/enterprise" },
+  { label: "Features", href: "/website/features" },
+  { label: "Pricing", href: "/website/pricing" },
+  { label: "Templates", href: "/marketplace" },
+  { label: "Enterprise", href: "/website/enterprise" },
 ];
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -46,25 +48,38 @@ export default function Header() {
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-10">
-          {navItems.map((item) => (
-            <Link
-              key={item.label}
-              href={item.href}
-              className={`text-sm font-medium transition-colors duration-300 ${
-                scrolled
-                  ? "text-[#0A2E1A] hover:text-black"
-                  : "text-white/90 hover:text-white"
-              }`}
-            >
-              {item.label}
-            </Link>
-          ))}
+          {navItems.map((item) => {
+            const isActive = pathname === item.href;
+            return (
+              <Link
+                key={item.label}
+                href={item.href}
+                className={`relative text-sm font-medium transition-colors duration-300 ${
+                  isActive
+                    ? scrolled
+                      ? "text-[#0A2E1A]"
+                      : "text-white"
+                    : scrolled
+                    ? "text-[#0A2E1A]/60 hover:text-[#0A2E1A]"
+                    : "text-white/70 hover:text-white"
+                }`}
+              >
+                {item.label}
+                <span
+                  className={`absolute -bottom-1.5 left-0 h-[2px] rounded-full transition-all duration-300 ${
+                    isActive ? "w-full" : "w-0"
+                  }`}
+                  style={{ backgroundColor: scrolled ? "#0A2E1A" : "#C8F135" }}
+                />
+              </Link>
+            );
+          })}
         </nav>
 
         {/* Desktop Buttons */}
         <div className="hidden md:flex items-center gap-4">
           <Link
-            href="/login"
+            href="/auth/login"
             className={`text-sm font-medium transition-colors duration-300 ${
               scrolled
                 ? "text-[#0A2E1A] hover:text-black"
@@ -76,7 +91,7 @@ export default function Header() {
 
           {/* Animated Button */}
           <Link
-            href="/get-started"
+            href="/auth/signup"
             className={`group relative overflow-hidden rounded-full px-6 py-3 text-sm font-semibold transition-all duration-300 ${
               scrolled
                 ? "bg-[#0A2E1A] text-[#C8F135]"
@@ -135,20 +150,33 @@ export default function Header() {
           }`}
         >
           <div className="space-y-2">
-            {navItems.map((item) => (
-              <Link
-                key={item.label}
-                href={item.href}
-                onClick={() => setMenuOpen(false)}
-                className={`block py-3 text-sm font-medium transition-colors ${
-                  scrolled
-                    ? "text-[#0A2E1A] hover:text-black"
-                    : "text-white/90 hover:text-white"
-                }`}
-              >
-                {item.label}
-              </Link>
-            ))}
+            {navItems.map((item) => {
+              const isActive = pathname === item.href;
+              return (
+                <Link
+                  key={item.label}
+                  href={item.href}
+                  onClick={() => setMenuOpen(false)}
+                  className={`flex items-center justify-between py-3 text-sm font-medium transition-colors ${
+                    isActive
+                      ? scrolled
+                        ? "text-[#0A2E1A] font-semibold"
+                        : "text-white font-semibold"
+                      : scrolled
+                      ? "text-[#0A2E1A]/60 hover:text-[#0A2E1A]"
+                      : "text-white/70 hover:text-white"
+                  }`}
+                >
+                  {item.label}
+                  {isActive && (
+                    <span
+                      className="w-1.5 h-1.5 rounded-full"
+                      style={{ backgroundColor: scrolled ? "#0A2E1A" : "#C8F135" }}
+                    />
+                  )}
+                </Link>
+              );
+            })}
           </div>
 
           <div
@@ -169,7 +197,7 @@ export default function Header() {
             </Link>
 
             <Link
-              href="/get-started"
+              href="/auth/signup"
               onClick={() => setMenuOpen(false)}
               className={`group relative flex justify-center overflow-hidden rounded-full px-6 py-3 text-sm font-semibold ${
                 scrolled

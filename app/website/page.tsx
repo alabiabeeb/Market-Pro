@@ -259,7 +259,7 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto px-5 sm:px-8">
           <div className="text-center mb-16 space-y-4">
             <p className="text-xs font-bold tracking-widest text-gray-400 uppercase">Why merchants switch</p>
-            <h2 className="text-4xl sm:text-5xl font-black text-[#0A2E1A] leading-tight">
+            <h2 className="text-3xl sm:text-5xl font-black text-[#0A2E1A] leading-tight">
               Built for how Nigeria<br />actually does business
             </h2>
             <p className="text-lg text-gray-500 max-w-xl mx-auto">
@@ -312,11 +312,11 @@ export default function LandingPage() {
         <div className="max-w-4xl mx-auto px-5 sm:px-8">
           <div className="text-center mb-14 space-y-4">
             <p className="text-xs font-bold tracking-widest uppercase" style={{ color: "#C8F135" }}>The honest comparison</p>
-            <h2 className="text-4xl sm:text-5xl font-black text-white">MarketPro vs the rest</h2>
+            <h2 className="text-3xl sm:text-5xl font-black text-white">MarketPro vs the rest</h2>
           </div>
-          <div className="rounded-2xl overflow-hidden border border-white/10">
+          <div className="rounded-2xl overflow-hidden border border-white/10 w-full">
             {/* Header */}
-            <div className="grid grid-cols-3 text-sm font-bold px-6 py-4 border-b border-white/10"
+            <div className="grid grid-cols-3 text-sm font-bold px-6 py-4 border-b border-white/10 "
               style={{ backgroundColor: "#0F3D22" }}>
               <span className="text-white/40">Feature</span>
               <span className="text-center" style={{ color: "#C8F135" }}>MarketPro</span>
